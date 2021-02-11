@@ -1,0 +1,12 @@
+CREATE DATABASE IF NOT EXISTS ginecology;
+
+DROP TABLE user;
+
+CREATE TABLE user (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    name VARCHAR(60) COLLATE latin1_bin NOT NULL,
+    CONSTRAINT UserPK PRIMARY KEY (id),
+    CONSTRAINT NameUniqueKey UNIQUE (name)
+) ENGINE = InnoDB;
+
+CREATE INDEX UserIndexByUserName ON user (name);
