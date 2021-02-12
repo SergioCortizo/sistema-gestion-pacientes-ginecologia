@@ -1,0 +1,17 @@
+<div th:fragment="menu">
+	<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+		<div class="sb-sidenav-menu">
+			<div class="nav">
+				<div class="sb-sidenav-menu-heading" th:text="#{label.gotohome}">Go to home</div>
+				<a class="nav-link" th:href="@{/}">
+					<div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
+					<span th:text="#{label.home}">Home</span>
+				</a>
+			</div>
+		</div>
+		<div class="sb-sidenav-footer">
+			<div class="small"><span th:text="#{label.loggedinas}">Logged in as:</span></div>
+			pepito.piscinas
+		</div>
+	</nav>
+</div>
