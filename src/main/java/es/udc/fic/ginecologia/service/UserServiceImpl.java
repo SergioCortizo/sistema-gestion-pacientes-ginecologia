@@ -7,14 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fic.ginecologia.model.User;
-import es.udc.fic.ginecologia.repository.UserRepository;
+import es.udc.fic.ginecologia.repository.UserDao;
 
 @Service
 @Transactional
 public class UserServiceImpl implements UserService {
 
 	@Autowired 
-	UserRepository userRepo;
+	UserDao userRepo;
 	
 	@Override
 	public List<User> findAllUsers() {
