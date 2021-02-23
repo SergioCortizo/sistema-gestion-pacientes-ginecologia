@@ -8,6 +8,18 @@
 					<span th:text="#{label.home}">Home</span>
 				</a>
 			</div>
+			
+			<div class="nav">
+				<div class="sb-sidenav-menu-heading" th:text="#{label.usersmanagement}">Users management</div>
+				<a class="nav-link" th:href="@{/login}">
+					<div class="sb-nav-link-icon"><i class="fas fa-lock"></i></div>
+					<span th:text="#{label.login}">Login</span>
+				</a>
+				<a class="nav-link" th:href="@{/login?logout}">
+					<div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
+					<span th:text="#{label.logout}">Logout</span>
+				</a>
+			</div>
 		</div>
 		<div class="sb-sidenav-footer">
 			<div class="small"><span th:text="#{label.loggedinas}">Logged in as:</span></div>
