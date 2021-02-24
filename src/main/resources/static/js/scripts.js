@@ -19,4 +19,9 @@
         e.preventDefault();
         $("body").toggleClass("sb-sidenav-toggled");
     });
+
+	$("#logoutLink").on("click", function(e) {
+        e.preventDefault();
+        document.logoutForm.submit();
+    });
 })(jQuery);

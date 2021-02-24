@@ -17,13 +17,13 @@
             <div id="layoutSidenav_content">
 
                 <main>
-					<div sec:authorize="isAuthenticated()">
-					    Welcome <b><span sec:authentication="name">Username</span></b>
-					    &nbsp;
-					    <i><span sec:authentication="principal.authorities">Roles</span></i>
-					</div>
                     <div class="container-fluid">
                         <h1 class="mt-4" th:text="#{app.title}">Title</h1>
+	
+						<form name="logoutForm" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+							<input type="submit" value="logout" />
+						</form>
+
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item active" th:text="#{label.home}">Home</li>
                         </ol>
@@ -96,25 +96,9 @@
                     <div th:include="fragments/copyright :: copyright" class="container-fluid"/>
 					<div th:include="fragments/scripts :: general" />
                 </footer>
-				<script>
-					function startDateInputs() {
-					  var date_from=$('input[name="dateFrom"]');
-					  var date_to=$('input[name="dateTo"]');
-					  
-					  var container=$('.bootstrap-iso form').length>0 ? $('.bootstrap-iso form').parent() : "body";
-					  var options={
-					    format: 'dd/mm/yyyy',
-					    container: container,
-					    todayHighlight: true,
-					    autoclose: true,
-					  };
-			
-					  date_from.datepicker(options);
-					  date_to.datepicker(options);
-					}
-	
-					$(document).ready(startDateInputs())
-				</script>
+
+				<script th:src="@{/js/index.js}"></script>
+				
             </div>
         </div>
 		
