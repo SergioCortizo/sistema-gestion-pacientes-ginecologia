@@ -25,4 +25,10 @@ public class UserController {
 	    return "login";
 	}
 	
+	// Register form
+	@GetMapping("/register")
+	public String registerPage() {
+	    return "register";
+	}
+	
 }

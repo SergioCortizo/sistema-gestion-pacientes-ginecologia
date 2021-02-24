@@ -1,0 +1,6 @@
+<div th:fragment="main_general">
+	<h1 class="mt-4" th:text="#{app.title}">Title</h1>
+	<form id="logoutForm" name="logoutForm" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
+		<input type="hidden" value="logout" />
+	</form>
+</div>

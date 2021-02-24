@@ -18,15 +18,9 @@
 
                 <main>
                     <div class="container-fluid">
-                        <h1 class="mt-4" th:text="#{app.title}">Title</h1>
-	
-						<form name="logoutForm" sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
-							<input type="submit" value="logout" />
-						</form>
 
-                        <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item active" th:text="#{label.home}">Home</li>
-                        </ol>
+						<div th:include="fragments/main_general :: main_general" />
+
                         <div class="card mb-4">
                             <div class="card-header">
                                 <i class="fas fa-table mr-1"></i>

@@ -19,6 +19,10 @@
 					<div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
 					<span th:text="#{label.logout}">Logout</span>
 				</a>
+				<a class="nav-link" sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/register}">
+					<div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
+					<span th:text="#{label.register}">Register user</span>
+				</a>
 			</div>
 			
 			<form th:action="@{/logout}" method="post" th:hidden="true" name="logoutForm">
