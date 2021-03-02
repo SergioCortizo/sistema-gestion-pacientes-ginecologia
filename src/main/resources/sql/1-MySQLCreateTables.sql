@@ -9,6 +9,12 @@ CREATE TABLE user (
     password VARCHAR(60) COLLATE latin1_bin NOT NULL,
     email VARCHAR(60) COLLATE latin1_bin NOT NULL,
     enabled TINYINT(4) DEFAULT NULL,
+    postal_address VARCHAR(100) COLLATE latin1_bin NOT NULL,
+    location VARCHAR(60) COLLATE latin1_bin NOT NULL,
+    dni VARCHAR(9) COLLATE latin1_bin NOT NULL,
+    phone_number VARCHAR(9) COLLATE latin1_bin NOT NULL,
+    discharge_date TIMESTAMP NOT NULL,
+    collegiate_number VARCHAR(9) DEFAULT NULL,
     CONSTRAINT UserPK PRIMARY KEY (id),
     CONSTRAINT NameUniqueKey UNIQUE (username)
 ) ENGINE = InnoDB;

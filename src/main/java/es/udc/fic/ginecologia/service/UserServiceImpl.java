@@ -36,4 +36,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return result;
 	}
 
+	@Override
+	public void registerUser(User user) {
+		
+		
+		
+	}
+
 }

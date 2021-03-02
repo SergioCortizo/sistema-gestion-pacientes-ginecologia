@@ -11,17 +11,13 @@
 			
 			<div class="nav">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.usersmanagement}">Users management</div>
-				<a class="nav-link" th:href="@{/login}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/user/user-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-lock"></i></div>
-					<span th:text="#{label.login}">Login</span>
+					<span th:text="#{label.usersmanagement}">Users management</span>
 				</a>
 				<a class="nav-link" sec:authorize="isAuthenticated()" id="logoutLink" href="#">
 					<div class="sb-nav-link-icon"><i class="fas fa-sign-out-alt"></i></div>
 					<span th:text="#{label.logout}">Logout</span>
-				</a>
-				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/register}">
-					<div class="sb-nav-link-icon"><i class="fas fa-user-plus"></i></div>
-					<span th:text="#{label.register}">Register user</span>
 				</a>
 			</div>
 			
