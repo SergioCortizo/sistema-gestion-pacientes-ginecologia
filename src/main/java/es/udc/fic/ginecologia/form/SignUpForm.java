@@ -1,26 +1,26 @@
 package es.udc.fic.ginecologia.form;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
-
 public class SignUpForm {
-    @NotBlank
-    @Size(min = 3, max = 60)
+
     private String name;
 
-    @NotBlank
-    @Size(min = 3, max = 60)
     private String username;
 
-    @NotBlank
-    @Size(max = 60)
-    @Email
     private String email;
     
-    @NotBlank
-    @Size(min = 6, max = 60)
     private String password;
+    
+    private String postalAddress;
+    
+    private String location;
+    
+    private String DNI;
+    
+    private String phoneNumber;
+    
+    private String collegiateNumber;
+    
+    private Integer[] roles;
 
 	public String getName() {
 		return name;
@@ -53,5 +53,52 @@ public class SignUpForm {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-    
+
+	public String getPostalAddress() {
+		return postalAddress;
+	}
+
+	public void setPostalAddress(String postalAddress) {
+		this.postalAddress = postalAddress;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public String getDNI() {
+		return DNI;
+	}
+
+	public void setDNI(String dNI) {
+		DNI = dNI;
+	}
+
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public void setPhoneNumber(String phoneNumber) {
+		this.phoneNumber = phoneNumber;
+	}
+
+	public String getCollegiateNumber() {
+		return collegiateNumber;
+	}
+
+	public void setCollegiateNumber(String collegiateNumber) {
+		this.collegiateNumber = collegiateNumber;
+	}
+
+	public Integer[] getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Integer[] roles) {
+		this.roles = roles;
+	}
 }

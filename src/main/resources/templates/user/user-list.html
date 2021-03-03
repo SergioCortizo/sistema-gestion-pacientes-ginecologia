@@ -22,8 +22,17 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item active" th:text="#{label.home}">Inicio</li>
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item active"><span th:text="#{label.usersmanagement}">Gestión de
+								usuarios</span></li>
 					</ol>
+
+					<div class="mb-4">
+						<a th:href="@{/user/register}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+							<span>Registrar usuario</span>
+							<i class="fas fa-plus"></i>
+						</a>
+					</div>
 
 					<div class="card mb-4">
 						<div class="card-header">
@@ -92,8 +101,10 @@
 												<ul class="list-inline" th:each="role : ${user.roles}">
 													<li class="list-inline-item">
 														<th:block th:switch="${role.name}">
-															<span th:case="'ROLE_ADMIN'" th:text="#{label.admin}">Admin</span>
-															<span th:case="'ROLE_FACULTATIVE'" th:text="#{label.facultative}">Facultative</span>
+															<span th:case="'ROLE_ADMIN'"
+																th:text="#{label.admin}">Admin</span>
+															<span th:case="'ROLE_FACULTATIVE'"
+																th:text="#{label.facultative}">Facultative</span>
 														</th:block>
 													</li>
 												</ul>

@@ -2,7 +2,9 @@ $.extend(
 	$.validator.messages, {
 		minlength: jQuery.validator.format("Por favor meta al menos {0} caracteres."),
 		maxlength: jQuery.validator.format("El limite de caracteres esta en {0} caracteres."),
-		required: jQuery.validator.format("Campo requerido.")
+		required: jQuery.validator.format("Campo requerido."),
+		email: jQuery.validator.format("Por favor introduzca un email válido."),
+		equalTo: jQuery.validator.format("Por favor introduzca el mismo valor de nuevo."),
 	}
 );
 
