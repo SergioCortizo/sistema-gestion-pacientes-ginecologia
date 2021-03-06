@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
+import es.udc.fic.ginecologia.model.Role;
 import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.repository.UserDao;
 
@@ -20,21 +21,38 @@ public class PermissionCheckerImpl implements PermissionChecker {
 	@Override
 	public void checkUserExists(Long userId) throws InstanceNotFoundException {
 		if (!userDao.existsById(userId)) {
-			throw new InstanceNotFoundException("project.model.user", userId);
+			throw new InstanceNotFoundException("entities.user", userId);
 		}
 
 	}
 
 	@Override
-	public User checkUser(Long userId) throws InstanceNotFoundException {
+	public User checkUser(Integer userId) throws InstanceNotFoundException {
 		Optional<User> user = userDao.findById(userId);
 		
 		if (!user.isPresent()) {
-			throw new InstanceNotFoundException("project.entities.user", userId);
+			throw new InstanceNotFoundException("entities.user", userId);
 		}
 		
 		return user.get();
 
+	}
+	
+	@Override
+	public boolean checkIsAdmin(Integer userId) throws InstanceNotFoundException {
+		Optional<User> user = userDao.findById(userId);
+		
+		if (!user.isPresent()) {
+			throw new InstanceNotFoundException("entities.user", userId);
+		}
+		
+		for (Role role : user.get().getRoles()) {
+			if (role.getName().equals("ROLE_ADMIN")) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 }

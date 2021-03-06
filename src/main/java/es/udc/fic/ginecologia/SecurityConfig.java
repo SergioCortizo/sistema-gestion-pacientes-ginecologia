@@ -52,9 +52,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		
 		http.addFilterBefore(filter,CsrfFilter.class)
 			.authorizeRequests()
-	        .antMatchers("/").permitAll()
-	        .antMatchers("/register").hasRole("ADMIN")
+	        .antMatchers("/user/register").hasRole("ADMIN")
+	        .antMatchers("/user/register-error").hasRole("ADMIN")
 	        .antMatchers("/user/user-list").hasRole("ADMIN")
+	        .antMatchers("/user/update/{id}").hasRole("ADMIN")
+	        .antMatchers("/user/change-password/{id}").hasRole("ADMIN")
 	        .anyRequest().authenticated()
 	        .and()
 		        .formLogin()

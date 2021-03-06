@@ -7,6 +7,8 @@ import es.udc.fic.ginecologia.model.Role;
 import es.udc.fic.ginecologia.model.User;
 
 public class UserListElem {
+	private Integer id;
+	
 	private String name;
     
     private String username;
@@ -24,6 +26,7 @@ public class UserListElem {
 		this.username = user.getUsername();
 		this.email = user.getEmail();
 		this.enabled = user.isEnabled();
+		this.id = user.getId();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		
@@ -79,5 +82,13 @@ public class UserListElem {
 	public void setRoles(Set<Role> roles) {
 		this.roles = roles;
 	}
-	
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
 }

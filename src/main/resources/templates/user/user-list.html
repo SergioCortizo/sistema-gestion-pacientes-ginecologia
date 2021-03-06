@@ -28,7 +28,8 @@
 					</ol>
 
 					<div class="mb-4">
-						<a th:href="@{/user/register}" class="btn btn-primary btn-lg active" role="button" aria-pressed="true">
+						<a th:href="@{/user/register}" class="btn btn-primary btn-lg active" role="button"
+							aria-pressed="true">
 							<span>Registrar usuario</span>
 							<i class="fas fa-plus"></i>
 						</a>
@@ -88,6 +89,7 @@
 											<th th:text="#{label.dischargedate}">Discharge date</th>
 											<th th:text="#{label.enabled}">Enabled</th>
 											<th th:text="#{label.roles}">Roles</th>
+											<th th:text="#{label.actions}">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -108,6 +110,18 @@
 														</th:block>
 													</li>
 												</ul>
+											</td>
+											<td>
+												<div class="row">
+													<form th:action="@{/user/update/{id}(id=${user.id})}" method="GET">
+														<button class="btn btn-link" type="submit"><i
+																class="fas fa-edit"></i></button>
+													</form>
+													<button class="btn btn-link">
+														<i class="fas fa-check" th:if="${!user.enabled}"></i>
+														<i class="fas fa-times" th:if="${user.enabled}"></i>
+													</button>
+												</div>
 											</td>
 										</tr>
 									</tbody>

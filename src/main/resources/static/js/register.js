@@ -14,16 +14,16 @@ $(document).ready(function() {
 			"inputCollegiateNumber": {
 				collegiateNumberCheck: true
 			},
-			"roles[]": {
+			"roles": {
 				required: true
 			}
 		},
 		messages: {
-			"roles[]" : "Por favor escoja más de un rol."
+			"roles" : "Por favor escoja más de un rol."
 		},
 		errorPlacement: function (error, element) {
             console.log('dd', element.attr("name"))
-            if (element.attr("name") == "roles[]") {
+            if (element.attr("name") == "roles") {
                 error.appendTo("#checkboxes");
             } else {
                 error.insertAfter(element)

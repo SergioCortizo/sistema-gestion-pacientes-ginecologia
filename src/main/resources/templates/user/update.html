@@ -23,42 +23,25 @@
 
 					<ol class="breadcrumb mb-4">
 						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
-						<li class="breadcrumb-item"><a th:href="@{/user/user-list}"
-								th:text="#{label.usersmanagement}">Gestión de usuarios</a></li>
-						<li class="breadcrumb-item active"><span th:text="#{label.registerUser}">Registrar
-								usuario</span></li>
+						<li class="breadcrumb-item active"><span th:text="#{label.settings}">Settings</span></li>
 					</ol>
 
 					<div class="card mb-4">
 						<div class="card-header">
-							<i class="fas fa-user-plus mr-1"></i>
-							<span th:text="#{label.register}">Register user</span>
+							<i class="fas fa-user mr-1"></i>
+							<span th:text="#{label.settings}">Settings</span>
 						</div>
 						<div class="card-body">
 							<div th:if="${duplicateUser}" class="alert alert-danger" role="alert">
 								<span th:text="#{label.userexists}">User already exists.</span>
 							</div>
-							<form id="register-form" th:object="${signUpForm}" th:action="@{/user/register}"
-								method="POST">
-								<div class="form-row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="small mb-1" for="inputUsername"
-												th:text="#{label.login}">Login</label>
-											<input class="form-control py-4" th:field="*{username}" id="inputUsername"
-												name="inputUsername" type="text" placeholder="Login" minlength="3"
-												maxlength="60" required />
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="small mb-1" for="inputName" th:text="#{label.name}">Nombre
-												completo</label>
-											<input class="form-control py-4" th:field="*{name}" id="inputName"
-												type="text" placeholder="Nombre completo" minlength="3" maxlength="60"
-												required />
-										</div>
-									</div>
+							<form id="update-form" th:object="${updateForm}"
+								th:action="@{/user/update/{id}(id=${userId})}" method="POST">
+								<div class="form-group">
+									<label class="small mb-1" for="inputName" th:text="#{label.name}">Nombre
+										completo</label>
+									<input class="form-control py-4" th:field="*{name}" id="inputName" type="text"
+										placeholder="Nombre completo" minlength="3" maxlength="60" required />
 								</div>
 								<div class="form-group">
 									<label class="small mb-1" for="inputEmailAddress"
@@ -66,26 +49,6 @@
 									<input class="form-control py-4" th:field="*{email}" id="inputEmailAddress"
 										type="email" aria-describedby="emailHelp" placeholder="Correo electronico"
 										required />
-								</div>
-								<div class="form-row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="small mb-1" for="inputPassword"
-												th:text="#{label.password}">Password</label>
-											<input class="form-control py-4" th:field="*{password}" id="inputPassword"
-												name="inputPassword" type="password" placeholder="Password"
-												minlength="3" maxlength="60" required />
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="small mb-1" for="inputConfirmPassword"
-												th:text="#{label.confirm}">Confirm</label>
-											<input class="form-control py-4" id="inputConfirmPassword"
-												name="inputConfirmPassword" type="password" placeholder="Confirmar"
-												minlength="3" maxlength="60" required />
-										</div>
-									</div>
 								</div>
 								<div class="form-row">
 									<div class="col-md-9">
@@ -131,11 +94,12 @@
 												th:text="#{label.collegiatenumber}">Collegiate number</label>
 											<input class="form-control py-4" th:field="*{collegiateNumber}"
 												id="inputCollegiateNumber" name="inputCollegiateNumber" type="text"
-												placeholder="Nº de colegiado" minlength="9" maxlength="9" required />
+												placeholder="Nº de colegiado" minlength="9" maxlength="9" />
 										</div>
 									</div>
 								</div>
-								<fieldset class="form-group" id="checkboxes" name="checkboxes">
+								<fieldset sec:authorize="hasRole('ADMIN')" class="form-group" id="checkboxes"
+									name="checkboxes">
 									<legend class="col-form-label col-sm-2 pt-0" th:text="#{label.roles}">Roles</legend>
 									<div class="col-sm-1">
 										<div class="form-check" th:each="role : ${roles}">
@@ -148,8 +112,54 @@
 										</div>
 									</div>
 								</fieldset>
-								<button type="submit" class="btn btn-primary" th:text="#{label.registerUser}">Register
+								<button type="submit" class="btn btn-primary" th:text="#{label.updateUser}">Update
 									user</button>
+							</form>
+						</div>
+					</div>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-lock mr-1"></i>
+							<span th:text="#{label.changepassword}">Change password</span>
+						</div>
+						<div class="card-body">
+							<div th:if="${wrongPassword}" class="alert alert-danger" role="alert">
+								<span th:text="#{label.wrongcredentials}">Wrong credentials</span>
+							</div>
+							<form id="password-form" th:action="@{/user/change-password/{id}(id=${userId})}" method="POST"
+								th:object="${changePasswordForm}">
+								<div class="form-row">
+									<div class="col-md-4">
+										<div class="form-group">
+											<label class="small mb-1" for="inputOldPassword"
+												th:text="#{label.oldpassword}">Old password</label>
+											<input class="form-control py-4" id="inputOldPassword"
+												name="inputOldPassword" type="password" placeholder="Password viejo"
+												minlength="3" maxlength="60" required th:field="*{oldPassword}" />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label class="small mb-1" for="inputNewPassword"
+												th:text="#{label.newpassword}">New password</label>
+											<input class="form-control py-4" id="inputNewPassword"
+												name="inputNewPassword" type="password" placeholder="Nuevo password"
+												minlength="3" maxlength="60" required th:field="*{newPassword}" />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label class="small mb-1" for="inputConfirmPassword"
+												th:text="#{label.confirm}">Confirm</label>
+											<input class="form-control py-4" id="inputConfirmPassword"
+												name="inputConfirmPassword" type="password" placeholder="Confirmar"
+												minlength="3" maxlength="60" required />
+										</div>
+									</div>
+								</div>
+								<button type="submit" class="btn btn-primary" th:text="#{label.changePassword}">Change
+									password</button>
 							</form>
 						</div>
 					</div>
@@ -159,7 +169,7 @@
 			<footer class="py-4 bg-light mt-auto">
 				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
 				<div th:include="fragments/scripts :: general" />
-				<script th:src="@{/js/register.js}"></script>
+				<script th:src="@{/js/update-own-data.js}"></script>
 			</footer>
 
 		</div>

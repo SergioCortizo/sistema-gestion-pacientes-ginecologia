@@ -12,6 +12,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
+import es.udc.fic.ginecologia.common.exception.IncorrectPasswordException;
+import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
+import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
 import es.udc.fic.ginecologia.model.Role;
@@ -23,18 +26,18 @@ import es.udc.fic.ginecologia.repository.UserDao;
 @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
-	@Autowired 
+	@Autowired
 	private UserDao userRepo;
-	
-	@Autowired 
+
+	@Autowired
 	private RoleDao roleRepo;
-	
+
 	@Autowired
 	private PermissionChecker permissionChecker;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder encrypter;
-	
+
 	@Override
 	public Iterable<User> findAllUsers() {
 		return userRepo.findAll();
@@ -43,35 +46,129 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userRepo.getUserByUsername(username);
-		
+
 		if (user == null) {
-            throw new UsernameNotFoundException("Could not find user");
-        }
-		
+			throw new UsernameNotFoundException("Could not find user");
+		}
+
 		CustomUserDetails result = new CustomUserDetails(user);
-         
-        return result;
+
+		return result;
 	}
 
 	@Override
 	public void registerUser(User user, Iterable<Integer> roles) throws DuplicateInstanceException {
-		
+
 		if (userRepo.existsByUsername(user.getUsername())) {
 			throw new DuplicateInstanceException("entities.user", user.getUsername());
 		}
-		
+
 		Set<Role> foundRoles = new HashSet<Role>();
 		roleRepo.findAllById(roles).forEach(foundRoles::add);
-		
+
 		user.setPassword(encrypter.encode(user.getPassword()));
 		user.setRoles(foundRoles);
-		
+
 		userRepo.save(user);
 	}
 
 	@Override
 	public Iterable<Role> findAllRoles() {
 		return roleRepo.findAll();
+	}
+
+	@Override
+	public User updateProfile(Integer id, String name, String email, String postalAddress,
+			String location, String DNI, String phoneNumber, String collegiateNumber, Iterable<Integer> roles)
+			throws InstanceNotFoundException {
+
+		User user = permissionChecker.checkUser(id);
+
+		user.setName(name);
+		user.setEmail(email);
+		user.setPostalAddress(postalAddress);
+		user.setLocation(location);
+		user.setDNI(DNI);
+		user.setPhoneNumber(phoneNumber);
+		user.setCollegiateNumber(collegiateNumber);
+
+		Set<Role> foundRoles = new HashSet<Role>();
+		roleRepo.findAllById(roles).forEach(foundRoles::add);
+
+		user.setRoles(foundRoles);
+
+		return user;
+
+	}
+
+	@Override
+	public User updateProfile(Integer adminId, Integer id, String name, String email,
+			String postalAddress, String location, String DNI, String phoneNumber, String collegiateNumber,
+			Iterable<Integer> roles) throws InstanceNotFoundException, PermissionException {
+
+		if (!permissionChecker.checkIsAdmin(adminId)) {
+			throw new PermissionException();
+		}
+		
+		User user = permissionChecker.checkUser(id);
+
+		user.setName(name);
+		user.setEmail(email);
+		user.setPostalAddress(postalAddress);
+		user.setLocation(location);
+		user.setDNI(DNI);
+		user.setPhoneNumber(phoneNumber);
+		user.setCollegiateNumber(collegiateNumber);
+
+		Set<Role> foundRoles = new HashSet<Role>();
+		roleRepo.findAllById(roles).forEach(foundRoles::add);
+
+		user.setRoles(foundRoles);
+
+		return user;
+
+	}
+
+	@Override
+	public void changePassword(Integer id, String oldPassword, String newPassword)
+			throws InstanceNotFoundException, IncorrectPasswordException {
+
+		User user = permissionChecker.checkUser(id);
+
+		if (!encrypter.matches(oldPassword, user.getPassword())) {
+			throw new IncorrectPasswordException();
+		} else {
+			user.setPassword(encrypter.encode(newPassword));
+		}
+
+	}
+	
+	@Override
+	public void changePassword(Integer adminId, Integer id, String oldPassword, String newPassword)
+			throws InstanceNotFoundException, IncorrectPasswordException, PermissionException {
+		
+		if (!permissionChecker.checkIsAdmin(adminId)) {
+			throw new PermissionException();
+		}
+		
+		User user = permissionChecker.checkUser(id);
+
+		if (!encrypter.matches(oldPassword, user.getPassword())) {
+			throw new IncorrectPasswordException();
+		} else {
+			user.setPassword(encrypter.encode(newPassword));
+		}
+
+	}
+
+	@Override
+	public User findUserById(Integer id) throws InstanceNotFoundException {
+		return permissionChecker.checkUser(id);
+	}
+
+	@Override
+	public boolean existsUserById(Integer id) {
+		return userRepo.existsById(id);
 	}
 
 }
