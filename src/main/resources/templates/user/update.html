@@ -23,13 +23,15 @@
 
 					<ol class="breadcrumb mb-4">
 						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
-						<li class="breadcrumb-item active"><span th:text="#{label.settings}">Settings</span></li>
+						<li class="breadcrumb-item"><a th:href="@{/user/user-list}" th:text="#{label.usersmanagement}">Gestión de
+								usuarios</a></li>
+						<li class="breadcrumb-item active"><span th:text="#{label.updateUser}">Update user</span></li>
 					</ol>
 
 					<div class="card mb-4">
 						<div class="card-header">
 							<i class="fas fa-user mr-1"></i>
-							<span th:text="#{label.settings}">Settings</span>
+							<span th:text="#{label.updateUser}">Update user</span>
 						</div>
 						<div class="card-body">
 							<div th:if="${duplicateUser}" class="alert alert-danger" role="alert">
@@ -169,7 +171,7 @@
 			<footer class="py-4 bg-light mt-auto">
 				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
 				<div th:include="fragments/scripts :: general" />
-				<script th:src="@{/js/update-own-data.js}"></script>
+				<script th:src="@{/js/update.js}"></script>
 			</footer>
 
 		</div>

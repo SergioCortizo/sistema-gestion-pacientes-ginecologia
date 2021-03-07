@@ -78,9 +78,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public User updateProfile(Integer id, String name, String email, String postalAddress,
-			String location, String DNI, String phoneNumber, String collegiateNumber, Iterable<Integer> roles)
-			throws InstanceNotFoundException {
+	public User updateProfile(Integer id, String name, String email, String postalAddress, String location, String DNI,
+			String phoneNumber, String collegiateNumber, Iterable<Integer> roles) throws InstanceNotFoundException {
 
 		User user = permissionChecker.checkUser(id);
 
@@ -102,14 +101,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public User updateProfile(Integer adminId, Integer id, String name, String email,
-			String postalAddress, String location, String DNI, String phoneNumber, String collegiateNumber,
-			Iterable<Integer> roles) throws InstanceNotFoundException, PermissionException {
+	public User updateProfile(Integer adminId, Integer id, String name, String email, String postalAddress,
+			String location, String DNI, String phoneNumber, String collegiateNumber, Iterable<Integer> roles)
+			throws InstanceNotFoundException, PermissionException {
 
 		if (!permissionChecker.checkIsAdmin(adminId)) {
 			throw new PermissionException();
 		}
-		
+
 		User user = permissionChecker.checkUser(id);
 
 		user.setName(name);
@@ -142,15 +141,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		}
 
 	}
-	
+
 	@Override
 	public void changePassword(Integer adminId, Integer id, String oldPassword, String newPassword)
 			throws InstanceNotFoundException, IncorrectPasswordException, PermissionException {
-		
+
 		if (!permissionChecker.checkIsAdmin(adminId)) {
 			throw new PermissionException();
 		}
-		
+
 		User user = permissionChecker.checkUser(id);
 
 		if (!encrypter.matches(oldPassword, user.getPassword())) {
@@ -169,6 +168,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	@Override
 	public boolean existsUserById(Integer id) {
 		return userRepo.existsById(id);
+	}
+
+	@Override
+	public void changeUserState(Integer adminId, Integer userId) throws InstanceNotFoundException, PermissionException {
+		if (!permissionChecker.checkIsAdmin(adminId)) {
+			throw new PermissionException();
+		}
+
+		User user = permissionChecker.checkUser(userId);
+		
+		user.setEnabled(!user.isEnabled());
+
 	}
 
 }

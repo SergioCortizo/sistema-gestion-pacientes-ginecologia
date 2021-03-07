@@ -94,7 +94,12 @@ public class UserController {
 	// Users management
 	@GetMapping("/user/user-list")
 	public String goToUsersManagement(Model model) {
-		List<UserListElem> userList = UserListElemConversor.generateUserList(userService.findAllUsers());
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		List<UserListElem> userList = UserListElemConversor.generateUserList(userService.findAllUsers(), userId);
 
 		model.addAttribute("users", userList);
 
@@ -172,36 +177,36 @@ public class UserController {
 
 		return "user/update";
 	}
-	
+
 	// Update data for another user form
-		@GetMapping("/user/update/{id}/wrong-password")
-		public String updateDataFormForAnotherUserWrongPassword(@PathVariable Integer id, Model model) {
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+	@GetMapping("/user/update/{id}/wrong-password")
+	public String updateDataFormForAnotherUserWrongPassword(@PathVariable Integer id, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
-			CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
-			Integer userId = userDetails.getId();
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
 
-			User user;
+		User user;
 
+		try {
+			user = userService.findUserById(id);
+		} catch (InstanceNotFoundException e) {
 			try {
-				user = userService.findUserById(id);
-			} catch (InstanceNotFoundException e) {
-				try {
-					if (!permissionChecker.checkIsAdmin(userId)) {
-						return "/error/401";
-					}
-				} catch (InstanceNotFoundException e1) {
+				if (!permissionChecker.checkIsAdmin(userId)) {
 					return "/error/401";
 				}
-				return "/error/404";
+			} catch (InstanceNotFoundException e1) {
+				return "/error/401";
 			}
-
-			prepareModelUpdateTemplate(model, user);
-			model.addAttribute("userId", id);
-			model.addAttribute("wrongPassword", true);
-
-			return "user/update";
+			return "/error/404";
 		}
+
+		prepareModelUpdateTemplate(model, user);
+		model.addAttribute("userId", id);
+		model.addAttribute("wrongPassword", true);
+
+		return "user/update";
+	}
 
 	// Endpoint to update user
 	@PostMapping("/user/update/{id}")
@@ -295,7 +300,44 @@ public class UserController {
 
 	// Endpoint to change another user's password
 	@PostMapping("/user/change-password/{id}")
-	public String changePassword(@PathVariable Integer id, @ModelAttribute ChangePasswordForm changePasswordForm, Model model) {
+	public String changePassword(@PathVariable Integer id, @ModelAttribute ChangePasswordForm changePasswordForm,
+			Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			userService.findUserById(id);
+		} catch (InstanceNotFoundException e) {
+			try {
+				if (!permissionChecker.checkIsAdmin(userId)) {
+					return "/error/401";
+				}
+			} catch (InstanceNotFoundException e1) {
+				return "/error/401";
+			}
+			return "/error/404";
+		}
+
+		try {
+			userService.changePassword(userId, id, changePasswordForm.getOldPassword(),
+					changePasswordForm.getNewPassword());
+		} catch (InstanceNotFoundException e) {
+			return "/error/404";
+		} catch (IncorrectPasswordException e) {
+			return "redirect:/user/update/" + id + "/wrong-password";
+		} catch (PermissionException e) {
+			return "/error/401";
+		}
+
+		return "redirect:/user/update/" + id;
+	}
+
+	// Endpoint to change another user's password
+	@PostMapping("/user/change-enabling-state/{id}")
+	public String changeEnablingState(@PathVariable Integer id, Model model) {
+		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -315,17 +357,16 @@ public class UserController {
 		}
 		
 		try {
-			userService.changePassword(userId, id, changePasswordForm.getOldPassword(), changePasswordForm.getNewPassword());
+			userService.changeUserState(userId, id);
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
-		} catch (IncorrectPasswordException e) {
-			return "redirect:/user/update/" + id + "/wrong-password";
 		} catch (PermissionException e) {
 			return "/error/401";
 		}
 		
-		return "redirect:/user/update/" + id;
+		return "redirect:/user/user-list";
 	}
+	
 
 	private void prepareModelUpdateTemplate(Model model, User user) {
 		UpdateForm form = new UpdateForm();

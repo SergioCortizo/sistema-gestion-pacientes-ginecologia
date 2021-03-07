@@ -30,6 +30,8 @@ public interface UserService {
 
 	void changePassword(Integer adminId, Integer id, String oldPassword, String newPassword)
 			throws InstanceNotFoundException, IncorrectPasswordException, PermissionException;
+
+	void changeUserState(Integer adminId, Integer userId) throws InstanceNotFoundException, PermissionException;
 	
 
 }

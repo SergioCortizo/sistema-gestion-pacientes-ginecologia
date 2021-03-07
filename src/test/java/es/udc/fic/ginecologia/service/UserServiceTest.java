@@ -509,7 +509,7 @@ public class UserServiceTest {
 
 		User admin = createUser("Admin", "admin", "admin@example.com", "postalAddress 1", "location 1", "11111111A",
 				"654789123", "122112345");
-		user.setPassword("password1");
+		admin.setPassword("password1");
 
 		userService.registerUser(user, roles);
 		userService.registerUser(admin, rolesWithoutAdmin);
@@ -543,7 +543,7 @@ public class UserServiceTest {
 	public void testFindUserByIdExpectUserNotFound() throws DuplicateInstanceException, InstanceNotFoundException {
 		assertThrows(InstanceNotFoundException.class, () -> userService.findUserById(-1));
 	}
-	
+
 	@Test
 	public void testExistsUserById() throws DuplicateInstanceException, InstanceNotFoundException {
 		Role role1 = createRole("role1");
@@ -559,10 +559,10 @@ public class UserServiceTest {
 		user.setPassword("password1");
 
 		userService.registerUser(user, roles);
-		
+
 		assertTrue(userService.existsUserById(user.getId()));
 	}
-	
+
 	@Test
 	public void testExistsUserByIdUnknownUser() throws DuplicateInstanceException, InstanceNotFoundException {
 		Role role1 = createRole("role1");
@@ -578,7 +578,125 @@ public class UserServiceTest {
 		user.setPassword("password1");
 
 		userService.registerUser(user, roles);
-		
+
 		assertFalse(userService.existsUserById(-1));
+	}
+
+	@Test
+	public void testChangeUserStateDisableUser()
+			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException {
+		Role role1 = createRole("role1");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId(), role2.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		User admin = createUser("Admin", "admin", "admin@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		admin.setPassword("password1");
+
+		userService.registerUser(user, roles);
+		userService.registerUser(admin, roles);
+
+		userService.changeUserState(admin.getId(), user.getId());
+
+		assertFalse(user.isEnabled());
+	}
+
+	@Test
+	public void testChangeUserStateEnableUser()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("role1");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId(), role2.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setEnabled(false);
+		user.setPassword("password1");
+
+		User admin = createUser("Admin", "admin", "admin@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		admin.setPassword("password1");
+
+		userService.registerUser(user, roles);
+		userService.registerUser(admin, roles);
+
+		userService.changeUserState(admin.getId(), user.getId());
+
+		assertTrue(user.isEnabled());
+	}
+
+	@Test
+	public void testChangeUserStateAdminNotFoundExpected() throws DuplicateInstanceException {
+		Role role1 = createRole("role1");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId(), role2.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		assertThrows(InstanceNotFoundException.class, () -> userService.changeUserState(-1, user.getId()));
+	}
+
+	@Test
+	public void testChangeUserStateUserNotFoundExpected() throws DuplicateInstanceException {
+		Role role1 = createRole("role1");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId(), role2.getId());
+
+		User admin = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		admin.setPassword("password1");
+
+		userService.registerUser(admin, roles);
+
+		assertThrows(InstanceNotFoundException.class, () -> userService.changeUserState(admin.getId(), -1));
+	}
+
+	@Test
+	public void testChangeUserStatePermissionExceptionExpected() throws DuplicateInstanceException {
+		Role role1 = createRole("role1");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId(), role2.getId());
+		Iterable<Integer> rolesWithoutAdmin = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		User admin = createUser("Admin", "admin", "admin@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		admin.setPassword("password1");
+
+		userService.registerUser(user, roles);
+		userService.registerUser(admin, rolesWithoutAdmin);
+
+		assertThrows(PermissionException.class, () -> userService.changeUserState(admin.getId(), user.getId()));
 	}
 }

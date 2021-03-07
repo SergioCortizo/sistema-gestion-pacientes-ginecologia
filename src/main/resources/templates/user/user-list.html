@@ -117,10 +117,12 @@
 														<button class="btn btn-link" type="submit"><i
 																class="fas fa-edit"></i></button>
 													</form>
-													<button class="btn btn-link">
-														<i class="fas fa-check" th:if="${!user.enabled}"></i>
-														<i class="fas fa-times" th:if="${user.enabled}"></i>
-													</button>
+													<form th:action="@{/user/change-enabling-state/{id}(id=${user.id})}" method="POST">
+														<button class="btn btn-link" type="submit">
+															<i class="fas fa-check" th:if="${!user.enabled}"></i>
+															<i class="fas fa-times" th:if="${user.enabled}"></i>
+														</button>
+													</form>
 												</div>
 											</td>
 										</tr>
@@ -138,7 +140,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/index.js}"></script>
+			<script th:src="@{/js/user-list.js}"></script>
 
 		</div>
 	</div>
