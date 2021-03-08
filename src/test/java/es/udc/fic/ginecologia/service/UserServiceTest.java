@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -699,4 +700,83 @@ public class UserServiceTest {
 
 		assertThrows(PermissionException.class, () -> userService.changeUserState(admin.getId(), user.getId()));
 	}
+
+	@Test
+	public void testFindUsers() throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+		Iterable<Integer> roleAdmin = Arrays.asList(role2.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+		User user3 = createUser("User 3", "user3", "user3@example.com", "postalAddress 3", "location 3", "11111111C",
+				"654789123", "122112345");
+		user3.setPassword("password3");
+		User user4 = createUser("User 4", "user4", "user4@example.com", "postalAddress 4", "location 4", "11111111D",
+				"654789123", "122112345");
+		user4.setPassword("password4");
+
+		userService.registerUser(user1, roleFacultative);
+		userService.registerUser(user2, roleAdmin);
+		userService.registerUser(user3, roleFacultative);
+		userService.registerUser(user4, roleAdmin);
+
+		LocalDateTime dateFrom = LocalDateTime.now().minusDays(2);
+		LocalDateTime dateTo = LocalDateTime.now().plusDays(2);
+
+		Iterable<User> result = userService.findUsers(user2.getId(), "user", "user", "user example", dateFrom, dateTo,
+				true, role2.getId());
+
+		Iterable<User> expectedResult = Arrays.asList(user2, user4);
+
+		assertEquals(expectedResult, result);
+	}
+
+	@Test
+	public void testFindUsersExpectAdminNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role2);
+
+		LocalDateTime dateFrom = LocalDateTime.now().minusDays(2);
+		LocalDateTime dateTo = LocalDateTime.now().plusDays(2);
+
+		assertThrows(InstanceNotFoundException.class,
+				() -> userService.findUsers(-1, "user", "user", "user example", dateFrom, dateTo, true, role2.getId()));
+
+	}
+
+	@Test
+	public void testFindUsersExpectPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+
+		userService.registerUser(user1, roleFacultative);
+
+		LocalDateTime dateFrom = LocalDateTime.now().minusDays(2);
+		LocalDateTime dateTo = LocalDateTime.now().plusDays(2);
+
+		assertThrows(PermissionException.class, () -> userService.findUsers(user1.getId(), "user", "user",
+				"user example", dateFrom, dateTo, true, role1.getId()));
+	}
+	
+	
 }

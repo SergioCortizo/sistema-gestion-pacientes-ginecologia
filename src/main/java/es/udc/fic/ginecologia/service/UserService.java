@@ -1,5 +1,7 @@
 package es.udc.fic.ginecologia.service;
 
+import java.time.LocalDateTime;
+
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
 import es.udc.fic.ginecologia.common.exception.IncorrectPasswordException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
@@ -32,6 +34,9 @@ public interface UserService {
 			throws InstanceNotFoundException, IncorrectPasswordException, PermissionException;
 
 	void changeUserState(Integer adminId, Integer userId) throws InstanceNotFoundException, PermissionException;
+
+	Iterable<User> findUsers(Integer adminId, String login, String name, String email, LocalDateTime firstDischargeDate,
+			LocalDateTime lastDischargeDate, boolean enabled, Integer roleId) throws PermissionException, InstanceNotFoundException;
 	
 
 }

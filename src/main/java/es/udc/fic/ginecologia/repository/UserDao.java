@@ -5,10 +5,12 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import es.udc.fic.ginecologia.model.User;
 
-public interface UserDao extends CrudRepository<User, Integer> {
+@Repository
+public interface UserDao extends CrudRepository<User, Integer>, CustomizedUserDao {
 	boolean existsByUsername(String username);
 	boolean existsById(Long id);
 	

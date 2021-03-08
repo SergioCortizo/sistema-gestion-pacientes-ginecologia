@@ -1,5 +1,6 @@
 package es.udc.fic.ginecologia.controller;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,7 @@ import es.udc.fic.ginecologia.form.SignUpForm;
 import es.udc.fic.ginecologia.form.UpdateForm;
 import es.udc.fic.ginecologia.form.UserListElem;
 import es.udc.fic.ginecologia.form.UserListElemConversor;
+import es.udc.fic.ginecologia.form.UserSearchForm;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
 import es.udc.fic.ginecologia.model.Role;
 import es.udc.fic.ginecologia.model.User;
@@ -101,7 +103,11 @@ public class UserController {
 
 		List<UserListElem> userList = UserListElemConversor.generateUserList(userService.findAllUsers(), userId);
 
+		List<Role> roles = prepareRoleSelectorElements();
+
 		model.addAttribute("users", userList);
+		model.addAttribute("roles", roles);
+		model.addAttribute("userSearchForm", new UserSearchForm());
 
 		return "user/user-list";
 	}
@@ -337,7 +343,7 @@ public class UserController {
 	// Endpoint to change another user's password
 	@PostMapping("/user/change-enabling-state/{id}")
 	public String changeEnablingState(@PathVariable Integer id, Model model) {
-		
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -355,7 +361,7 @@ public class UserController {
 			}
 			return "/error/404";
 		}
-		
+
 		try {
 			userService.changeUserState(userId, id);
 		} catch (InstanceNotFoundException e) {
@@ -363,10 +369,67 @@ public class UserController {
 		} catch (PermissionException e) {
 			return "/error/401";
 		}
-		
+
 		return "redirect:/user/user-list";
 	}
-	
+
+	// Endpoint to search users
+	@PostMapping("/user/search")
+	public String searchUsers(@ModelAttribute UserSearchForm userSearchForm, Model model) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId)) {
+				return "/error/401";
+			}
+		} catch (InstanceNotFoundException e1) {
+			return "/error/401";
+		}
+
+		String username = userSearchForm.getLogin().trim().equals("") ? null : userSearchForm.getLogin().trim();
+		String name = userSearchForm.getName().trim().equals("") ? null : userSearchForm.getName().trim();
+		String email = userSearchForm.getEmail().trim().equals("") ? null : userSearchForm.getEmail().trim();
+		LocalDateTime dateFrom = userSearchForm.getDateFrom() == null ? null
+				: userSearchForm.getDateFrom().atStartOfDay();
+		LocalDateTime dateTo = userSearchForm.getDateTo() == null ? null
+				: userSearchForm.getDateTo().atTime(23, 59, 59);
+		boolean enabled = userSearchForm.isEnabled();
+		Integer roleId = userSearchForm.getRoleId() == null ? null : userSearchForm.getRoleId();
+
+		Iterable<UserListElem> userList = new ArrayList<>();
+
+		try {
+			userList = UserListElemConversor.generateUserList(
+					userService.findUsers(userId, username, name, email, dateFrom, dateTo, enabled, roleId), userId);
+		} catch (InstanceNotFoundException | PermissionException e) {
+			return "/error/401";
+		}
+
+		List<Role> roles = prepareRoleSelectorElements();
+
+		model.addAttribute("users", userList);
+		model.addAttribute("roles", roles);
+		model.addAttribute("userSearchForm", new UserSearchForm());
+
+		return "/user/user-list";
+	}
+
+	private List<Role> prepareRoleSelectorElements() {
+		List<Role> roles = new ArrayList<>();
+
+		Role roleAll = new Role("-");
+		roles.add(roleAll);
+
+		for (Role role : userService.findAllRoles()) {
+			roles.add(role);
+		}
+
+		return roles;
+	}
 
 	private void prepareModelUpdateTemplate(Model model, User user) {
 		UpdateForm form = new UpdateForm();

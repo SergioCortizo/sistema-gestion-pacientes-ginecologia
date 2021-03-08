@@ -180,5 +180,13 @@ public class User {
 	public void setCollegiateNumber(String collegiateNumber) {
 		this.collegiate_number = collegiateNumber;
 	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", name=" + name + ", username=" + username + ", password=" + password + ", email="
+				+ email + ", enabled=" + enabled + ", roles=" + roles + ", postal_address=" + postal_address
+				+ ", location=" + location + ", dni=" + dni + ", phone_number=" + phone_number + ", discharge_date="
+				+ discharge_date + ", collegiate_number=" + collegiate_number + "]";
+	}
     
 }

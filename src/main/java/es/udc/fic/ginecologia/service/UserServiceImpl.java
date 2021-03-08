@@ -1,5 +1,6 @@
 package es.udc.fic.ginecologia.service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,8 +23,8 @@ import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.repository.RoleDao;
 import es.udc.fic.ginecologia.repository.UserDao;
 
-@Service
 @Transactional
+@Service
 public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
@@ -177,9 +178,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		}
 
 		User user = permissionChecker.checkUser(userId);
-		
+
 		user.setEnabled(!user.isEnabled());
 
+	}
+
+	@Override
+	public Iterable<User> findUsers(Integer adminId, String login, String name, String email,
+			LocalDateTime firstDischargeDate, LocalDateTime lastDischargeDate, boolean enabled, Integer roleId)
+			throws PermissionException, InstanceNotFoundException {
+
+		if (!permissionChecker.checkIsAdmin(adminId)) {
+			throw new PermissionException();
+		}
+
+		return userRepo.findUsers(login, name, email, firstDischargeDate, lastDischargeDate, enabled, roleId);
 	}
 
 }
