@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -53,6 +54,10 @@ public class User {
     
     private String collegiate_number;
     
+    @OneToMany
+    @JoinColumn(name="user_id", referencedColumnName="id")
+    private Set<Schedule> schedules = new HashSet<>();
+    
     public User() {}
 
     public User(String name, String username, String email, String postalAddress, String location, String dNI,
@@ -70,8 +75,6 @@ public class User {
 		this.discharge_date = LocalDateTime.now();
 		this.enabled = true;
 	}
-
-
 
 	public Integer getId()
     {
@@ -181,12 +184,12 @@ public class User {
 		this.collegiate_number = collegiateNumber;
 	}
 
-	@Override
-	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", username=" + username + ", password=" + password + ", email="
-				+ email + ", enabled=" + enabled + ", roles=" + roles + ", postal_address=" + postal_address
-				+ ", location=" + location + ", dni=" + dni + ", phone_number=" + phone_number + ", discharge_date="
-				+ discharge_date + ", collegiate_number=" + collegiate_number + "]";
+	public Set<Schedule> getSchedules() {
+		return schedules;
+	}
+
+	public void setSchedules(Set<Schedule> schedules) {
+		this.schedules = schedules;
 	}
     
 }

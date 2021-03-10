@@ -19,8 +19,10 @@ import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
 import es.udc.fic.ginecologia.model.Role;
+import es.udc.fic.ginecologia.model.Schedule;
 import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.repository.RoleDao;
+import es.udc.fic.ginecologia.repository.ScheduleDao;
 import es.udc.fic.ginecologia.repository.UserDao;
 
 @Transactional
@@ -32,6 +34,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
 	private RoleDao roleRepo;
+	
+	@Autowired
+	private ScheduleDao scheduleRepo;
 
 	@Autowired
 	private PermissionChecker permissionChecker;
@@ -195,4 +200,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		return userRepo.findUsers(login, name, email, firstDischargeDate, lastDischargeDate, enabled, roleId);
 	}
 
+	@Override
+	public void changeSchedule(Integer adminId, Integer userId, Set<Schedule> schedules)
+			throws InstanceNotFoundException, PermissionException {
+		if (!permissionChecker.checkIsAdmin(adminId)) {
+			throw new PermissionException();
+		}
+
+		User user = permissionChecker.checkUser(userId);
+		
+		Set<Schedule> actualSchedules = user.getSchedules();
+		
+		scheduleRepo.deleteAll(actualSchedules);
+		
+		for (Schedule schedule : schedules) {
+			scheduleRepo.save(schedule);
+		}
+	}
 }

@@ -6,7 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.junit.jupiter.api.Test;
@@ -21,8 +24,12 @@ import es.udc.fic.ginecologia.common.exception.IncorrectPasswordException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.model.Role;
+import es.udc.fic.ginecologia.model.Schedule;
+import es.udc.fic.ginecologia.model.SchedulePK;
 import es.udc.fic.ginecologia.model.User;
+import es.udc.fic.ginecologia.model.Weekday;
 import es.udc.fic.ginecologia.repository.RoleDao;
+import es.udc.fic.ginecologia.repository.ScheduleDao;
 import es.udc.fic.ginecologia.repository.UserDao;
 
 @SpringBootTest
@@ -40,6 +47,9 @@ public class UserServiceTest {
 	private RoleDao roleDao;
 
 	@Autowired
+	private ScheduleDao scheduleDao;
+
+	@Autowired
 	private BCryptPasswordEncoder encrypter;
 
 	private User createUser(String name, String username, String email, String postalAddress, String location,
@@ -51,6 +61,18 @@ public class UserServiceTest {
 
 	private Role createRole(String name) {
 		return new Role(name);
+	}
+
+	private Schedule createSchedule(Integer userId, Weekday weekday, LocalTime initialHour, LocalTime finalHour) {
+		Schedule result = new Schedule();
+		SchedulePK resultPK = new SchedulePK();
+		resultPK.setUser_id(userId);
+		resultPK.setWeekday(weekday);
+		result.setPk(resultPK);
+		result.setInitial_hour(initialHour);
+		result.setFinal_hour(finalHour);
+
+		return result;
 	}
 
 	@Test
@@ -777,6 +799,131 @@ public class UserServiceTest {
 		assertThrows(PermissionException.class, () -> userService.findUsers(user1.getId(), "user", "user",
 				"user example", dateFrom, dateTo, true, role1.getId()));
 	}
+
+	@Test
+	public void testChangeSchedule() throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+		Iterable<Integer> roleAdmin = Arrays.asList(role2.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+
+		userService.registerUser(user1, roleFacultative);
+		userService.registerUser(user2, roleAdmin);
+
+		Schedule monday = createSchedule(user1.getId(), Weekday.monday, LocalTime.of(10, 00), LocalTime.of(14, 00));
+		Schedule tuesday = createSchedule(user1.getId(), Weekday.tuesday, LocalTime.of(16, 00), LocalTime.of(20, 00));
+		Schedule wednesday = createSchedule(user1.getId(), Weekday.wednesday, LocalTime.of(10, 00),
+				LocalTime.of(18, 00));
+		Schedule thursday = createSchedule(user1.getId(), Weekday.thursday, LocalTime.of(8, 00), LocalTime.of(16, 00));
+		Schedule friday = createSchedule(user1.getId(), Weekday.friday, LocalTime.of(10, 00), LocalTime.of(14, 00));
+
+		List<Schedule> schedulesExpected = Arrays.asList(monday, tuesday, wednesday, thursday, friday);
+
+		Set<Schedule> schedules = new HashSet<>();
+		schedules.add(monday);
+		schedules.add(tuesday);
+		schedules.add(wednesday);
+		schedules.add(thursday);
+		schedules.add(friday);
+
+		userService.changeSchedule(user2.getId(), user1.getId(), schedules);
+
+		Iterable<Schedule> result = scheduleDao.findAll();
+
+		for (Schedule schedule : result) {
+			Schedule scheduleFound = schedulesExpected.stream().filter(s -> s.getPk().equals(schedule.getPk()))
+					.findFirst().orElse(null);
+
+			assertTrue(scheduleFound != null);
+			assertEquals(schedule.getInitial_hour(), scheduleFound.getInitial_hour());
+			assertEquals(schedule.getFinal_hour(), scheduleFound.getFinal_hour());
+
+		}
+	}
+
+	@Test
+	public void testChangeScheduleThrowsAdminNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+		Iterable<Integer> roleAdmin = Arrays.asList(role2.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+
+		userService.registerUser(user1, roleFacultative);
+		userService.registerUser(user2, roleAdmin);
+
+		assertThrows(InstanceNotFoundException.class, () -> userService.changeSchedule(-1, user1.getId(), null));
+
+	}
 	
+	@Test
+	public void testChangeScheduleThrowsUserNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+		Iterable<Integer> roleAdmin = Arrays.asList(role2.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+
+		userService.registerUser(user1, roleFacultative);
+		userService.registerUser(user2, roleAdmin);
+
+		assertThrows(InstanceNotFoundException.class, () -> userService.changeSchedule(user2.getId(), -1, null));
+
+	}
 	
+	@Test
+	public void testChangeScheduleThrowsPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+
+		userService.registerUser(user1, roleFacultative);
+		userService.registerUser(user2, roleFacultative);
+
+		assertThrows(PermissionException.class, () -> userService.changeSchedule(user2.getId(), user1.getId(), null));
+
+	}
 }

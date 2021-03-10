@@ -11,7 +11,7 @@ INSERT INTO role (name)
 	VALUES ('ROLE_FACULTATIVE'), 
 		   ('ROLE_ADMIN');
 
---Datos para userRole
+--Datos para user_role
 INSERT INTO user_role (user_id, role_id)
 	VALUES (1, 1),
 		   (1, 2),
@@ -19,3 +19,13 @@ INSERT INTO user_role (user_id, role_id)
 		   (3, 1),
 		   (4, 2),
 		   (5, 1);
+		   
+--Datos para schedule
+INSERT INTO schedule (user_id, weekday, initial_hour, final_hour)
+	VALUES (1, 'monday', '10:00:00', '14:00:00'),
+		   (1, 'tuesday', '17:00:00', '20:00:00'),
+		   (1, 'friday', '10:00:00', '14:00:00'),
+		   (2, 'monday', '17:00:00', '20:00:00'),
+		   (2, 'thursday', '10:00:00', '12:00:00'),
+		   (3, 'wednesday', '11:00:00', '14:00:00'),
+		   (4, 'friday', '10:00:00', '20:00:00');

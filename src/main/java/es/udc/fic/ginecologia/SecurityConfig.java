@@ -59,6 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        .antMatchers("/user/change-password/{id}").hasRole("ADMIN")
 	        .antMatchers("/user/search").hasRole("ADMIN")
 	        .antMatchers("/user/change-enabling-state/{id}").hasRole("ADMIN")
+	        .antMatchers("/user/change-schedule/{id}").hasRole("ADMIN")
 	        .anyRequest().authenticated()
 	        .and()
 		        .formLogin()

@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,8 @@ import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
 import es.udc.fic.ginecologia.form.ChangePasswordForm;
+import es.udc.fic.ginecologia.form.ScheduleConversor;
+import es.udc.fic.ginecologia.form.ScheduleForm;
 import es.udc.fic.ginecologia.form.SignUpForm;
 import es.udc.fic.ginecologia.form.UpdateForm;
 import es.udc.fic.ginecologia.form.UserListElem;
@@ -31,6 +34,7 @@ import es.udc.fic.ginecologia.form.UserListElemConversor;
 import es.udc.fic.ginecologia.form.UserSearchForm;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
 import es.udc.fic.ginecologia.model.Role;
+import es.udc.fic.ginecologia.model.Schedule;
 import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.service.UserService;
 
@@ -178,8 +182,12 @@ public class UserController {
 			return "/error/404";
 		}
 
+		List<Schedule> schedules = new ArrayList<>(user.getSchedules());
+		ScheduleForm scheduleForm = ScheduleConversor.prepareScheduleForm(schedules);
+		
 		prepareModelUpdateTemplate(model, user);
 		model.addAttribute("userId", id);
+		model.addAttribute("scheduleForm", scheduleForm);
 
 		return "user/update";
 	}
@@ -416,6 +424,50 @@ public class UserController {
 		model.addAttribute("userSearchForm", new UserSearchForm());
 
 		return "/user/user-list";
+	}
+
+	// Endpoint to change another user's password
+	@PostMapping("/user/change-schedule/{id}")
+	public String changeSchedule(@PathVariable Integer id, @ModelAttribute ScheduleForm scheduleForm,
+			Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		User user = null;
+		
+		try {
+			user = userService.findUserById(id);
+		} catch (InstanceNotFoundException e) {
+			try {
+				if (!permissionChecker.checkIsAdmin(userId)) {
+					return "/error/401";
+				}
+			} catch (InstanceNotFoundException e1) {
+				return "/error/401";
+			}
+			return "/error/404";
+		}
+		
+		Set<Schedule> schedules = ScheduleConversor.convertToScheduleSet(scheduleForm.getSchedules(), user);
+		
+		try {
+			userService.changeSchedule(userId, id, schedules);
+		} catch (InstanceNotFoundException e) {
+			try {
+				if (!permissionChecker.checkIsAdmin(userId)) {
+					return "/error/401";
+				}
+			} catch (InstanceNotFoundException e1) {
+				return "/error/401";
+			}
+			return "/error/404";
+		} catch (PermissionException e) {
+			return "/error/401";
+		}
+
+		return "redirect:/user/update/" + id;
 	}
 
 	private List<Role> prepareRoleSelectorElements() {

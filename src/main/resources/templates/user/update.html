@@ -23,7 +23,8 @@
 
 					<ol class="breadcrumb mb-4">
 						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
-						<li class="breadcrumb-item"><a th:href="@{/user/user-list}" th:text="#{label.usersmanagement}">Gestión de
+						<li class="breadcrumb-item"><a th:href="@{/user/user-list}"
+								th:text="#{label.usersmanagement}">Gestión de
 								usuarios</a></li>
 						<li class="breadcrumb-item active"><span th:text="#{label.updateUser}">Update user</span></li>
 					</ol>
@@ -129,8 +130,8 @@
 							<div th:if="${wrongPassword}" class="alert alert-danger" role="alert">
 								<span th:text="#{label.wrongcredentials}">Wrong credentials</span>
 							</div>
-							<form id="password-form" th:action="@{/user/change-password/{id}(id=${userId})}" method="POST"
-								th:object="${changePasswordForm}">
+							<form id="password-form" th:action="@{/user/change-password/{id}(id=${userId})}"
+								method="POST" th:object="${changePasswordForm}">
 								<div class="form-row">
 									<div class="col-md-4">
 										<div class="form-group">
@@ -162,6 +163,62 @@
 								</div>
 								<button type="submit" class="btn btn-primary" th:text="#{label.changePassword}">Change
 									password</button>
+							</form>
+						</div>
+					</div>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-calendar-week mr-1"></i>
+							<span th:text="#{label.schedule}">Schedule</span>
+						</div>
+						<div class="card-body">
+							<form id="schedule-form" th:method="POST"
+								th:action="@{/user/change-schedule/{id}(id=${userId})}" th:object="${scheduleForm}">
+								<div class="form-row" th:each="schedule, scheduleStat : *{schedules}">
+									<div class="form-check mr-5">
+										<input class="form-check-input" type="checkbox" th:value="${schedule.weekday}"
+											th:id="'day-' + ${schedule.weekday}"
+											th:field="*{schedules[__${scheduleStat.index}__].selected}">
+										<label class="form-check-label" th:for="'day-' + ${schedule.weekday}">
+											<th:block th:switch="${schedule.weekday}">
+												<div th:case="'0'">
+													<span th:text="#{label.monday}">Monday</span>
+												</div>
+												<div th:case="'1'">
+													<span th:text="#{label.tuesday}">Tuesday</span>
+												</div>
+												<div th:case="'2'">
+													<span th:text="#{label.wednesday}">Wednesday</span>
+												</div>
+												<div th:case="'3'">
+													<span th:text="#{label.thursday}">Thursday</span>
+												</div>
+												<div th:case="'4'">
+													<span th:text="#{label.friday}">Friday</span>
+												</div>
+											</th:block>
+										</label>
+										<div class="form-row">
+											<div class="col-sm-6">
+												<input type="time" class="form-control" th:id="'initialHour-' + ${schedule.weekday}"
+													th:field="*{schedules[__${scheduleStat.index}__].initial_hour}" 
+													th:disabled="${!schedule.selected}"
+													min="00:00" max="23:59"
+													th:required="${schedule.selected} ? 'required' : ''"/>
+											</div>
+											<div class="col-sm-6">
+												<input type="time" class="form-control" th:id="'finalHour-' + ${schedule.weekday}"
+													th:field="*{schedules[__${scheduleStat.index}__].final_hour}" 
+													th:disabled="${!schedule.selected}"
+													min="00:00" max="23:59"
+													th:required="${schedule.selected} ? 'required' : ''"/>
+											</div>
+										</div>
+									</div>
+								</div>
+								<button class="btn btn-primary mt-3" th:text="#{label.changeschedule}">Change
+									schedule</button>
 							</form>
 						</div>
 					</div>
