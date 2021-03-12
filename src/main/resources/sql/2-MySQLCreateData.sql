@@ -29,3 +29,14 @@ INSERT INTO schedule (user_id, weekday, initial_hour, final_hour)
 		   (2, 'thursday', '10:00:00', '12:00:00'),
 		   (3, 'wednesday', '11:00:00', '14:00:00'),
 		   (4, 'friday', '10:00:00', '20:00:00');
+
+--Datos para speciality
+INSERT INTO speciality (name, enabled)
+	VALUES ('Obstetricia general', 1),
+	       ('Ginecología general', 1),
+	       ('Alto riesgo obstétrico', 1),
+	       ('Ecografía', 1),
+	       ('Medicina reproductiva', 1),
+	       ('Ginecología oncológica', 1),
+	       ('Fisiopatología mamaria', 1),
+	       ('Urgencias en Obstetricia y Ginecología', 1);

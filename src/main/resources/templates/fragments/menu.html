@@ -10,10 +10,14 @@
 			</div>
 			
 			<div class="nav" sec:authorize="hasRole('ADMIN')">
-				<div class="sb-sidenav-menu-heading" th:text="#{label.usersmanagement}">Users management</div>
+				<div class="sb-sidenav-menu-heading" th:text="#{label.management}">Management</div>
 				<a class="nav-link" th:href="@{/user/user-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-lock"></i></div>
 					<span th:text="#{label.usersmanagement}">Users management</span>
+				</a>
+				<a class="nav-link" th:href="@{/speciality/speciality-list}">
+					<div class="sb-nav-link-icon"><i class="fas fa-certificate"></i></div>
+					<span th:text="#{label.specialitiesmanagement}">Specialities management</span>
 				</a>
 			</div>
 			

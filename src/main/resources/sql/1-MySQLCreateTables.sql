@@ -2,6 +2,7 @@ DROP TABLE schedule;
 DROP TABLE user_role;
 DROP TABLE user;
 DROP TABLE role;
+DROP TABLE speciality;
 
 CREATE TABLE user (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -51,6 +52,14 @@ CREATE TABLE schedule (
 );
 
 CREATE INDEX ScheduleIndexByUserIdAndWeekday ON schedule (user_id, weekday);
+
+CREATE TABLE speciality (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(100) NOT NULL,
+	enabled TINYINT(4) DEFAULT NULL,
+	CONSTRAINT SpecialityPK PRIMARY KEY (id),
+	CONSTRAINT NameSpecialityUniqueKey UNIQUE (name)
+);
 
 
 
