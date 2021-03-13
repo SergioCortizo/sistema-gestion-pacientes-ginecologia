@@ -40,3 +40,30 @@ INSERT INTO speciality (name, enabled)
 	       ('Ginecología oncológica', 1),
 	       ('Fisiopatología mamaria', 1),
 	       ('Urgencias en Obstetricia y Ginecología', 1);
+	       
+--Datos para user_speciality
+INSERT INTO user_speciality (user_id, speciality_id)
+	VALUES (1, 1),
+		   (1, 2),
+		   (1, 3),
+		   (1, 4),
+		   (1, 5),
+		   (1, 6),
+		   (1, 7),
+		   (1, 8),
+		   (3, 1),
+		   (3, 3),
+		   (3, 5),
+		   (3, 7),
+		   (5, 2),
+		   (5, 4),
+		   (5, 6),
+		   (5, 8);
+		   
+		   
+		   	       
+	       
+	       
+	       
+	       
+	       

@@ -10,8 +10,8 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -58,6 +58,14 @@ public class User {
     @JoinColumn(name="user_id", referencedColumnName="id")
     private Set<Schedule> schedules = new HashSet<>();
     
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "user_speciality",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "speciality_id")
+            )
+    private Set<Speciality> specialities = new HashSet<>();
+    
     public User() {}
 
     public User(String name, String username, String email, String postalAddress, String location, String dNI,
@@ -76,25 +84,21 @@ public class User {
 		this.enabled = true;
 	}
 
-	public Integer getId()
-    {
-        return id;
-    }
+	public Integer getId() {
+		return id;
+	}
 
-    public void setId(Integer id)
-    {
-        this.id = id;
-    }
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
-    public String getName()
-    {
-        return name;
-    }
+	public String getName() {
+		return name;
+	}
 
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
 	public String getUsername() {
 		return username;
@@ -136,12 +140,12 @@ public class User {
 		this.roles = roles;
 	}
 
-	public String getPostalAddress() {
+	public String getPostal_address() {
 		return postal_address;
 	}
 
-	public void setPostalAddress(String postalAddress) {
-		this.postal_address = postalAddress;
+	public void setPostal_address(String postal_address) {
+		this.postal_address = postal_address;
 	}
 
 	public String getLocation() {
@@ -152,36 +156,36 @@ public class User {
 		this.location = location;
 	}
 
-	public String getDNI() {
+	public String getDni() {
 		return dni;
 	}
 
-	public void setDNI(String dNI) {
-		dni = dNI;
+	public void setDni(String dni) {
+		this.dni = dni;
 	}
 
-	public String getPhoneNumber() {
+	public String getPhone_number() {
 		return phone_number;
 	}
 
-	public void setPhoneNumber(String phoneNumber) {
-		this.phone_number = phoneNumber;
+	public void setPhone_number(String phone_number) {
+		this.phone_number = phone_number;
 	}
 
-	public LocalDateTime getDischargeDate() {
+	public LocalDateTime getDischarge_date() {
 		return discharge_date;
 	}
 
-	public void setDischargeDate(LocalDateTime dischargeDate) {
-		this.discharge_date = dischargeDate;
+	public void setDischarge_date(LocalDateTime discharge_date) {
+		this.discharge_date = discharge_date;
 	}
 
-	public String getCollegiateNumber() {
+	public String getCollegiate_number() {
 		return collegiate_number;
 	}
 
-	public void setCollegiateNumber(String collegiateNumber) {
-		this.collegiate_number = collegiateNumber;
+	public void setCollegiate_number(String collegiate_number) {
+		this.collegiate_number = collegiate_number;
 	}
 
 	public Set<Schedule> getSchedules() {
@@ -190,6 +194,14 @@ public class User {
 
 	public void setSchedules(Set<Schedule> schedules) {
 		this.schedules = schedules;
+	}
+
+	public Set<Speciality> getSpecialities() {
+		return specialities;
+	}
+
+	public void setSpecialities(Set<Speciality> specialities) {
+		this.specialities = specialities;
 	}
     
 }

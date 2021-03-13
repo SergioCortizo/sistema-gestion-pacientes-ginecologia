@@ -91,11 +91,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 		user.setName(name);
 		user.setEmail(email);
-		user.setPostalAddress(postalAddress);
+		user.setPostal_address(postalAddress);
 		user.setLocation(location);
-		user.setDNI(DNI);
-		user.setPhoneNumber(phoneNumber);
-		user.setCollegiateNumber(collegiateNumber);
+		user.setDni(DNI);
+		user.setPhone_number(phoneNumber);
+		user.setCollegiate_number(collegiateNumber);
 
 		Set<Role> foundRoles = new HashSet<Role>();
 		roleRepo.findAllById(roles).forEach(foundRoles::add);
@@ -119,11 +119,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 		user.setName(name);
 		user.setEmail(email);
-		user.setPostalAddress(postalAddress);
+		user.setPostal_address(postalAddress);
 		user.setLocation(location);
-		user.setDNI(DNI);
-		user.setPhoneNumber(phoneNumber);
-		user.setCollegiateNumber(collegiateNumber);
+		user.setDni(DNI);
+		user.setPhone_number(phoneNumber);
+		user.setCollegiate_number(collegiateNumber);
 
 		Set<Role> foundRoles = new HashSet<Role>();
 		roleRepo.findAllById(roles).forEach(foundRoles::add);

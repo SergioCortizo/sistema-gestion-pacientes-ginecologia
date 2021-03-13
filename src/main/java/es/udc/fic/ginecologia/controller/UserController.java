@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +30,7 @@ import es.udc.fic.ginecologia.form.ChangePasswordForm;
 import es.udc.fic.ginecologia.form.ScheduleConversor;
 import es.udc.fic.ginecologia.form.ScheduleForm;
 import es.udc.fic.ginecologia.form.SignUpForm;
+import es.udc.fic.ginecologia.form.SpecialitiesToAddForm;
 import es.udc.fic.ginecologia.form.UpdateForm;
 import es.udc.fic.ginecologia.form.UserListElem;
 import es.udc.fic.ginecologia.form.UserListElemConversor;
@@ -35,13 +38,18 @@ import es.udc.fic.ginecologia.form.UserSearchForm;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
 import es.udc.fic.ginecologia.model.Role;
 import es.udc.fic.ginecologia.model.Schedule;
+import es.udc.fic.ginecologia.model.Speciality;
 import es.udc.fic.ginecologia.model.User;
+import es.udc.fic.ginecologia.service.SpecialityService;
 import es.udc.fic.ginecologia.service.UserService;
 
 @Controller
 public class UserController {
 	@Autowired
 	UserService userService;
+
+	@Autowired
+	SpecialityService specialityService;
 
 	@Autowired
 	PermissionChecker permissionChecker;
@@ -118,7 +126,7 @@ public class UserController {
 
 	// Update own data form
 	@GetMapping("/user/update-own-data")
-	public String updateOwnDataForm(Model model) {
+	public String updateOwnDataForm(Model model) throws InstanceNotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -139,7 +147,7 @@ public class UserController {
 
 	// Update own data form (wrong password)
 	@GetMapping("/user/update-own-data-wrong-password")
-	public String updateOwnDataFormWrongPassword(Model model) {
+	public String updateOwnDataFormWrongPassword(Model model) throws InstanceNotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -161,7 +169,7 @@ public class UserController {
 
 	// Update data for another user form
 	@GetMapping("/user/update/{id}")
-	public String updateDataFormForAnotherUser(@PathVariable Integer id, Model model) {
+	public String updateDataFormForAnotherUser(@PathVariable Integer id, Model model) throws InstanceNotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -182,19 +190,16 @@ public class UserController {
 			return "/error/404";
 		}
 
-		List<Schedule> schedules = new ArrayList<>(user.getSchedules());
-		ScheduleForm scheduleForm = ScheduleConversor.prepareScheduleForm(schedules);
-		
 		prepareModelUpdateTemplate(model, user);
 		model.addAttribute("userId", id);
-		model.addAttribute("scheduleForm", scheduleForm);
 
 		return "user/update";
 	}
 
 	// Update data for another user form
 	@GetMapping("/user/update/{id}/wrong-password")
-	public String updateDataFormForAnotherUserWrongPassword(@PathVariable Integer id, Model model) {
+	public String updateDataFormForAnotherUserWrongPassword(@PathVariable Integer id, Model model)
+			throws InstanceNotFoundException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -428,15 +433,14 @@ public class UserController {
 
 	// Endpoint to change another user's password
 	@PostMapping("/user/change-schedule/{id}")
-	public String changeSchedule(@PathVariable Integer id, @ModelAttribute ScheduleForm scheduleForm,
-			Model model) {
+	public String changeSchedule(@PathVariable Integer id, @ModelAttribute ScheduleForm scheduleForm, Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
 
 		User user = null;
-		
+
 		try {
 			user = userService.findUserById(id);
 		} catch (InstanceNotFoundException e) {
@@ -449,9 +453,9 @@ public class UserController {
 			}
 			return "/error/404";
 		}
-		
+
 		Set<Schedule> schedules = ScheduleConversor.convertToScheduleSet(scheduleForm.getSchedules(), user);
-		
+
 		try {
 			userService.changeSchedule(userId, id, schedules);
 		} catch (InstanceNotFoundException e) {
@@ -483,15 +487,15 @@ public class UserController {
 		return roles;
 	}
 
-	private void prepareModelUpdateTemplate(Model model, User user) {
+	private void prepareModelUpdateTemplate(Model model, User user) throws InstanceNotFoundException {
 		UpdateForm form = new UpdateForm();
 		form.setName(user.getName());
 		form.setEmail(user.getEmail());
-		form.setPostalAddress(user.getPostalAddress());
+		form.setPostalAddress(user.getPostal_address());
 		form.setLocation(user.getLocation());
-		form.setDNI(user.getDNI());
-		form.setPhoneNumber(user.getPhoneNumber());
-		form.setCollegiateNumber(user.getCollegiateNumber());
+		form.setDNI(user.getDni());
+		form.setPhoneNumber(user.getPhone_number());
+		form.setCollegiateNumber(user.getCollegiate_number());
 
 		Iterable<Role> roles = user.getRoles();
 
@@ -503,8 +507,22 @@ public class UserController {
 
 		form.setRoles(roleIds);
 
+		List<Schedule> schedules = new ArrayList<>(user.getSchedules());
+		ScheduleForm scheduleForm = ScheduleConversor.prepareScheduleForm(schedules);
+
+		Set<Speciality> specialitiesFromUser = user.getSpecialities();
+		List<Speciality> specialities = StreamSupport
+				.stream(specialityService.findAllSpecialities().spliterator(), false)
+				.filter(s -> !specialitiesFromUser.contains(s)).collect(Collectors.toList());
+
 		model.addAttribute("roles", userService.findAllRoles());
+		model.addAttribute("specialities", specialities);
+		model.addAttribute("specialitiesFromUser", specialitiesFromUser);
+		model.addAttribute("isFacultative", permissionChecker.checkIsFacultative(user.getId()));
 		model.addAttribute("updateForm", form);
+		model.addAttribute("scheduleForm", scheduleForm);
 		model.addAttribute("changePasswordForm", new ChangePasswordForm());
+		model.addAttribute("specialitiesToAddForm", new SpecialitiesToAddForm());
+
 	}
 }

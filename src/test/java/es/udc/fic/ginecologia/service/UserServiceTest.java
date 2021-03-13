@@ -142,11 +142,11 @@ public class UserServiceTest {
 		assertEquals(result.getName(), user.getName());
 		assertEquals(result.getUsername(), user.getUsername());
 		assertEquals(result.getEmail(), user.getEmail());
-		assertEquals(result.getPostalAddress(), user.getPostalAddress());
+		assertEquals(result.getPostal_address(), user.getPostal_address());
 		assertEquals(result.getLocation(), user.getLocation());
-		assertEquals(result.getDNI(), user.getDNI());
-		assertEquals(result.getPhoneNumber(), user.getPhoneNumber());
-		assertEquals(result.getCollegiateNumber(), user.getCollegiateNumber());
+		assertEquals(result.getDni(), user.getDni());
+		assertEquals(result.getPhone_number(), user.getPhone_number());
+		assertEquals(result.getCollegiate_number(), user.getCollegiate_number());
 		assertEquals(user.getPassword(), result.getPassword());
 		assertTrue(result.isEnabled());
 	}
@@ -196,11 +196,11 @@ public class UserServiceTest {
 
 		assertEquals(result.getName(), "New User 1");
 		assertEquals(result.getEmail(), "newuser1@example.com");
-		assertEquals(result.getPostalAddress(), "newpostalAddress 1");
+		assertEquals(result.getPostal_address(), "newpostalAddress 1");
 		assertEquals(result.getLocation(), "newlocation 1");
-		assertEquals(result.getDNI(), "11111111B");
-		assertEquals(result.getPhoneNumber(), "655789123");
-		assertEquals(result.getCollegiateNumber(), "122412345");
+		assertEquals(result.getDni(), "11111111B");
+		assertEquals(result.getPhone_number(), "655789123");
+		assertEquals(result.getCollegiate_number(), "122412345");
 	}
 
 	@Test
@@ -260,11 +260,11 @@ public class UserServiceTest {
 
 		assertEquals(result.getName(), "New User 1");
 		assertEquals(result.getEmail(), "newuser1@example.com");
-		assertEquals(result.getPostalAddress(), "newpostalAddress 1");
+		assertEquals(result.getPostal_address(), "newpostalAddress 1");
 		assertEquals(result.getLocation(), "newlocation 1");
-		assertEquals(result.getDNI(), "11111111B");
-		assertEquals(result.getPhoneNumber(), "655789123");
-		assertEquals(result.getCollegiateNumber(), "122412345");
+		assertEquals(result.getDni(), "11111111B");
+		assertEquals(result.getPhone_number(), "655789123");
+		assertEquals(result.getCollegiate_number(), "122412345");
 	}
 
 	@Test

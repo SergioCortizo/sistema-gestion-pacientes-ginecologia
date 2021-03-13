@@ -6,6 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -405,5 +408,281 @@ public class SpecialityServiceTest {
 
 		assertThrows(PermissionException.class,
 				() -> specialityService.findSpecialities(user.getId(), "speciality", true));
+	}
+
+	@Test
+	public void findSpecialitiesByUser()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+		Iterable<Integer> roleAdmin = Arrays.asList(role2.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+
+		userService.registerUser(user1, roleFacultative);
+		userService.registerUser(user2, roleAdmin);
+
+		Speciality speciality1 = new Speciality("speciality1");
+		Speciality speciality2 = new Speciality("speciality2");
+		Speciality speciality3 = new Speciality("speciality3");
+		Speciality speciality4 = new Speciality("speciality4");
+
+		specialityDao.save(speciality1);
+		specialityDao.save(speciality2);
+		specialityDao.save(speciality3);
+		specialityDao.save(speciality4);
+
+		List<Speciality> expectedResult = Arrays.asList(speciality1, speciality2, speciality3, speciality4);
+
+		Set<Speciality> specialities = new HashSet<>();
+		expectedResult.forEach(specialities::add);
+
+		user1.setSpecialities(specialities);
+
+		Iterable<Speciality> result = specialityService.findSpecialitiesFromUser(user2.getId(), user1.getId());
+
+		for (Speciality speciality : result) {
+			Speciality specialityFound = expectedResult.stream().filter(s -> s.getName().equals(speciality.getName()))
+					.findFirst().orElse(null);
+
+			assertTrue(specialityFound != null);
+			assertEquals(speciality.getName(), specialityFound.getName());
+			assertTrue(speciality.isEnabled());
+
+		}
+	}
+
+	@Test
+	public void findSpecialitiesByUserExpectAdminNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+
+		userService.registerUser(user1, roleFacultative);
+
+		assertThrows(InstanceNotFoundException.class,
+				() -> specialityService.findSpecialitiesFromUser(-1, user1.getId()));
+
+	}
+
+	@Test
+	public void findSpecialitiesByUserExpectUserNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role2);
+
+		Iterable<Integer> roleAdmin = Arrays.asList(role2.getId());
+
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+
+		userService.registerUser(user2, roleAdmin);
+
+		assertThrows(InstanceNotFoundException.class,
+				() -> specialityService.findSpecialitiesFromUser(user2.getId(), -1));
+
+	}
+
+	@Test
+	public void findSpecialitiesByUserExpectPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+
+		userService.registerUser(user1, roleFacultative);
+		userService.registerUser(user2, roleFacultative);
+
+		assertThrows(PermissionException.class,
+				() -> specialityService.findSpecialitiesFromUser(user2.getId(), user1.getId()));
+
+	}
+
+	@Test
+	public void changeSpecialitiesTest()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role1);
+		roleDao.save(role2);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+		Iterable<Integer> roleAdmin = Arrays.asList(role2.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+
+		userService.registerUser(user1, roleFacultative);
+		userService.registerUser(user2, roleAdmin);
+
+		Speciality speciality1 = new Speciality("speciality1");
+		Speciality speciality2 = new Speciality("speciality2");
+		Speciality speciality3 = new Speciality("speciality3");
+		Speciality speciality4 = new Speciality("speciality4");
+
+		specialityDao.save(speciality1);
+		specialityDao.save(speciality2);
+		specialityDao.save(speciality3);
+		specialityDao.save(speciality4);
+
+		List<Speciality> expectedResult = Arrays.asList(speciality1, speciality2, speciality3, speciality4);
+
+		Set<Speciality> specialities = new HashSet<>();
+		expectedResult.forEach(specialities::add);
+
+		specialityService.changeSpecialities(user2.getId(), user1.getId(), specialities);
+
+		Iterable<Speciality> result = specialityService.findSpecialitiesFromUser(user2.getId(), user1.getId());
+
+		for (Speciality speciality : result) {
+			Speciality specialityFound = expectedResult.stream().filter(s -> s.getName().equals(speciality.getName()))
+					.findFirst().orElse(null);
+
+			assertTrue(specialityFound != null);
+			assertEquals(speciality.getName(), specialityFound.getName());
+			assertTrue(speciality.isEnabled());
+
+		}
+	}
+
+	@Test
+	public void changeSpecialitiesTestExpectAdminNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+
+		userService.registerUser(user1, roleFacultative);
+
+		Speciality speciality1 = new Speciality("speciality1");
+		Speciality speciality2 = new Speciality("speciality2");
+		Speciality speciality3 = new Speciality("speciality3");
+		Speciality speciality4 = new Speciality("speciality4");
+
+		specialityDao.save(speciality1);
+		specialityDao.save(speciality2);
+		specialityDao.save(speciality3);
+		specialityDao.save(speciality4);
+
+		List<Speciality> expectedResult = Arrays.asList(speciality1, speciality2, speciality3, speciality4);
+
+		Set<Speciality> specialities = new HashSet<>();
+		expectedResult.forEach(specialities::add);
+
+		assertThrows(InstanceNotFoundException.class,
+				() -> specialityService.changeSpecialities(-1, user1.getId(), specialities));
+	}
+	
+	@Test
+	public void changeSpecialitiesTestExpectUserNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role2 = createRole("ROLE_ADMIN");
+
+		roleDao.save(role2);
+
+		Iterable<Integer> roleAdmin = Arrays.asList(role2.getId());
+
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+
+		userService.registerUser(user2, roleAdmin);
+
+		Speciality speciality1 = new Speciality("speciality1");
+		Speciality speciality2 = new Speciality("speciality2");
+		Speciality speciality3 = new Speciality("speciality3");
+		Speciality speciality4 = new Speciality("speciality4");
+
+		specialityDao.save(speciality1);
+		specialityDao.save(speciality2);
+		specialityDao.save(speciality3);
+		specialityDao.save(speciality4);
+
+		List<Speciality> expectedResult = Arrays.asList(speciality1, speciality2, speciality3, speciality4);
+
+		Set<Speciality> specialities = new HashSet<>();
+		expectedResult.forEach(specialities::add);
+
+		assertThrows(InstanceNotFoundException.class,
+				() -> specialityService.changeSpecialities(user2.getId(), -1, specialities));
+
+	}
+	
+	@Test
+	public void changeSpecialitiesTestExpectPermissionExpception()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roleFacultative = Arrays.asList(role1.getId());
+
+		User user1 = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user1.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654789123", "122112345");
+		user2.setPassword("password2");
+
+		userService.registerUser(user1, roleFacultative);
+		userService.registerUser(user2, roleFacultative);
+
+		Speciality speciality1 = new Speciality("speciality1");
+		Speciality speciality2 = new Speciality("speciality2");
+		Speciality speciality3 = new Speciality("speciality3");
+		Speciality speciality4 = new Speciality("speciality4");
+
+		specialityDao.save(speciality1);
+		specialityDao.save(speciality2);
+		specialityDao.save(speciality3);
+		specialityDao.save(speciality4);
+
+		List<Speciality> expectedResult = Arrays.asList(speciality1, speciality2, speciality3, speciality4);
+
+		Set<Speciality> specialities = new HashSet<>();
+		expectedResult.forEach(specialities::add);
+
+		assertThrows(PermissionException.class,
+				() -> specialityService.changeSpecialities(user2.getId(), user1.getId(), specialities));
+
 	}
 }

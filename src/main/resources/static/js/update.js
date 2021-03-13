@@ -68,4 +68,22 @@ $(document).ready(function() {
 		$(finalHourId).prop("disabled", !$(finalHourId).prop("disabled"));
 
 	});
+	
+	$("#btnAddSpecialities").click(() => {
+		$("#selectAddSpecialities").val().forEach(s => {
+			$('#selectQuitSpecialities').append($("#speciality-" + s));
+			$('#selectAddSpecialities').children('option[value=' + s + ']').remove();
+		});
+	});
+	
+	$("#btnQuitSpecialities").click(() => {
+		$("#selectQuitSpecialities").val().forEach(s =>{
+			$('#selectAddSpecialities').append($("#speciality-" + s));
+			$('#selectQuitSpecialities').children('option[value=' + s + ']').remove();
+		});
+	});
+	
+	$("#btnSubmitSpecialities").click(() => {
+		$("#selectQuitSpecialities").children().attr("selected", "selected");
+	});
 });

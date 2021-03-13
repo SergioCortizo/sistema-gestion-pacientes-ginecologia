@@ -21,4 +21,10 @@ public interface SpecialityService {
 	Iterable<Speciality> findSpecialities(Integer adminId, String name, boolean enabled)
 			throws InstanceNotFoundException, PermissionException;
 
+	Iterable<Speciality> findSpecialitiesFromUser(Integer adminId, Integer userId)
+			throws InstanceNotFoundException, PermissionException;
+
+	void changeSpecialities(Integer adminId, Integer userId, Iterable<Speciality> specialities)
+			throws InstanceNotFoundException, PermissionException;
+
 }

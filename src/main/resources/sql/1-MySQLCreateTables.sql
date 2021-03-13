@@ -1,5 +1,6 @@
 DROP TABLE schedule;
 DROP TABLE user_role;
+DROP TABLE user_speciality;
 DROP TABLE user;
 DROP TABLE role;
 DROP TABLE speciality;
@@ -61,7 +62,13 @@ CREATE TABLE speciality (
 	CONSTRAINT NameSpecialityUniqueKey UNIQUE (name)
 );
 
-
+CREATE TABLE user_speciality (
+	user_id BIGINT NOT NULL,
+	speciality_id BIGINT NOT NULL,
+	CONSTRAINT UserSpecialityPK PRIMARY KEY (user_id, speciality_id),
+	CONSTRAINT SpecialityFK FOREIGN KEY (speciality_id) REFERENCES speciality (id),
+	CONSTRAINT UserSpecialityFK FOREIGN KEY (user_id) REFERENCES user(id)
+);
 
 
 

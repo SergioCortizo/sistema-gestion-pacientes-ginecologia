@@ -25,12 +25,12 @@ public class UserListElem {
 		this.name = user.getName();
 		this.username = user.getUsername();
 		this.email = user.getEmail();
-		this.enabled = user.isEnabled();
+		this.enabled = user.isEnabled(); 
 		this.id = user.getId();
 		
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 		
-		this.discharge_date = user.getDischargeDate().format(formatter);
+		this.discharge_date = user.getDischarge_date().format(formatter);
 		
 		this.roles = user.getRoles();
 	}

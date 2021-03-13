@@ -16,12 +16,15 @@ import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
+import es.udc.fic.ginecologia.form.SpecialitiesToAddForm;
 import es.udc.fic.ginecologia.form.SpecialityConversor;
 import es.udc.fic.ginecologia.form.SpecialityForm;
 import es.udc.fic.ginecologia.form.SpecialityLine;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
 import es.udc.fic.ginecologia.model.Speciality;
+import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.service.SpecialityService;
+import es.udc.fic.ginecologia.service.UserService;
 
 @Controller
 public class SpecialityController {
@@ -30,6 +33,9 @@ public class SpecialityController {
 
 	@Autowired
 	PermissionChecker permissionChecker;
+	
+	@Autowired
+	UserService userService;
 
 	// Specialities list
 	@GetMapping("/speciality/speciality-list")
@@ -205,4 +211,45 @@ public class SpecialityController {
 		
 		return "redirect:/speciality/speciality-list";
 	}
+	
+	// Change specialities to user
+	@PostMapping("/speciality/change-specialities/{id}")
+	public String changeSpecialitiesToUser(@PathVariable Integer id, @ModelAttribute SpecialitiesToAddForm specialitiesToAddForm,
+			Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			userService.findUserById(id);
+		} catch (InstanceNotFoundException e) {
+			try {
+				if (!permissionChecker.checkIsAdmin(userId)) {
+					return "/error/401";
+				}
+			} catch (InstanceNotFoundException e1) {
+				return "/error/401";
+			}
+			return "/error/404";
+		}
+		
+		try {
+			specialityService.changeSpecialities(userId, id, specialitiesToAddForm.getSpecialitiesToAdd());
+		} catch (InstanceNotFoundException e) {
+			try {
+				if (!permissionChecker.checkIsAdmin(userId)) {
+					return "/error/401";
+				}
+			} catch (InstanceNotFoundException e1) {
+				return "/error/401";
+			}
+			return "/error/404";
+		} catch (PermissionException e) {
+			return "/error/401";
+		}
+		
+		return "redirect:/user/update/" + id;
+	}
+	
 }

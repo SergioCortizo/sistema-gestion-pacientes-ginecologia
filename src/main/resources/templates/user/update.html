@@ -201,24 +201,63 @@
 										</label>
 										<div class="form-row">
 											<div class="col-sm-6">
-												<input type="time" class="form-control" th:id="'initialHour-' + ${schedule.weekday}"
-													th:field="*{schedules[__${scheduleStat.index}__].initial_hour}" 
-													th:disabled="${!schedule.selected}"
-													min="00:00" max="23:59"
-													th:required="${schedule.selected} ? 'required' : ''"/>
+												<input type="time" class="form-control"
+													th:id="'initialHour-' + ${schedule.weekday}"
+													th:field="*{schedules[__${scheduleStat.index}__].initial_hour}"
+													th:disabled="${!schedule.selected}" min="00:00" max="23:59"
+													th:required="${schedule.selected} ? 'required' : ''" />
 											</div>
 											<div class="col-sm-6">
-												<input type="time" class="form-control" th:id="'finalHour-' + ${schedule.weekday}"
-													th:field="*{schedules[__${scheduleStat.index}__].final_hour}" 
-													th:disabled="${!schedule.selected}"
-													min="00:00" max="23:59"
-													th:required="${schedule.selected} ? 'required' : ''"/>
+												<input type="time" class="form-control"
+													th:id="'finalHour-' + ${schedule.weekday}"
+													th:field="*{schedules[__${scheduleStat.index}__].final_hour}"
+													th:disabled="${!schedule.selected}" min="00:00" max="23:59"
+													th:required="${schedule.selected} ? 'required' : ''" />
 											</div>
 										</div>
 									</div>
 								</div>
 								<button class="btn btn-primary mt-3" th:text="#{label.changeschedule}">Change
 									schedule</button>
+							</form>
+						</div>
+					</div>
+
+					<div class="card mb-4" th:if="${isFacultative}">
+						<div class="card-header">
+							<i class="fas fa-certificate mr-1"></i>
+							<span th:text="#{label.specialities}">Specialities</span>
+						</div>
+						<div class="card-body">
+							<form id="speciality-form" th:method="POST"
+								th:action="@{/speciality/change-specialities/{id}(id=${userId})}"
+								th:object="${specialitiesToAddForm}">
+								<div class="row d-flex justify-content-between">
+									<div class="col-sm-6 my-2">
+										<label class="medium font-weight-bold mb-1">Especialidades a añadir</label>
+										<select multiple class="form-control" id="selectAddSpecialities">
+											<option th:each="speciality : ${specialities}" th:value="${speciality.id}"
+												th:id="'speciality-' + ${speciality.id}" th:text="${speciality.name}">
+												Speciality</option>
+										</select>
+										<button id="btnAddSpecialities" type="button"
+											class="btn btn-success form-control mt-2">Añadir especialidades</button>
+									</div>
+									<div class="col-sm-6 my-2">
+										<label class="medium font-weight-bold mb-1">Especialidades añadidas</label>
+										<select multiple class="form-control" id="selectQuitSpecialities"
+											th:field="*{specialitiesToAdd}">
+											<option th:each="speciality : ${specialitiesFromUser}"
+												th:id="'speciality-' + ${speciality.id}" th:value="${speciality.id}"
+												th:text="${speciality.name}">Speciality
+											</option>
+										</select>
+										<button id="btnQuitSpecialities" type="button"
+											class="btn btn-danger form-control mt-2">Quitar
+											especialidades</button>
+									</div>
+								</div>
+								<button class="btn btn-primary form-control mt-2" id="btnSubmitSpecialities">Guardar cambios</button>
 							</form>
 						</div>
 					</div>
