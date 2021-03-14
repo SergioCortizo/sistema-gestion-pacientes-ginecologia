@@ -11,7 +11,6 @@
 	<div th:include="fragments/topbar :: topbar" />
 
 	<div id="layoutSidenav">
-
 		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
 
 		<div id="layoutSidenav_content">
@@ -23,40 +22,39 @@
 
 					<ol class="breadcrumb mb-4">
 						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
-						<li class="breadcrumb-item active"><span th:text="#{label.specialitiesmanagement}">Gestión de
-								especialidades</span></li>
+						<li class="breadcrumb-item active"><span th:text="#{label.medicinesmanagement}">Gestión de
+								medicamentos</span></li>
 					</ol>
 
-					<div th:if="${duplicateSpeciality}" class="alert alert-danger" role="alert">
-						<span th:text="#{label.duplicatespeciality}">The speciality already exists.</span>
+					<div th:if="${duplicateMedicine}" class="alert alert-danger" role="alert">
+						<span th:text="#{label.duplicatemedicine}">The medicine already exists.</span>
 					</div>
 
 					<div class="panel-group mb-4" id="accordion" role="tablist" aria-multiselectable="true">
 						<div class="panel panel-default">
-							<div class="panel-heading" role="tab" id="headingAddSpeciality">
+							<div class="panel-heading" role="tab" id="headingAddMedicine">
 								<h4 class="panel-title">
 									<a role="button" data-toggle="collapse" data-parent="#accordion"
-										href="#collapseAddSpeciality" aria-expanded="true" aria-controls="collapseAddSpeciality"
-										th:text="#{label.addspeciality}">
-										Add speciality
+										href="#collapseAddMedicine" aria-expanded="true"
+										aria-controls="collapseAddMedicine" th:text="#{label.addmedicine}">
+										Add medicine
 									</a>
 								</h4>
 							</div>
-							<div id="collapseAddSpeciality" class="panel-collapse collapse in" role="tabpanel"
-								aria-labelledby="headingAddSpeciality">
+							<div id="collapseAddMedicine" class="panel-collapse collapse in" role="tabpanel"
+								aria-labelledby="headingAddMedicine">
 								<div class="panel-body">
-									<form id="add-speciality-form" method="POST" th:object="${addSpecialityForm}"
-										th:action="@{/speciality/add-speciality}">
+									<form id="add-medicine-form" method="POST" th:object="${addMedicineForm}"
+										th:action="@{/medicine/add-medicine}">
 										<div class="form-group">
 											<label class="small mb-1" for="inputName"
-												th:text="#{label.specialityname}">Name</label>
+												th:text="#{label.medicinename}">Name</label>
 											<input class="form-control py-4" id="inputName" type="text"
-												th:field="*{name}" th:placeholder="#{label.specialityname}" />
-
+												th:field="*{name}" th:placeholder="#{label.medicinename}" />
 										</div>
 										<div class="form-group">
 											<button class="btn btn-primary" type="submit"
-												th:text="#{label.addspeciality}">Add speciality</button>
+												th:text="#{label.addmedicine}">Add medicine</button>
 										</div>
 									</form>
 								</div>
@@ -64,37 +62,34 @@
 						</div>
 					</div>
 
+
 					<div class="card mb-4">
 						<div class="card-header">
-							<i class="fas fa-table mr-1"></i>
-							<span th:text="#{label.specialitieslist}">Specialities list</span>
+							<i class="fas fa-prescription-bottle-alt mr-1"></i>
+							<span th:text="#{label.medicineslist}">Medicines list</span>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
 
 								<p>
 									<button class="btn btn-primary" type="button" data-toggle="collapse"
-										data-target="#collapseSearchSpecialities" aria-expanded="false"
-										aria-controls="collapseSearchSpecialities"
-										th:text="#{label.searchspecialities}">
-										Search specialities
+										data-target="#collapseSearchMedicines" aria-expanded="false"
+										aria-controls="collapseSearchMedicines" th:text="#{label.searchmedicines}">
+										Search medicines
 									</button>
 								</p>
 
-								<div class="collapse mb-3" id="collapseSearchSpecialities">
+								<div class="collapse mb-3" id="collapseSearchMedicines">
 									<div class="card card-body">
-										<form id="search-specialities-form" method="POST"
-											th:object="${searchSpecialitiesForm}"
-											th:action="@{/speciality/search-specialities}">
+										<form id="search-specialities-form" method="POST">
 											<div class="form-group">
 												<label class="small mb-1" for="inputName"
-													th:text="#{label.specialityname}">Name</label>
+													th:text="#{label.medicinename}">Name</label>
 												<input class="form-control py-4" id="inputName" type="text"
-													th:field="*{name}" th:placeholder="#{label.specialityname}" />
+													th:placeholder="#{label.medicinename}" />
 											</div>
 											<div class="form-check mb-4">
-												<input class="form-check-input" type="checkbox" id="checkEnabled"
-													th:field="*{enabled}" />
+												<input class="form-check-input" type="checkbox" id="checkEnabled" />
 												<label class="form-check-label" for="checkEnabled"
 													th:text="#{label.enabled}">
 													Enabled
@@ -102,7 +97,7 @@
 											</div>
 											<div class="form-group">
 												<button class="btn btn-primary" type="submit"
-													th:text="#{label.searchspecialities}">Search specialities</button>
+													th:text="#{label.searchmedicines}">Search medicines</button>
 											</div>
 										</form>
 									</div>
@@ -111,48 +106,46 @@
 								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
 									<thead>
 										<tr>
-											<th th:text="#{label.specialityname}">Name</th>
+											<th th:text="#{label.medicinename}">Name</th>
 											<th th:text="#{label.enabled}">Enabled</th>
 											<th th:text="#{label.actions}">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr th:each="speciality, rowStat : *{specialities}">
-											<td th:text="${speciality.name}">Name</td>
-											<td th:text="${speciality.enabled} ? #{label.yes} : #{label.no}">Enabled
+										<tr th:each="medicine, rowStat : *{medicines}">
+											<td th:text="${medicine.name}">Name</td>
+											<td th:text="${medicine.enabled} ? #{label.yes} : #{label.no}">Enabled
 											</td>
 											<td>
 												<div class="row">
-													<a th:href="'#updateSpecialityModal-' + ${speciality.id}"
-														role="button" data-toggle="modal"><i
-															class="fas fa-pen ml-3 mt-2"></i></a>
+													<a th:href="'#updateMedicineModal-' + ${medicine.id}" role="button"
+														data-toggle="modal"><i class="fas fa-pen ml-3 mt-2"></i></a>
 
-													<div th:id="'updateSpecialityModal-' + ${speciality.id}"
+													<div th:id="'updateMedicineModal-' + ${medicine.id}"
 														class="modal fade">
 														<div class="modal-dialog">
 															<div class="modal-content">
 																<div class="modal-header">
 																	<h4 class="modal-title"
-																		th:text="#{label.updatespeciality}">Update
-																		speciality</h4>
+																		th:text="#{label.updatemedicine}">Update
+																		medicine</h4>
 																</div>
 																<div class="modal-body">
-																	<form th:id="'update-speciality-form-' + ${speciality.id}" method="POST"
-																	 th:action="@{/speciality/update/{id}(id=${speciality.id})}"
-																	 th:object="${updateSpecialityForm}" >
+																	<form
+																		th:id="'update-medicine-form-' + ${medicine.id}"
+																		method="POST">
 																		<div class="form-group">
 																			<label class="small mb-1" for="inputName"
-																				th:text="#{label.specialityname}">Name</label>
+																				th:text="#{label.medicinename}">Name</label>
 																			<input class="form-control py-4" type="text"
-																				th:value="${speciality.name}"
-																				th:field="*{name}"
-																				th:placeholder="#{label.specialityname}" />
+																				th:value="${medicine.name}"
+																				th:placeholder="#{label.medicinename}" />
 																		</div>
 																		<div class="form-group">
 																			<button class="btn btn-primary"
 																				type="submit"
-																				th:text="#{label.updatespeciality}">Update
-																				speciality</button>
+																				th:text="#{label.updatemedicine}">Update
+																				medicine</button>
 																		</div>
 																	</form>
 																</div>
@@ -164,11 +157,10 @@
 														</div>
 													</div>
 
-													<form method="POST"
-														th:action="@{/speciality/change-speciality-state/{id}(id=${speciality.id})}">
+													<form method="POST">
 														<button class="btn btn-link" type="submit">
-															<i class="fas fa-check" th:if="${!speciality.enabled}"></i>
-															<i class="fas fa-times" th:if="${speciality.enabled}"></i>
+															<i class="fas fa-check" th:if="${!medicine.enabled}"></i>
+															<i class="fas fa-times" th:if="${medicine.enabled}"></i>
 														</button>
 													</form>
 												</div>
@@ -189,12 +181,8 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/speciality-list.js}"></script>
+			<script th:src="@{/js/medicine-list.js}"></script>
 
 		</div>
-
 	</div>
-
 </body>
-
-</html>

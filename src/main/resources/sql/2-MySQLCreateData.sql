@@ -60,8 +60,24 @@ INSERT INTO user_speciality (user_id, speciality_id)
 		   (5, 6),
 		   (5, 8);
 		   
-		   
-		   	       
+--Datos para medicine
+INSERT INTO medicine (name, enabled)
+	VALUES ('Ácido fólico', 1),	   	       
+	       ('Amonio', 1),	   	       
+	       ('Amoxicilina', 1),	   	       
+	       ('Bisacodil', 1),	   	       
+	       ('Cefalosporinas', 1),	   	       
+	       ('Clindamicina', 1),	   	       
+	       ('Clorfeniramina', 1),	   	       
+	       ('Cloridio de amonio', 1),	   	       
+	       ('Clorhexidina', 1),	   	       
+	       ('Digoxina', 1),	   	       
+	       ('Doxilamina', 1),	   	       
+	       ('Fenoterol', 1),	   	       
+	       ('Insulina', 1),	   	       
+	       ('Levotiroxina', 1),	   	       
+	       ('Paracetamol', 1),	   	       
+	       ('Tiamina', 1);   	       
 	       
 	       
 	       

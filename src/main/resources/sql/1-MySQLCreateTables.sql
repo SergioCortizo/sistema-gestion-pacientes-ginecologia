@@ -4,6 +4,7 @@ DROP TABLE user_speciality;
 DROP TABLE user;
 DROP TABLE role;
 DROP TABLE speciality;
+DROP TABLE medicine;
 
 CREATE TABLE user (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -70,7 +71,13 @@ CREATE TABLE user_speciality (
 	CONSTRAINT UserSpecialityFK FOREIGN KEY (user_id) REFERENCES user(id)
 );
 
-
+CREATE TABLE medicine (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(100) NOT NULL,
+	enabled TINYINT(4) DEFAULT NULL,
+	CONSTRAINT MedicinePK PRIMARY KEY (id),
+	CONSTRAINT NameMedicineUniqueKey UNIQUE (name)
+);
 
 
 

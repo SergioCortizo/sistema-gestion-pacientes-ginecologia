@@ -89,6 +89,7 @@ public class SpecialityServiceTest {
 		Speciality speciality = specialityDao.findByName("newspeciality").get();
 
 		assertEquals("newspeciality", speciality.getName());
+		assertTrue(speciality.isEnabled());
 	}
 
 	@Test
