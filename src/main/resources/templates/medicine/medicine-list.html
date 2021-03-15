@@ -81,15 +81,18 @@
 
 								<div class="collapse mb-3" id="collapseSearchMedicines">
 									<div class="card card-body">
-										<form id="search-specialities-form" method="POST">
+										<form id="search-specialities-form" method="POST"
+											th:object="${searchMedicinesForm}"
+											th:action="@{/medicine/search-medicines}">
 											<div class="form-group">
 												<label class="small mb-1" for="inputName"
 													th:text="#{label.medicinename}">Name</label>
 												<input class="form-control py-4" id="inputName" type="text"
-													th:placeholder="#{label.medicinename}" />
+													th:placeholder="#{label.medicinename}" th:field="*{name}" />
 											</div>
 											<div class="form-check mb-4">
-												<input class="form-check-input" type="checkbox" id="checkEnabled" />
+												<input class="form-check-input" type="checkbox" id="checkEnabled"
+													th:field="*{enabled}" />
 												<label class="form-check-label" for="checkEnabled"
 													th:text="#{label.enabled}">
 													Enabled
@@ -133,12 +136,15 @@
 																<div class="modal-body">
 																	<form
 																		th:id="'update-medicine-form-' + ${medicine.id}"
-																		method="POST">
+																		method="POST"
+																		th:action="@{/medicine/update/{id}(id=${medicine.id})}"
+																		th:object="${updateMedicineForm}">
 																		<div class="form-group">
 																			<label class="small mb-1" for="inputName"
 																				th:text="#{label.medicinename}">Name</label>
 																			<input class="form-control py-4" type="text"
 																				th:value="${medicine.name}"
+																				th:field="*{name}"
 																				th:placeholder="#{label.medicinename}" />
 																		</div>
 																		<div class="form-group">
@@ -157,7 +163,8 @@
 														</div>
 													</div>
 
-													<form method="POST">
+													<form method="POST"
+														th:action="@{/medicine/change-medicine-state/{id}(id=${medicine.id})}">
 														<button class="btn btn-link" type="submit">
 															<i class="fas fa-check" th:if="${!medicine.enabled}"></i>
 															<i class="fas fa-times" th:if="${medicine.enabled}"></i>

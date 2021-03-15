@@ -172,7 +172,7 @@ public class SpecialityController {
 
 	// Update speciality
 	@PostMapping("/speciality/update/{id}")
-	public String updateSpecialityState(@PathVariable Integer id, @ModelAttribute SpecialityForm updateSpecialityForm,
+	public String updateSpeciality(@PathVariable Integer id, @ModelAttribute SpecialityForm updateSpecialityForm,
 			Model model) {
 
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

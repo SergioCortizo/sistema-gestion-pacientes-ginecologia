@@ -12,4 +12,13 @@ public interface MedicineService {
 	void addMedicine(Integer adminId, String name)
 			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException;
 
+	void updateMedicine(Integer adminId, Integer medicineId, String name)
+			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException;
+
+	void changeEnablingMedicine(Integer adminId, Integer medicineId)
+			throws InstanceNotFoundException, PermissionException;
+
+	Iterable<Medicine> findMedicines(Integer adminId, String name, boolean enabled)
+			throws InstanceNotFoundException, PermissionException;
+
 }

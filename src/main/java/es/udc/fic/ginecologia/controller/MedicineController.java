@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
@@ -91,11 +92,106 @@ public class MedicineController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/401";
 		}
-		
+
 		try {
 			medicineService.addMedicine(userId, addMedicineForm.getName().trim());
 		} catch (InstanceNotFoundException e) {
 			return "/error/401";
+		} catch (DuplicateInstanceException e) {
+			return "redirect:/medicine/medicine-list-error";
+		} catch (PermissionException e) {
+			return "/error/401";
+		}
+
+		return "redirect:/medicine/medicine-list";
+	}
+
+	// Search medicines
+	@PostMapping("/medicine/search-medicines")
+	public String searchSpecialities(@ModelAttribute MedicineForm searchMedicinesForm, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId)) {
+				return "/error/401";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/401";
+		}
+
+		Iterable<Medicine> medicines;
+
+		try {
+			medicines = medicineService.findMedicines(userId, searchMedicinesForm.getName(),
+					searchMedicinesForm.isEnabled());
+		} catch (InstanceNotFoundException | PermissionException e) {
+			return "/error/401";
+		}
+
+		prepareModel(model, medicines);
+
+		return "medicine/medicine-list";
+	}
+
+	// Change medicine state
+	@PostMapping("/medicine/change-medicine-state/{id}")
+	public String changeMedicineState(@PathVariable Integer id, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId)) {
+				return "/error/401";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/401";
+		}
+
+		try {
+			medicineService.changeEnablingMedicine(userId, id);
+		} catch (InstanceNotFoundException e) {
+			try {
+				if (!permissionChecker.checkIsAdmin(userId)) {
+					return "/error/401";
+				} else {
+					return "/error/404";
+				}
+			} catch (InstanceNotFoundException e1) {
+				return "/error/401";
+			}
+		} catch (PermissionException e) {
+			return "/error/401";
+		}
+
+		return "redirect:/medicine/medicine-list";
+	}
+
+	// Update speciality
+	@PostMapping("/medicine/update/{id}")
+	public String updateMedicine(@PathVariable Integer id, @ModelAttribute MedicineForm updateMedicineForm,
+			Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId)) {
+				return "/error/401";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/401";
+		}
+		
+		try {
+			medicineService.updateMedicine(userId, id, updateMedicineForm.getName());
+		} catch (InstanceNotFoundException e) {
+			return "/error/404";
 		} catch (DuplicateInstanceException e) {
 			return "redirect:/medicine/medicine-list-error";
 		} catch (PermissionException e) {
@@ -108,5 +204,7 @@ public class MedicineController {
 	private void prepareModel(Model model, Iterable<Medicine> medicines) {
 		model.addAttribute("medicines", medicines);
 		model.addAttribute("addMedicineForm", new MedicineForm());
+		model.addAttribute("searchMedicinesForm", new MedicineForm());
+		model.addAttribute("updateMedicineForm", new MedicineForm());
 	}
 }
