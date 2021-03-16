@@ -510,10 +510,11 @@ public class UserController {
 		List<Schedule> schedules = new ArrayList<>(user.getSchedules());
 		ScheduleForm scheduleForm = ScheduleConversor.prepareScheduleForm(schedules);
 
-		Set<Speciality> specialitiesFromUser = user.getSpecialities();
+		List<Speciality> specialitiesFromUser = StreamSupport.stream(user.getSpecialities().spliterator(), false)
+				.filter(s -> s.isEnabled()).collect(Collectors.toList());
 		List<Speciality> specialities = StreamSupport
 				.stream(specialityService.findAllSpecialities().spliterator(), false)
-				.filter(s -> !specialitiesFromUser.contains(s)).collect(Collectors.toList());
+				.filter(s -> !specialitiesFromUser.contains(s) && s.isEnabled()).collect(Collectors.toList());
 
 		model.addAttribute("roles", userService.findAllRoles());
 		model.addAttribute("specialities", specialities);

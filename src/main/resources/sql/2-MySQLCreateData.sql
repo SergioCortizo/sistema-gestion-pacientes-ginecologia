@@ -79,7 +79,20 @@ INSERT INTO medicine (name, enabled)
 	       ('Paracetamol', 1),	   	       
 	       ('Tiamina', 1);   	       
 	       
-	       
+--Datos para diagnostic_test
+INSERT INTO diagnostic_test (name, enabled)	       
+	VALUES ('Citología', 1),
+		   ('Colposcopia', 1),
+		   ('Biopsia endometrial', 1),
+		   ('Ecografía ginecológica', 1),
+		   ('Ecografía mamaria', 1),
+		   ('Histeroscopia', 1),
+		   ('Monitorización fetal', 1),
+		   ('Amniocentesis', 1),
+		   ('Ecografía en 5D', 1),
+		   ('Mamografía', 1),
+		   ('Paponicolau', 1),
+		   ('Histerosalpingografia', 1);
 	       
 	       
 	       

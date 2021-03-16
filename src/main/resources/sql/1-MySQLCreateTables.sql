@@ -5,6 +5,7 @@ DROP TABLE user;
 DROP TABLE role;
 DROP TABLE speciality;
 DROP TABLE medicine;
+DROP TABLE diagnostic_test;
 
 CREATE TABLE user (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -77,6 +78,14 @@ CREATE TABLE medicine (
 	enabled TINYINT(4) DEFAULT NULL,
 	CONSTRAINT MedicinePK PRIMARY KEY (id),
 	CONSTRAINT NameMedicineUniqueKey UNIQUE (name)
+);
+
+CREATE TABLE diagnostic_test (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(100) NOT NULL,
+	enabled TINYINT(4) DEFAULT NULL,
+	CONSTRAINT DiagnosticTestPK PRIMARY KEY (id),
+	CONSTRAINT NameDiagnosticTestUniqueKey UNIQUE (name)
 );
 
 

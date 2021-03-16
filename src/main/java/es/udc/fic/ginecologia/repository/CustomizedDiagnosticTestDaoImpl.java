@@ -1,0 +1,62 @@
+package es.udc.fic.ginecologia.repository;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import es.udc.fic.ginecologia.model.DiagnosticTest;
+
+public class CustomizedDiagnosticTestDaoImpl implements CustomizedDiagnosticTestDao {
+
+	@PersistenceContext
+	private EntityManager entityManager;
+
+	private String[] getTokens(String keywords) {
+
+		if (keywords == null || keywords.length() == 0) {
+			return new String[0];
+		} else {
+			return keywords.split("\\s");
+		}
+
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public Iterable<DiagnosticTest> findMedicines(String name, boolean enabled) {
+		String[] tokensName = getTokens(name);
+
+		String queryString = "SELECT d FROM DiagnosticTest d";
+		
+		if (tokensName.length != 0) {
+			queryString += " WHERE (";
+
+			for (int i = 0; i < tokensName.length - 1; i++) {
+				queryString += "LOWER(d.name) LIKE LOWER(:tokenName" + i + ") OR ";
+			}
+
+			queryString += "LOWER(d.name) LIKE LOWER(:tokenName" + (tokensName.length - 1) + ")";
+
+			queryString += ")";
+		}
+
+		if (tokensName.length != 0) {
+			queryString += enabled ? " AND d.enabled=1" : "";
+		} else {
+			queryString += enabled ? " WHERE d.enabled=1" : "";
+		}
+		
+		Query query = entityManager.createQuery(queryString);
+
+		if (tokensName.length != 0) {
+			for (int i = 0; i < tokensName.length; i++) {
+				query.setParameter("tokenName" + i, '%' + tokensName[i] + '%');
+			}
+		}
+		
+		Iterable<DiagnosticTest> result = query.getResultList();
+		
+		return result;
+	}
+
+}
