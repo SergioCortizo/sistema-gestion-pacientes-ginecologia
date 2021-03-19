@@ -294,7 +294,7 @@ public class MedicineServiceTest {
 		assertThrows(InstanceNotFoundException.class,
 				() -> medicineService.changeEnablingMedicine(-1, medicine.getId()));
 	}
-	
+
 	@Test
 	public void changeEnablingMedicineTestMedicineNotFound()
 			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
@@ -310,10 +310,9 @@ public class MedicineServiceTest {
 
 		userService.registerUser(user, roles);
 
-		assertThrows(InstanceNotFoundException.class,
-				() -> medicineService.changeEnablingMedicine(user.getId(), -1));
+		assertThrows(InstanceNotFoundException.class, () -> medicineService.changeEnablingMedicine(user.getId(), -1));
 	}
-	
+
 	@Test
 	public void changeEnablingMedicineTestPermissionException()
 			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
@@ -329,7 +328,62 @@ public class MedicineServiceTest {
 
 		userService.registerUser(user, roles);
 
-		assertThrows(PermissionException.class,
-				() -> medicineService.changeEnablingMedicine(user.getId(), 1));
+		assertThrows(PermissionException.class, () -> medicineService.changeEnablingMedicine(user.getId(), 1));
+	}
+
+	@Test
+	public void findMedicinesTest() throws InstanceNotFoundException, PermissionException, DuplicateInstanceException {
+		Medicine medicine1 = new Medicine("medicine1");
+		Medicine medicine2 = new Medicine("medicine2");
+		Medicine medicine3 = new Medicine("medicine3");
+		Medicine medicine4 = new Medicine("medicine4");
+
+		medicineDao.save(medicine1);
+		medicineDao.save(medicine2);
+		medicineDao.save(medicine3);
+		medicineDao.save(medicine4);
+
+		Iterable<Medicine> expectedResult = Arrays.asList(medicine1, medicine2, medicine3, medicine4);
+
+		Role role = createRole("ROLE_ADMIN");
+
+		roleDao.save(role);
+
+		Iterable<Integer> roles = Arrays.asList(role.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		Iterable<Medicine> result = medicineService.findMedicines(user.getId(), "medicine", true);
+
+		assertEquals(expectedResult, result);
+	}
+
+	@Test
+	public void findMedicinesTestAdminNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		assertThrows(InstanceNotFoundException.class, () -> medicineService.findMedicines(-1, "medicine", true));
+	}
+
+	@Test
+	public void findMedicinesTestPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role = createRole("ROLE");
+
+		roleDao.save(role);
+
+		Iterable<Integer> roles = Arrays.asList(role.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		assertThrows(PermissionException.class, () -> medicineService.findMedicines(user.getId(), "medicine", true));
 	}
 }

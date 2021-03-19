@@ -23,7 +23,7 @@ public class CustomizedDiagnosticTestDaoImpl implements CustomizedDiagnosticTest
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public Iterable<DiagnosticTest> findMedicines(String name, boolean enabled) {
+	public Iterable<DiagnosticTest> findDiagnosticTests(String name, boolean enabled) {
 		String[] tokensName = getTokens(name);
 
 		String queryString = "SELECT d FROM DiagnosticTest d";

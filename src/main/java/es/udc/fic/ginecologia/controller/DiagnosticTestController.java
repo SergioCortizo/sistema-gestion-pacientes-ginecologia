@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
@@ -79,7 +80,7 @@ public class DiagnosticTestController {
 	// Add diagnostic test
 	@PostMapping("/diagnostic-test/add-diagnostic-test")
 	public String addDiagnosticTest(@ModelAttribute DiagnosticTestForm addDiagnosticTestForm, Model model) {
-		
+
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -92,7 +93,7 @@ public class DiagnosticTestController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/401";
 		}
-		
+
 		try {
 			diagnosticTestService.addDiagnosticTest(userId, addDiagnosticTestForm.getName());
 		} catch (InstanceNotFoundException e) {
@@ -102,12 +103,106 @@ public class DiagnosticTestController {
 		} catch (PermissionException e) {
 			return "/error/401";
 		}
-		
+
 		return "redirect:/diagnostic-test/diagnostic-test-list";
+	}
+
+	// Update diagnostic test
+	@PostMapping("/diagnostic-test/update/{id}")
+	public String updateDiagnosticTest(@PathVariable Integer id,
+			@ModelAttribute DiagnosticTestForm updateDiagnosticTestForm, Model model) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId)) {
+				return "/error/401";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/401";
+		}
+
+		try {
+			diagnosticTestService.updateDiagnosticTest(userId, id, updateDiagnosticTestForm.getName());
+		} catch (InstanceNotFoundException e) {
+			return "/error/404";
+		} catch (DuplicateInstanceException e) {
+			return "redirect:/diagnostic-test/diagnostic-test-list-error";
+		} catch (PermissionException e) {
+			return "/error/401";
+		}
+
+		return "redirect:/diagnostic-test/diagnostic-test-list";
+	}
+
+	// Change diagnostic test state
+	@PostMapping("/diagnostic-test/change-diagnostic-test-state/{id}")
+	public String changeDiagnosticTestState(@PathVariable Integer id, Model model) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId)) {
+				return "/error/401";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/401";
+		}
+
+		try {
+			diagnosticTestService.changeEnablingDiagnosticTest(userId, id);
+		} catch (InstanceNotFoundException e) {
+			return "/error/404";
+		} catch (PermissionException e) {
+			return "/error/401";
+		}
+
+		return "redirect:/diagnostic-test/diagnostic-test-list";
+	}
+
+	// Update diagnostic test
+	@PostMapping("/diagnostic-test/search-diagnostic-tests")
+	public String searchDiagnosticTests(@ModelAttribute DiagnosticTestForm searchDiagnosticTestsForm, Model model) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId)) {
+				return "/error/401";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/401";
+		}
+
+		Iterable<DiagnosticTest> diagnosticTests;
+		
+		try {
+			diagnosticTests = diagnosticTestService.findDiagnosticTests(userId, searchDiagnosticTestsForm.getName(),
+					searchDiagnosticTestsForm.isEnabled());
+		} catch (InstanceNotFoundException e) {
+			return "/error/404";
+		} catch (PermissionException e) {
+			return "/error/401";
+		}
+		
+		prepareModel(model, diagnosticTests);
+
+		return "diagnostic-test/diagnostic-test-list";
 	}
 
 	private void prepareModel(Model model, Iterable<DiagnosticTest> diagnosticTests) {
 		model.addAttribute("diagnosticTests", diagnosticTests);
 		model.addAttribute("addDiagnosticTestForm", new DiagnosticTestForm());
+		model.addAttribute("searchDiagnosticTestsForm", new DiagnosticTestForm());
+		model.addAttribute("updateDiagnosticTestForm", new DiagnosticTestForm());
 	}
 }

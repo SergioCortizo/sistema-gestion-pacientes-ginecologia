@@ -12,4 +12,14 @@ public interface DiagnosticTestService {
 	void addDiagnosticTest(Integer adminId, String name)
 			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException;
 
+	void updateDiagnosticTest(Integer adminId, Integer diagnosticTestId, String name)
+			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException;
+
+	void changeEnablingDiagnosticTest(Integer adminId, Integer diagnosticTestId)
+			throws InstanceNotFoundException, PermissionException;
+
+	Iterable<DiagnosticTest> findDiagnosticTests(
+			Integer adminId, String name, boolean enabled)
+			throws InstanceNotFoundException, PermissionException;
+
 }
