@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+
+			<main>
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item active"><span th:text="#{label.contraceptivesmanagement}">Gestión de
+								métodos anticonceptivos</span></li>
+					</ol>
+
+					<div th:if="${duplicateContraceptive}" class="alert alert-danger" role="alert">
+						<span th:text="#{label.duplicatecontraceptive}">The contraceptive already exists.</span>
+					</div>
+
+					<div class="panel-group mb-4" id="accordion" role="tablist" aria-multiselectable="true">
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingAddContraceptive">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" data-parent="#accordion"
+										href="#collapseAddContraceptive" aria-expanded="true"
+										aria-controls="collapseAddAddContraceptive"
+										th:text="#{label.addcontraceptive}">
+										Add contraceptive
+									</a>
+								</h4>
+							</div>
+							<div id="collapseAddContraceptive" class="panel-collapse collapse in" role="tabpanel"
+								aria-labelledby="headingAddContraceptive">
+								<div class="panel-body">
+									<form id="add-contraceptive-form" method="POST"
+										th:object="${addContraceptiveForm}"
+										th:action="@{/contraceptive/add-contraceptive}">
+										<div class="form-group">
+											<label class="small mb-1" for="inputName"
+												th:text="#{label.contraceptivename}">Name</label>
+											<input class="form-control py-4" id="inputName" type="text"
+												th:field="*{name}" th:placeholder="#{label.contraceptivename}" />
+										</div>
+										<div class="form-group">
+											<button class="btn btn-primary" type="submit"
+												th:text="#{label.addcontraceptive}">Add contraceptive</button>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-capsules mr-1"></i>
+							<span th:text="#{label.contraceptivelist}">Contraceptives list</span>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+
+								<p>
+									<button class="btn btn-primary" type="button" data-toggle="collapse"
+										data-target="#collapseSearchContraceptives" aria-expanded="false"
+										aria-controls="collapseSearchContraceptives"
+										th:text="#{label.searchcontraceptives}">
+										Search contraceptives
+									</button>
+								</p>
+
+								<div class="collapse mb-3" id="collapseSearchContraceptives">
+									<div class="card card-body">
+										<form id="search-contraceptives-form" method="POST"
+											th:object="${searchContraceptivesForm}"
+											th:action="@{/contraceptive/search-contraceptives}">
+											<div class="form-group">
+												<label class="small mb-1" for="inputName"
+													th:text="#{label.contraceptivename}">Name</label>
+												<input class="form-control py-4" id="inputName" type="text"
+													th:placeholder="#{label.contraceptivename}" th:field="*{name}" />
+											</div>
+											<div class="form-check mb-4">
+												<input class="form-check-input" type="checkbox" id="checkEnabled"
+													th:field="*{enabled}" />
+												<label class="form-check-label" for="checkEnabled"
+													th:text="#{label.enabled}">
+													Enabled
+												</label>
+											</div>
+											<div class="form-group">
+												<button class="btn btn-primary" type="submit"
+													th:text="#{label.searchcontraceptives}">Search contraceptives</button>
+											</div>
+										</form>
+									</div>
+								</div>
+
+								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+									<thead>
+										<tr>
+											<th th:text="#{label.contraceptivename}">Name</th>
+											<th th:text="#{label.enabled}">Enabled</th>
+											<th th:text="#{label.actions}">Actions</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="contraceptive, rowStat : *{contraceptives}">
+											<td th:text="${contraceptive.name}">Name</td>
+											<td th:text="${contraceptive.enabled} ? #{label.yes} : #{label.no}">Enabled
+											</td>
+											<td>
+												<div class="row">
+													<a th:href="'#updateContraceptiveModal-' + ${contraceptive.id}"
+														role="button" data-toggle="modal"><i
+															class="fas fa-pen ml-3 mt-2"></i></a>
+
+													<div th:id="'updateContraceptiveModal-' + ${contraceptive.id}"
+														class="modal fade">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h4 class="modal-title"
+																		th:text="#{label.updatecontraceptive}">Update
+																		contraceptive</h4>
+																</div>
+																<div class="modal-body">
+																	<form
+																		th:action="@{/contraceptive/update/{id}(id=${contraceptive.id})}"
+																		th:object="${updateContraceptiveForm}"
+																		th:id="'update-contraceptive-form-' + ${contraceptive.id}"
+																		method="POST">
+																		<div class="form-group">
+																			<label class="small mb-1" for="inputName"
+																				th:text="#{label.contraceptivename}">Name</label>
+																			<input class="form-control py-4" type="text"
+																				th:value="${contraceptive.name}"
+																				th:placeholder="#{label.contraceptivename}"
+																				th:field="*{name}" />
+																		</div>
+																		<div class="form-group">
+																			<button class="btn btn-primary"
+																				type="submit"
+																				th:text="#{label.updatecontraceptive}">Update
+																				contraceptive</button>
+																		</div>
+																	</form>
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-default"
+																		data-dismiss="modal">Cerrar</button>
+																</div>
+															</div>
+														</div>
+													</div>
+
+													<form method="POST"
+														th:action="@{/contraceptive/change-contraceptive-state/{id}(id=${contraceptive.id})}">
+														<button class="btn btn-link" type="submit">
+															<i class="fas fa-check"
+																th:if="${!contraceptive.enabled}"></i>
+															<i class="fas fa-times"
+																th:if="${contraceptive.enabled}"></i>
+														</button>
+													</form>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+			<script th:src="@{/js/contraceptive-list.js}"></script>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>

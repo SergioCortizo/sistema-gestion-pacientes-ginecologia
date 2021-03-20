@@ -93,6 +93,16 @@ INSERT INTO diagnostic_test (name, enabled)
 		   ('Mamografía', 1),
 		   ('Paponicolau', 1),
 		   ('Histerosalpingografia', 1);
-	       
+		   
+--Datos para contraceptive
+INSERT INTO contraceptive (name, enabled)	       
+	VALUES ('Métodos hormonales', 1),
+		   ('Implantes', 1),
+		   ('DIU', 1),
+		   ('Métodos barrera', 1),
+		   ('Vasectomía', 1),
+		   ('Ligadura de trompas', 1),
+		   ('Planificación familiar natural', 1);
+		   	       
 	       
 	       

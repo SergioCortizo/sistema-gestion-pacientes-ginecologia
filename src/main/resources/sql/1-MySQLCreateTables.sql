@@ -6,6 +6,7 @@ DROP TABLE role;
 DROP TABLE speciality;
 DROP TABLE medicine;
 DROP TABLE diagnostic_test;
+DROP TABLE contraceptive;
 
 CREATE TABLE user (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -86,6 +87,14 @@ CREATE TABLE diagnostic_test (
 	enabled TINYINT(4) DEFAULT NULL,
 	CONSTRAINT DiagnosticTestPK PRIMARY KEY (id),
 	CONSTRAINT NameDiagnosticTestUniqueKey UNIQUE (name)
+);
+
+CREATE TABLE contraceptive (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	name VARCHAR(100) NOT NULL,
+	enabled TINYINT(4) DEFAULT NULL,
+	CONSTRAINT ContraceptivePK PRIMARY KEY (id),
+	CONSTRAINT NameContraceptiveUniqueKey UNIQUE (name)
 );
 
 
