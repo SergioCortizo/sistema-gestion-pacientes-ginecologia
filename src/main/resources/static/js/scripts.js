@@ -22,6 +22,6 @@
 
 	$("#logoutLink").on("click", function(e) {
         e.preventDefault();
-        document.logoutForm.submit();
+        $("#logoutForm").submit();
     });
 })(jQuery);

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
     
 	<head th:include="fragments/header :: header">
 		<title th:text="login">Login</title>
@@ -18,6 +19,7 @@
 										<div th:if="${loginError}" class="alert alert-danger" role="alert">
 										  <span th:text="#{label.wrongcredentials}">Wrong user or password</span>
 										</div>
+										<img class="d-block mx-auto" width="200" height="200" th:src="${logo}" />
                                         <form id="login-form" th:action="@{/login}" method="POST">
                                             <div class="form-group">
                                                 <label class="small mb-1" for="username" th:text="#{label.loginusername}">Username (at least 3 characters)</label>

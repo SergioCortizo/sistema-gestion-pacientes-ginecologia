@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+
+			<main>
+				<div class="container-fluid">
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item active"><span th:text="#{label.nameandlogosettings}">Ajustar nombre y
+								logo</span></li>
+					</ol>
+
+					<form id="name-and-logo-form" method="POST" th:object="${nameAndLogoForm}"
+						th:action="@{/settings/change-name-and-logo}" enctype="multipart/form-data">
+						<div class="form-group">
+							<label class="small mb-1" for="inputName" th:text="#{label.enterprisename}">Name</label>
+							<input class="form-control py-4" id="inputName" name="inputName" type="text"
+								th:field="*{enterpriseName}" th:placeholder="#{label.enterprisename}" />
+						</div>
+						<div class="form-group">
+							<label class="small mb-1" for="inputName" th:text="#{label.logo}">Logo</label>
+							<img class="rounded d-block" width="200" height="200" th:src="${logo}" />
+							<input type="file" class="form-control-file" id="logo" name="logo"
+								th:field="*{logo}" />
+						</div>
+						<div class="form-group">
+							<button class="btn btn-primary" type="submit" th:text="#{label.save}">Save</button>
+						</div>
+					</form>
+
+				</div>
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+			<script th:src="@{/js/name-and-logo.js}"></script>
+		</div>
+	</div>
+</body>
+
+</html>

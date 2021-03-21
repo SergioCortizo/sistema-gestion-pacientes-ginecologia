@@ -7,6 +7,7 @@ DROP TABLE speciality;
 DROP TABLE medicine;
 DROP TABLE diagnostic_test;
 DROP TABLE contraceptive;
+DROP TABLE settings;
 
 CREATE TABLE user (
     id BIGINT NOT NULL AUTO_INCREMENT,
@@ -97,5 +98,9 @@ CREATE TABLE contraceptive (
 	CONSTRAINT NameContraceptiveUniqueKey UNIQUE (name)
 );
 
-
+CREATE TABLE settings (
+	name VARCHAR(60) NOT NULL,
+	value LONGBLOB,
+	CONSTRAINT SettingsPK PRIMARY KEY (name)
+);
 

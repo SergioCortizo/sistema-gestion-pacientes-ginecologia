@@ -5,6 +5,7 @@ $.extend(
 		required: jQuery.validator.format("Campo requerido."),
 		email: jQuery.validator.format("Por favor introduzca un email válido."),
 		equalTo: jQuery.validator.format("Por favor introduzca el mismo valor de nuevo."),
+		extension: jQuery.validator.format("Por favor introduzca un archivo con una extensión válida."),
 	}
 );
 

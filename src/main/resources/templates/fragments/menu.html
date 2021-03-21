@@ -10,6 +10,14 @@
 			</div>
 			
 			<div class="nav" sec:authorize="hasRole('ADMIN')">
+				<div class="sb-sidenav-menu-heading" th:text="#{label.settings}">Settings</div>
+				<a class="nav-link" th:href="@{/settings/name-and-logo}">
+					<div class="sb-nav-link-icon"><i class="fas fa-images"></i></div>
+					<span th:text="#{label.nameandlogosettings}">Name and logo settings</span>
+				</a>
+			</div>
+			
+			<div class="nav" sec:authorize="hasRole('ADMIN')">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.management}">Management</div>
 				<a class="nav-link" th:href="@{/user/user-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-lock"></i></div>

@@ -1,223 +1,232 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
-	
+
 	<modelVersion>4.0.0</modelVersion>
-	
+
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>2.4.2</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
-	
+
 	<groupId>es.udc.fic</groupId>
 	<artifactId>sistema-gestion-pacientes-ginecologia</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>sistema-gestion-pacientes-ginecologia</name>
 	<description>Sistema de gestión de pacientes de una ginecología</description>
-	
+
 	<properties>
-		<!--  Data source properties -->
-        <dataSource.user>root</dataSource.user>
-        <dataSource.password>root</dataSource.password>
-        <testDataSource.user>${dataSource.user}</testDataSource.user>
-        <testDataSource.password>${dataSource.password}</testDataSource.password>
-        
-        <!--  Compiler options -->
-   		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- Data source properties -->
+		<dataSource.user>root</dataSource.user>
+		<dataSource.password>root</dataSource.password>
+		<testDataSource.user>${dataSource.user}</testDataSource.user>
+		<testDataSource.password>${dataSource.password}</testDataSource.password>
+
+		<!-- Compiler options -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-	
+
 		<java.version>11</java.version>
 	</properties>
-	
-	<profiles>
-        <profile>
-            <id>mysql</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-            <properties>
-                <!-- JDBC driver properties -->
-                <jdbcDriver.groupId>mysql</jdbcDriver.groupId>
-                <jdbcDriver.artifactId>mysql-connector-java</jdbcDriver.artifactId>
-                <jdbcDriver.version>8.0.23</jdbcDriver.version>
-                <jdbcDriver.className>com.mysql.cj.jdbc.Driver</jdbcDriver.className>
 
-                <!--  Data source properties -->
-                <dataSource.baseUrl>jdbc:mysql://localhost/ginecology</dataSource.baseUrl>
-                <dataSource.url>${dataSource.baseUrl}?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Europe/Madrid</dataSource.url>
-                <testDataSource.url>${dataSource.baseUrl}test?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Europe/Madrid</testDataSource.url>
-                <dataSource.createTablesScript>1-MySQLCreateTables.sql</dataSource.createTablesScript>
-                <dataSource.createDataScript>2-MySQLCreateData.sql</dataSource.createDataScript>
-            </properties>
-        </profile>
-    </profiles>
-	
+	<profiles>
+		<profile>
+			<id>mysql</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<!-- JDBC driver properties -->
+				<jdbcDriver.groupId>mysql</jdbcDriver.groupId>
+				<jdbcDriver.artifactId>mysql-connector-java</jdbcDriver.artifactId>
+				<jdbcDriver.version>8.0.23</jdbcDriver.version>
+				<jdbcDriver.className>com.mysql.cj.jdbc.Driver</jdbcDriver.className>
+
+				<!-- Data source properties -->
+				<dataSource.baseUrl>jdbc:mysql://localhost/ginecology</dataSource.baseUrl>
+				<dataSource.url>${dataSource.baseUrl}?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Europe/Madrid</dataSource.url>
+				<testDataSource.url>${dataSource.baseUrl}test?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=Europe/Madrid</testDataSource.url>
+				<dataSource.createTablesScript>1-MySQLCreateTables.sql</dataSource.createTablesScript>
+				<dataSource.createDataScript>2-MySQLCreateData.sql</dataSource.createDataScript>
+			</properties>
+		</profile>
+	</profiles>
+
 	<dependencies>
-         <dependency>
-             <groupId>org.springframework.boot</groupId>
-             <artifactId>spring-boot-starter-test</artifactId>
-             <scope>test</scope>
-        </dependency>
-        <dependency>
-             <groupId>org.springframework.boot</groupId>
-             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-             <groupId>org.springframework.boot</groupId>
-             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-             <groupId>org.springframework.boot</groupId>
-             <artifactId>spring-boot-devtools</artifactId>
-             <optional>true</optional>
-        </dependency>
 		<dependency>
-		    <groupId>org.thymeleaf.extras</groupId>
-		    <artifactId>thymeleaf-extras-springsecurity5</artifactId>
-		</dependency>
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-        </dependency>
-        <dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-crypto</artifactId>
-		</dependency>
-        <dependency>
-        	<groupId>io.jsonwebtoken</groupId>
-        	<artifactId>jjwt</artifactId>
-        	<version>0.9.0</version>
-        </dependency>
-		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-config</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
-		    <groupId>org.springframework.security</groupId>
-		    <artifactId>spring-security-web</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 		<dependency>
-		    <groupId>javax.validation</groupId>
-		    <artifactId>validation-api</artifactId>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity5</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tika</groupId>
+			<artifactId>tika-core</artifactId>
+			<version>1.25</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-codec</groupId>
+			<artifactId>commons-codec</artifactId>
+		</dependency>
+
 	</dependencies>
 
 	<build>
 		<resources>
-		    <resource>
-		        <directory>src/main/resources</directory>
-		    </resource>
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
 		</resources>
-	
+
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 			<plugin>
-		        <groupId>org.codehaus.mojo</groupId>
-		        <artifactId>sql-maven-plugin</artifactId>
-		        <version>1.5</version>
-		        
-		        <dependencies>
-		          <dependency>
-		            <groupId>${jdbcDriver.groupId}</groupId>
-					<artifactId>${jdbcDriver.artifactId}</artifactId>
-					<version>${jdbcDriver.version}</version>
-		          </dependency>
-		        </dependencies>
-		        
-		        <configuration>
-		          <driver>${jdbcDriver.className}</driver>
-		          <url>${dataSource.url}</url>
-		          <username>${dataSource.user}</username>
-		          <password>${dataSource.password}</password>
-		          <autocommit>true</autocommit>
-                  <onError>continue</onError>
-                  <orderFile>ascending</orderFile>
-		          <fileset>
-                    <basedir>${basedir}</basedir>
-                    <includes>
-                      <include>
-                        src/main/resources/sql/${dataSource.createTablesScript}
-                      </include>
-                      <include>
-                        src/main/resources/sql/${dataSource.createDataScript}
-                      </include>
-                    </includes>
-                  </fileset>
-		        </configuration>
-		        
-		        <executions>
-                  <execution>
-                    <id>create-tables-for-testing</id>
-                    <phase>process-test-resources</phase>
-                    <goals>
-                      <goal>execute</goal>
-                    </goals>
-                    <configuration>
-                      <driver>${jdbcDriver.className}</driver>
-                      <url>${testDataSource.url}</url>
-                      <username>${testDataSource.user}</username>
-                      <password>${testDataSource.password}</password>
-                      <autocommit>true</autocommit>
-                      <onError>continue</onError>
-                      <fileset>
-                        <basedir>${basedir}</basedir>
-                        <includes>
-                          <include>
-                            src/main/resources/sql/${dataSource.createTablesScript}
-                          </include>
-                        </includes>
-                      </fileset>
-                    </configuration>
-                  </execution>
-                </executions>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>sql-maven-plugin</artifactId>
+				<version>1.5</version>
 
-		    </plugin>
+				<dependencies>
+					<dependency>
+						<groupId>${jdbcDriver.groupId}</groupId>
+						<artifactId>${jdbcDriver.artifactId}</artifactId>
+						<version>${jdbcDriver.version}</version>
+					</dependency>
+				</dependencies>
+
+				<configuration>
+					<driver>${jdbcDriver.className}</driver>
+					<url>${dataSource.url}</url>
+					<username>${dataSource.user}</username>
+					<password>${dataSource.password}</password>
+					<autocommit>true</autocommit>
+					<onError>continue</onError>
+					<orderFile>ascending</orderFile>
+					<fileset>
+						<basedir>${basedir}</basedir>
+						<includes>
+							<include>
+								src/main/resources/sql/${dataSource.createTablesScript}
+							</include>
+							<include>
+								src/main/resources/sql/${dataSource.createDataScript}
+							</include>
+						</includes>
+					</fileset>
+				</configuration>
+
+				<executions>
+					<execution>
+						<id>create-tables-for-testing</id>
+						<phase>process-test-resources</phase>
+						<goals>
+							<goal>execute</goal>
+						</goals>
+						<configuration>
+							<driver>${jdbcDriver.className}</driver>
+							<url>${testDataSource.url}</url>
+							<username>${testDataSource.user}</username>
+							<password>${testDataSource.password}</password>
+							<autocommit>true</autocommit>
+							<onError>continue</onError>
+							<fileset>
+								<basedir>${basedir}</basedir>
+								<includes>
+									<include>
+										src/main/resources/sql/${dataSource.createTablesScript}
+									</include>
+								</includes>
+							</fileset>
+						</configuration>
+					</execution>
+				</executions>
+
+			</plugin>
 		</plugins>
-		
+
 		<pluginManagement>
-        	<plugins>
-        		<!-- This plugin's configuration is used to store Eclipse m2e 
-        		     settings only. It has no influence on the Maven build
-        		     itself. -->
-        		<plugin>
-        			<groupId>org.eclipse.m2e</groupId>
-        			<artifactId>lifecycle-mapping</artifactId>
-        			<version>1.0.0</version>
-        			<configuration>
-        				<lifecycleMappingMetadata>
-        					<pluginExecutions>
-        						<pluginExecution>
-        							<pluginExecutionFilter>
-        								<groupId>org.codehaus.mojo</groupId>
-        								<artifactId>sql-maven-plugin</artifactId>
-        								<versionRange>${sqlPlugin.version}</versionRange>
-        								<goals>
-        									<goal>execute</goal>
-        								</goals>
-        							</pluginExecutionFilter>
-        							<action>
-        								<ignore></ignore>
-        							</action>
-        						</pluginExecution>
-        					</pluginExecutions>
-        				</lifecycleMappingMetadata>
-        			</configuration>
-        		</plugin>
-        	</plugins>
-        </pluginManagement>
-		
-		
+			<plugins>
+				<!-- This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>org.codehaus.mojo</groupId>
+										<artifactId>sql-maven-plugin</artifactId>
+										<versionRange>${sqlPlugin.version}</versionRange>
+										<goals>
+											<goal>execute</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+
 	</build>
 
 </project>
