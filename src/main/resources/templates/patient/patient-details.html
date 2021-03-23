@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{/patient/patient-list}"
+								th:text="#{label.watchpatients}">Ver pacientes</a></li>
+						<li class="breadcrumb-item active">
+							<span th:text="#{label.watchpatientdetails}">Ver detalles de paciente</span>
+						</li>
+					</ol>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-hospital-user mr-1"></i>
+							<span th:text="#{label.personaldata}">Personal data</span>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-4">
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.historynumber}">History
+												number</span>
+											<span class="ml-5" th:text="${patient.patient.id}">Id</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.name}">Name</span>
+											<span class="ml-5" th:text="${patient.patient.name}">Name</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.dni_nif}">DNI/NIF</span>
+											<span class="ml-5" th:text="${patient.patient.DNI_NIF}">DNI/NIF</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.mobilephone}">Mobile phone</span>
+											<span class="ml-5" th:text="${patient.patient.mobile_phone}">Mobile
+												phone</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.landline}">Landline</span>
+											<span class="ml-5" th:text="${patient.patient.landline}">Landline</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.birthday}">Birthday</span>
+											<span class="ml-5"
+												th:text="${patient.patient.birthday.toLocalDate()}">Birthday</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.age}">Age</span>
+											<span class="ml-5" th:text="${patient.age}">Age</span>
+										</div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.hist_numsergas}">History number in
+												SERGAS</span>
+											<span class="ml-5" th:text="${patient.patient.hist_numsergas}">History
+												number in
+												SERGAS</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.postalAddress}">Postal
+												address</span>
+											<span class="ml-5" th:text="${patient.patient.postal_address}">Postal
+												address</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.location}">Location</span>
+											<span class="ml-5" th:text="${patient.patient.location}">Location</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.email}">Email</span>
+											<span class="ml-5" th:text="${patient.patient.email}">Email</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.dischargedate}">Discarge
+												date</span>
+											<span class="ml-5"
+												th:text="${patient.patient.discharge_date.toLocalDate()}">Discharge
+												date</span>
+										</div>
+									</div>
+									<div class="row">
+										<div class="mb-3">
+											<span class="text-muted" th:text="#{label.registeredby}">Registered
+												by</span>
+											<span class="ml-5" th:text="${patient.patient.user.username}">User</span>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingAntecedents">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" data-parent="#accordion"
+										href="#collapseAntecedents" aria-expanded="true"
+										aria-controls="collapseAntecedents">
+										<span th:text="#{label.antecedents}">Antecedents</span>
+									</a>
+								</h4>
+							</div>
+							<div id="collapseAntecedents" class="panel-collapse collapse in" role="tabpanel"
+								aria-labelledby="headingAntecedents">
+								<div class="panel-body">
+
+									<div class="card mb-4">
+										<div class="card-header">
+											<i class="fas fa-file-medical mr-1"></i>
+											<span th:text="#{label.personalantecedents}">Persona antecedents</span>
+										</div>
+										<div class="card-body">
+											<div class="row mb-2">
+												<span class="text-muted" th:text="#{label.allergies}">Allergies</span>
+											</div>
+											<div class="row mb-4">
+												<span th:text="${patient.patient.allergies}">Allergies</span>
+											</div>
+
+											<div class="row mb-2">
+												<span class="text-muted" th:text="#{label.diseases}">Diseases</span>
+											</div>
+											<div class="row mb-4">
+												<span th:text="${patient.patient.diseases}">Diseases</span>
+											</div>
+
+											<div class="row mb-2">
+												<span class="text-muted"
+													th:text="#{label.interventions}">Interventions</span>
+											</div>
+											<div class="row mb-4">
+												<span th:text="${patient.patient.interventions}">Interventions</span>
+											</div>
+
+											<div class="row mb-2">
+												<span class="text-muted" th:text="#{label.family_background}">Family
+													background</span>
+											</div>
+											<div class="row mb-4">
+												<span
+													th:text="${patient.patient.family_background} == '' ? #{label.notregistered} : ${patient.patient.family_background}">Family
+													background</span>
+											</div>
+
+											<div class="row mb-2">
+												<span class="text-muted mr-2" th:text="#{label.smoker}">Smoker</span>
+												<span th:if="${patient.patient.smoker}"
+													th:text="#{label.yes}">Yes</span>
+												<span th:if="${!patient.patient.smoker}" th:text="#{label.no}">No</span>
+											</div>
+										</div>
+									</div>
+
+									<div class="card mb-4">
+										<div class="card-header">
+											<i class="fas fa-file-medical mr-1"></i>
+											<span th:text="#{label.ginecologycalantecedents}">Ginecologycal
+												antecedents</span>
+										</div>
+										<div class="card-body">
+											<div class="row mb-2">
+												<div class="col-md-2">
+													<span class="text-muted mr-2"
+														th:text="#{label.menarchyage}">Menarche
+														age</span>
+													<span th:text="${patient.patient.menarche}">Menarche age</span>
+												</div>
+												<div class="col-md-2">
+													<span class="text-muted mr-2"
+														th:text="#{label.menopauseage}">Menopause
+														age</span>
+													<span th:text="${patient.patient.menopause}">Menopause age</span>
+												</div>
+												<div class="col-md-3">
+													<span class="text-muted mr-2"
+														th:text="#{label.lastmenstruationdate}">Last menstruation
+														date</span>
+													<span
+														th:text="${patient.patient.last_menstruation_date.toLocalDate()}">Last
+														menstruation date</span>
+												</div>
+												<div class="col-md-5">
+													<span class="text-muted mr-2"
+														th:text="#{label.menstrualtype}">Menstrual type</span>
+													<span th:text="${patient.patient.menstrual_type}">Menstrual
+														type</span>
+												</div>
+											</div>
+											<div class="row mb-2">
+												<div class="col-md-1">
+													<span class="text-muted mr-2"
+														th:text="#{label.pregnancies}">Pregnancies</span>
+													<span th:text="${patient.patient.pregnancies}">Pregnancies</span>
+												</div>
+												<div class="col-md-1">
+													<span class="text-muted mr-2"
+														th:text="#{label.childbirths}">Childbirths</span>
+													<span th:text="${patient.patient.childbirths}">Childbirths</span>
+												</div>
+												<div class="col-md-1">
+													<span class="text-muted mr-2"
+														th:text="#{label.cesareansections}">Cesarean sections</span>
+													<span th:text="${patient.patient.cesarean_sections}">Cesarean
+														sections</span>
+												</div>
+												<div class="col-md-1">
+													<span class="text-muted mr-2"
+														th:text="#{label.misbirths}">Misbirths</span>
+													<span th:text="${patient.patient.misbirths}">Misbirths</span>
+												</div>
+											</div>
+											<div class="row mb-2 mt-2"th:if="${!patient.patient.contraceptives.empty()}">
+												<div class="col-md-2">
+													<span class="text-muted mr-2"
+														th:text="#{label.contraceptives}">Contraceptives</span>
+												</div>
+											</div>
+											<div class="row mb-2" th:if="${!patient.patient.contraceptives.empty()}">
+												<ul th:each="contraceptive : ${patient.patient.contraceptives}">
+													<li><span th:text="${contraceptive.name}">Contraceptive</span></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+		</div>
+	</div>
+</body>
+
+</html>

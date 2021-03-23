@@ -14,6 +14,7 @@ $(document).ready(function() {
 		        "previous": "Anterior"
 		    },
         },
-		"searching" : false
+		"searching" : false,
+		"order": []
     });
 });

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+
+			<main>
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item active">
+							<span th:text="#{label.watchpatients}">Ver pacientes</span>
+						</li>
+					</ol>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-hospital-user mr-1"></i>
+							<span th:text="#{label.patientlist}">Patients list</span>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+
+								<p>
+									<button class="btn btn-primary" type="button" data-toggle="collapse"
+										data-target="#collapseSearchPatients" aria-expanded="false"
+										aria-controls="collapseSearchPatients" th:text="#{label.searchpatients}">
+										Search patients
+									</button>
+								</p>
+
+								<div class="collapse mb-3" id="collapseSearchPatients">
+									<div class="card card-body">
+										<form id="search-patients-form" method="POST" th:object="${searchPatientsForm}"
+											th:action="@{/patient/search-patients}">
+											<div class="form-row">
+												<div class="col md-4">
+													<div class="form-group">
+														<label for="inputDNI_NIF" class="small mb-1"
+															th:text="#{label.dni_nif}">DNI/NIF</label>
+														<input type="text" class="form-control py-4" id="inputDNI_NIF"
+															th:placeholder="#{label.dni_nif}" th:field="*{DNI_NIF}">
+													</div>
+												</div>
+												<div class="col md-4">
+													<div class="form-group">
+														<label for="inputHist_numsergas" class="small mb-1"
+															th:text="#{label.hist_numsergas}">History Number in
+															SERGAS</label>
+														<input type="text" class="form-control py-4"
+															id="inputHist_numsergas"
+															th:placeholder="#{label.hist_numsergas}"
+															th:field="*{hist_numsergas}">
+													</div>
+												</div>
+												<div class="col md-4">
+													<div class="form-group">
+														<label for="inputName" class="small mb-1"
+															th:text="#{label.name}">Name</label>
+														<input type="text" class="form-control py-4" id="inputName"
+															th:placeholder="#{label.name}" th:field="*{name}">
+													</div>
+												</div>
+											</div>
+											<div class="form-check">
+												<input class="form-check-input" type="checkbox" id="checkEnabled"
+													th:field="*{enabled}">
+												<label class="form-check-label" for="checkEnabled"
+													th:text="#{label.enabled}">
+													Enabled
+												</label>
+											</div>
+											<div class="form-group">
+												<button class="btn btn-primary" type="submit"
+													th:text="#{label.searchpatients}">Search patients</button>
+											</div>
+										</form>
+									</div>
+								</div>
+
+								<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+									<thead>
+										<tr>
+											<th th:text="#{label.historynumber}">History number</th>
+											<th th:text="#{label.dni_nif}">DNI/NIF</th>
+											<th th:text="#{label.hist_numsergas}">History Number in SERGAS</th>
+											<th th:text="#{label.name}">Name</th>
+											<th th:text="#{label.enabled}">Enabled</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="patient : ${patients}">
+											<td><a th:href="@{/patient/patient-details/{id}(id=${patient.id})}"><span
+														th:text="${patient.id}">History number</span></a></td>
+											<td th:text="${patient.DNI_NIF}">DNI/NIF</td>
+											<td th:text="${patient.hist_numsergas}">History Number in SERGAS</td>
+											<td th:text="${patient.name}">Name</td>
+											<td th:text="${patient.enabled} ? #{label.yes} : #{label.no}">Enabled
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+			<script th:src="@{/js/patient-list.js}"></script>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>
