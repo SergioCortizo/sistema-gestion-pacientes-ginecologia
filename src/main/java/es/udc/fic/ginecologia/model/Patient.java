@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -60,6 +61,10 @@ public class Patient {
             inverseJoinColumns = @JoinColumn(name = "contraceptive_id")
             )
     private Set<Contraceptive> contraceptives = new HashSet<>();
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name="patient_id", referencedColumnName="id")
+    private Set<Meeting> meetings = new HashSet<>();
 	
 	public Patient() {
 		
@@ -312,6 +317,14 @@ public class Patient {
 
 	public void setContraceptives(Set<Contraceptive> contraceptives) {
 		this.contraceptives = contraceptives;
+	}
+
+	public Set<Meeting> getMeetings() {
+		return meetings;
+	}
+
+	public void setMeetings(Set<Meeting> meetings) {
+		this.meetings = meetings;
 	}
 	
 }

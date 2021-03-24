@@ -152,7 +152,7 @@
 									<div class="card mb-4">
 										<div class="card-header">
 											<i class="fas fa-file-medical mr-1"></i>
-											<span th:text="#{label.personalantecedents}">Persona antecedents</span>
+											<span th:text="#{label.personalantecedents}">Personal antecedents</span>
 										</div>
 										<div class="card-body">
 											<div class="row mb-2">
@@ -254,7 +254,8 @@
 													<span th:text="${patient.patient.misbirths}">Misbirths</span>
 												</div>
 											</div>
-											<div class="row mb-2 mt-2"th:if="${!patient.patient.contraceptives.empty()}">
+											<div class="row mb-2 mt-2"
+												th:if="${!patient.patient.contraceptives.empty()}">
 												<div class="col-md-2">
 													<span class="text-muted mr-2"
 														th:text="#{label.contraceptives}">Contraceptives</span>
@@ -267,10 +268,97 @@
 											</div>
 										</div>
 									</div>
-
 								</div>
 							</div>
+
+							<div class="panel-heading" role="tab" id="headingClinicCourse">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" data-parent="#accordion"
+										href="#collapseClinicCourse" aria-expanded="true"
+										aria-controls="collapseClinicCourse">
+										<span th:text="#{label.cliniccourse}">Clinic course</span>
+									</a>
+								</h4>
+							</div>
+							<div id="collapseClinicCourse" class="panel-collapse collapse in" role="tabpanel"
+								aria-labelledby="headingClinicCourse">
+								<div class="panel-body">
+									<div class="card mb-4">
+										<div class="card-header">
+											<i class="fas fa-calendar-alt mr-1"></i>
+											<span th:text="#{label.cliniccourse}">Clinic course</span>
+										</div>
+										<div class="card-body">
+											<div class="panel-group" id="accordion" role="tablist"
+												aria-multiselectable="true">
+												<div class="panel panel-default"
+													th:each="meeting : ${patient.meetings}">
+													<div class="panel-heading" role="tab"
+														th:id="'headingCourseClinic-' + ${meeting.id}">
+														<h6 class="panel-title">
+															<a role="button" data-toggle="collapse"
+																data-parent="#accordion"
+																th:href="'#collapseHeadingCourseClinic-' + ${meeting.id}"
+																aria-expanded="true"
+																th:attr="aria-controls='collapseHeadingCourseClinic-' + ${meeting.id}">
+																<span
+																	th:text="${meeting.meeting_date.toLocalDate()} + ' ' + ${meeting.meeting_date.toLocalTime()}">Meeting
+																	date</span>
+															</a>
+														</h6>
+													</div>
+													<div th:id="'collapseHeadingCourseClinic-' + ${meeting.id}"
+														class="panel-collapse collapse in" role="tabpanel"
+														th:attr="aria-labelledby='collapseHeadingCourseClinic-' + ${meeting.id}">
+														<div class="panel-body">
+															<ul>
+																<li>
+																	<span class="text-muted"
+																		th:text="#{label.activity}">Activity</span>
+																	<span th:text="${meeting.activity}">Activity</span>
+																</li>
+																<li>
+																	<span class="text-muted"
+																		th:text="#{label.state}">State</span>
+																	<th:block th:switch="${meeting.state.name}">
+																		<span th:case="'opened'"
+																			class="badge badge-success"
+																			th:text="#{label.opened}">Opened</span>
+																		<span th:case="'closed'"
+																			class="badge badge-danger"
+																			th:text="#{label.closed}">Closed</span>
+																		<span th:case="'cancelled'"
+																			class="badge badge-warning"
+																			th:text="#{label.cancelled}">Cancelled</span>
+																	</th:block>
+																</li>
+																<li>
+																	<span class="text-muted"
+																		th:text="#{label.facultativeprofile}">Facultative
+																		profile</span>
+																	<span th:text="${meeting.user.username}">Facultative
+																		profile</span>
+																</li>
+																<li>
+																	<span class="text-muted"
+																		th:text="#{label.comments}">Comments</span>
+																	<div>
+																		<span th:text="${meeting.comments}">Comments</span>
+																	</div>
+																</li>
+															</ul>
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+
 						</div>
+
 					</div>
 				</div>
 			</main>

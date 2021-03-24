@@ -1,15 +1,16 @@
-DROP TABLE schedule;
-DROP TABLE user_role;
-DROP TABLE user_speciality;
+DROP TABLE meeting;
 DROP TABLE patient_contraceptive;
-DROP TABLE user;
-DROP TABLE role;
+DROP TABLE patient;
+DROP TABLE user_speciality;
 DROP TABLE speciality;
+DROP TABLE user_role;
+DROP TABLE schedule;
+DROP TABLE role;
+DROP TABLE user;
+DROP TABLE settings;
 DROP TABLE medicine;
 DROP TABLE diagnostic_test;
 DROP TABLE contraceptive;
-DROP TABLE settings;
-DROP TABLE patient;
 
 CREATE TABLE user
 (
@@ -196,5 +197,16 @@ CREATE TABLE patient_contraceptive
    CONSTRAINT ContraceptiveFK FOREIGN KEY (contraceptive_id) REFERENCES contraceptive (id)
 );
 
-
+CREATE TABLE meeting (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	activity VARCHAR(100) COLLATE latin1_bin NOT NULL,
+	comments VARCHAR(1000) COLLATE latin1_bin NOT NULL,
+	meeting_date TIMESTAMP NOT NULL,
+	state ENUM ('opened', 'closed', 'cancelled') DEFAULT 'opened',
+	patient_id BIGINT NOT NULL,
+	user_id BIGINT NOT NULL,
+	CONSTRAINT MeetingPK PRIMARY KEY(id),
+	CONSTRAINT PatientMeetingFK FOREIGN KEY (patient_id) REFERENCES patient (id),
+	CONSTRAINT PatientUserFK FOREIGN KEY (user_id) REFERENCES user (id)
+);
 

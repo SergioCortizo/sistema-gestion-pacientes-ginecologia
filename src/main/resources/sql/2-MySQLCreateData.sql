@@ -136,6 +136,16 @@ VALUES (1, 1),
 	   (4, 7),
 	   (5, 6);
 	   
-
+--Datos para meeting
+INSERT INTO meeting(activity, comments, meeting_date, state, patient_id, user_id)
+	VALUES ('Primera cita', 'Primera cita para la paciente', '2002-02-05 14:16:00', 'closed', 1, 1),
+		   ('Segunda cita', 'Segunda cita para la paciente', '2003-02-05 14:16:00', 'cancelled', 1, 2),
+		   ('Tercera cita', 'Tercera cita para la paciente', '2004-02-05 14:16:00', 'closed', 1, 3),
+		   ('Cuarta cita', 'Cuarta cita para la paciente', '2005-02-05 14:16:00', 'closed', 1, 4),
+		   ('Quinta cita', 'Quinta cita para la paciente', '2021-05-05 14:16:00', 'opened', 1, 5),
+		   ('Primera cita', 'Primera cita para la paciente', '2002-02-05 14:16:00', 'closed', 2, 1),
+		   ('Segunda cita', 'Segunda cita para la paciente', '2003-02-05 14:16:00', 'cancelled', 2, 2),
+		   ('Tercera cita', 'Tercera cita para la paciente', '2004-02-05 14:16:00', 'closed', 2, 3),
+		   ('Primera cita', 'Primera cita para la paciente', '2021-08-10 17:30:00', 'opened', 3, 1);
 
 	       
