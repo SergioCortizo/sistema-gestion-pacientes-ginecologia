@@ -1,6 +1,8 @@
 package es.udc.fic.ginecologia.model;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -40,6 +43,14 @@ public class Meeting {
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="user_id")
 	private User user;	
+	
+	@OneToMany
+    @JoinColumn(name="meeting_id", referencedColumnName="id")
+    private Set<Answer> answers = new HashSet<>();
+	
+	@OneToMany
+    @JoinColumn(name="meeting_id", referencedColumnName="id")
+    private Set<ComplementaryTest> complementaryTests = new HashSet<>();
 
 	public Meeting() {
 
@@ -99,6 +110,22 @@ public class Meeting {
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public Set<Answer> getAnswers() {
+		return answers;
+	}
+
+	public void setAnswers(Set<Answer> answers) {
+		this.answers = answers;
+	}
+
+	public Set<ComplementaryTest> getComplementaryTests() {
+		return complementaryTests;
+	}
+
+	public void setComplementaryTests(Set<ComplementaryTest> complementaryTests) {
+		this.complementaryTests = complementaryTests;
 	}
 
 }

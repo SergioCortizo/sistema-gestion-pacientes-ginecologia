@@ -148,4 +148,41 @@ INSERT INTO meeting(activity, comments, meeting_date, state, patient_id, user_id
 		   ('Tercera cita', 'Tercera cita para la paciente', '2004-02-05 14:16:00', 'closed', 2, 3),
 		   ('Primera cita', 'Primera cita para la paciente', '2021-08-10 17:30:00', 'opened', 3, 1);
 
+INSERT INTO question(question)
+	VALUES ('¿Es activa sexualmente?'),
+		   ('¿Cuándo fue su última relación sexual?'),
+		   ('¿Utiliza métodos anticonceptivos?'),
+		   ('¿Realiza prácticas sexuales de riesgo?'),
+		   ('¿Ha tenido algún tipo de ETS?'),
+		   ('¿Cuándo se realizó la última citología?');
+		   
+INSERT INTO answer(answer, question_id, meeting_id)
+	VALUES ('Si', 1, 1),
+		   ('Hace 3 días', 2, 1),
+		   ('No', 3, 1),
+		   ('Por suerte no', 5, 2),
+		   ('Si', 3, 2),
+		   ('Si', 1, 3),
+		   ('Hace 3 días', 2, 3),
+		   ('No', 3, 3),
+		   ('Por suerte no', 5, 3),
+		   ('No', 3, 4),
+		   ('Hace 2 años', 6, 4),
+		   ('No', 3, 5);
+
+INSERT INTO complementary_test (id, file_name, file_type, diagnostic_test_id, meeting_id, data)
+	VALUES (UUID(), 'prueba_complementaria_1', 'application/octet-stream', 1, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
+		   (UUID(), 'prueba_complementaria_2.txt', 'text/plain', 5, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
+		   (UUID(), 'prueba_complementaria_3.txt', 'text/plain', 7, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
+		   (UUID(), 'prueba_complementaria_4.txt', 'text/plain', 2, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
+		   (UUID(), 'prueba_complementaria_5', 'application/octet-stream', 4, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
+		   (UUID(), 'prueba_complementaria_6', 'application/octet-stream', 8, 2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
+		   (UUID(), 'prueba_complementaria_7', 'application/octet-stream', 8, 2, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
+		   (UUID(), 'prueba_complementaria_8.txt', 'text/plain', 7, 3, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
+		   (UUID(), 'prueba_complementaria_9', 'application/octet-stream', 6, 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.');
+
+
+
+
+
 	       

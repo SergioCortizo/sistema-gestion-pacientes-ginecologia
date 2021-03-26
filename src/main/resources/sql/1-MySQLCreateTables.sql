@@ -1,3 +1,6 @@
+DROP TABLE complementary_test;
+DROP TABLE answer;
+DROP TABLE question;
 DROP TABLE meeting;
 DROP TABLE patient_contraceptive;
 DROP TABLE patient;
@@ -209,4 +212,39 @@ CREATE TABLE meeting (
 	CONSTRAINT PatientMeetingFK FOREIGN KEY (patient_id) REFERENCES patient (id),
 	CONSTRAINT PatientUserFK FOREIGN KEY (user_id) REFERENCES user (id)
 );
+
+CREATE TABLE question (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	question VARCHAR(100) COLLATE latin1_bin NOT NULL,
+	CONSTRAINT QuestionPK PRIMARY KEY(id)
+);
+
+CREATE TABLE answer (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	answer VARCHAR(1000) COLLATE latin1_bin NOT NULL,
+	question_id BIGINT NOT NULL,
+	meeting_id BIGINT NOT NULL,
+	CONSTRAINT AnswerPK PRIMARY KEY(id),
+	CONSTRAINT AnswerQuestionFK FOREIGN KEY (question_id) REFERENCES question (id),
+	CONSTRAINT AnswerMeetingFK FOREIGN KEY (meeting_id) REFERENCES meeting(id)
+);
+
+CREATE TABLE complementary_test (
+	id VARCHAR(255) NOT NULL,
+	data LONGBLOB NOT NULL,
+	file_name VARCHAR(255) NOT NULL,
+	file_type VARCHAR(255) NOT NULL,
+	diagnostic_test_id BIGINT NOT NULL,
+	meeting_id BIGINT NOT NULL,
+	CONSTRAINT ComplementaryTestPK PRIMARY KEY (id),
+	CONSTRAINT ComplementaryTestDiagnosticTestFK FOREIGN KEY (diagnostic_test_id) REFERENCES diagnostic_test (id),
+	CONSTRAINT ComplementaryTestMeetingFK FOREIGN KEY (meeting_id) REFERENCES meeting (id)
+);
+
+
+
+
+
+
+
 

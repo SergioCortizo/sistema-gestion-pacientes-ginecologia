@@ -343,13 +343,46 @@
 																	<span class="text-muted"
 																		th:text="#{label.comments}">Comments</span>
 																	<div>
-																		<span th:text="${meeting.comments}">Comments</span>
+																		<span
+																			th:text="${meeting.comments}">Comments</span>
 																	</div>
 																</li>
+																<li>
+																	<span class="text-muted"
+																		th:text="#{label.questions}">Questions</span>
+																	<ul>
+																		<li th:each="answer : ${meeting.answers}">
+																			<div>
+																				<span class="text-muted"
+																					th:text="${answer.question.question}">Question</span>
+																			</div>
+																			<div>
+																				<span
+																					th:text="${answer.answer}">Answer</span>
+																			</div>
+																		</li>
+																	</ul>
+																</li>
+																<li>
+																	<span class="text-muted"
+																		th:text="#{label.complementarytests}">Pruebas
+																		complementarias</span>
+																	<ul>
+																		<li
+																			th:each="complementaryTest : ${meeting.complementaryTests}">
+																			<a th:href="@{/downloadFile/{id}(id=${complementaryTest.id})}">
+																				<span th:text="${complementaryTest.fileName} + ' - '">Complementary
+																				test name</span>
+																			</a>
+																			<span th:text="${complementaryTest.diagnosticTest.name}">Diagnostic
+																				test name</span>
+																		</li>
+																	</ul>
+																</li>
+
 															</ul>
 														</div>
 													</div>
-
 												</div>
 											</div>
 										</div>
