@@ -216,7 +216,7 @@
 														age</span>
 													<span th:text="${patient.patient.menopause}">Menopause age</span>
 												</div>
-												<div class="col-md-3">
+												<div class="col-md-3" th:if="${patient.patient.last_menstruation_date}">
 													<span class="text-muted mr-2"
 														th:text="#{label.lastmenstruationdate}">Last menstruation
 														date</span>

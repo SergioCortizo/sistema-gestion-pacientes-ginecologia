@@ -21,4 +21,5 @@ public interface ContraceptiveService {
 	Iterable<Contraceptive> findContraceptives(Integer adminId, String name, boolean enabled)
 			throws InstanceNotFoundException, PermissionException;
 
+	Iterable<Contraceptive> findAllActiveContraceptives();
 }

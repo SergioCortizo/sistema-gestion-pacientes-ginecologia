@@ -8,23 +8,23 @@
 					<span th:text="#{label.home}">Home</span>
 				</a>
 			</div>
-			
-			<div class="nav" sec:authorize="hasRole('ADMIN')">
+
+			<div class="nav"  sec:authorize="hasRole('ADMIN')">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.settings}">Settings</div>
 				<a class="nav-link" th:href="@{/settings/name-and-logo}">
 					<div class="sb-nav-link-icon"><i class="fas fa-images"></i></div>
 					<span th:text="#{label.nameandlogosettings}">Name and logo settings</span>
 				</a>
 			</div>
-			
-			<div class="nav" sec:authorize="hasRole('FACULTATIVE')">
+
+			<div class="nav">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.patients}">Patients</div>
 				<a class="nav-link" th:href="@{/patient/patient-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-hospital-user"></i></div>
 					<span th:text="#{label.watchpatients}">Watch patients</span>
 				</a>
 			</div>
-			
+
 			<div class="nav" sec:authorize="hasRole('ADMIN')">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.management}">Management</div>
 				<a class="nav-link" th:href="@{/user/user-list}">
@@ -48,7 +48,7 @@
 					<span th:text="#{label.contraceptivesmanagement}">Contraceptives management</span>
 				</a>
 			</div>
-			
+
 		</div>
 		<div class="sb-sidenav-footer">
 			<div class="small"><span th:text="#{label.loggedinas}">Logged in as:</span></div>

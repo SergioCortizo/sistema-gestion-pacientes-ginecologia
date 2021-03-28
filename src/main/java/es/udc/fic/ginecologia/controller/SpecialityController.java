@@ -45,10 +45,10 @@ public class SpecialityController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		List<SpecialityLine> specialities = SpecialityConversor
@@ -69,10 +69,10 @@ public class SpecialityController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		List<SpecialityLine> specialities = SpecialityConversor
@@ -94,20 +94,20 @@ public class SpecialityController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
 			specialityService.addSpeciality(userId, addSpecialityForm.getName().trim());
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		} catch (DuplicateInstanceException e) {
 			return "redirect:/speciality/speciality-list-error";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/speciality/speciality-list";
@@ -123,10 +123,10 @@ public class SpecialityController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		List<SpecialityLine> specialities;
@@ -135,7 +135,7 @@ public class SpecialityController {
 			specialities = SpecialityConversor.convertToSpecialityLine(specialityService.findSpecialities(userId,
 					searchSpecialitiesForm.getName(), searchSpecialitiesForm.isEnabled()));
 		} catch (InstanceNotFoundException | PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		prepareModel(model, specialities);
@@ -153,10 +153,10 @@ public class SpecialityController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
@@ -164,7 +164,7 @@ public class SpecialityController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/speciality/speciality-list";
@@ -182,10 +182,10 @@ public class SpecialityController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
@@ -195,7 +195,7 @@ public class SpecialityController {
 		} catch (DuplicateInstanceException e) {
 			return "redirect:/speciality/speciality-list-error";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/speciality/speciality-list";
@@ -215,10 +215,10 @@ public class SpecialityController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
-					return "/error/401";
+					return "/error/403";
 				}
 			} catch (InstanceNotFoundException e1) {
-				return "/error/401";
+				return "/error/403";
 			}
 			return "/error/404";
 		}
@@ -228,14 +228,14 @@ public class SpecialityController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
-					return "/error/401";
+					return "/error/403";
 				}
 			} catch (InstanceNotFoundException e1) {
-				return "/error/401";
+				return "/error/403";
 			}
 			return "/error/404";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/user/update/" + id;

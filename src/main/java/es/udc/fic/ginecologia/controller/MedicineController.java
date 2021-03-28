@@ -39,10 +39,10 @@ public class MedicineController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		Iterable<Medicine> medicines = medicineService.findAllMedicines();
@@ -63,10 +63,10 @@ public class MedicineController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		Iterable<Medicine> medicines = medicineService.findAllMedicines();
@@ -87,20 +87,20 @@ public class MedicineController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
 			medicineService.addMedicine(userId, addMedicineForm.getName().trim());
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		} catch (DuplicateInstanceException e) {
 			return "redirect:/medicine/medicine-list-error";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/medicine/medicine-list";
@@ -116,10 +116,10 @@ public class MedicineController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		Iterable<Medicine> medicines;
@@ -128,7 +128,7 @@ public class MedicineController {
 			medicines = medicineService.findMedicines(userId, searchMedicinesForm.getName(),
 					searchMedicinesForm.isEnabled());
 		} catch (InstanceNotFoundException | PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		prepareModel(model, medicines);
@@ -146,10 +146,10 @@ public class MedicineController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
@@ -157,15 +157,15 @@ public class MedicineController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
-					return "/error/401";
+					return "/error/403";
 				} else {
 					return "/error/404";
 				}
 			} catch (InstanceNotFoundException e1) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/medicine/medicine-list";
@@ -182,10 +182,10 @@ public class MedicineController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 		
 		try {
@@ -195,7 +195,7 @@ public class MedicineController {
 		} catch (DuplicateInstanceException e) {
 			return "redirect:/medicine/medicine-list-error";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 		
 		return "redirect:/medicine/medicine-list";

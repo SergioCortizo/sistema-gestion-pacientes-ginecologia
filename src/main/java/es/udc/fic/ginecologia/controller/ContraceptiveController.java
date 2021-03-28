@@ -39,10 +39,10 @@ public class ContraceptiveController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		Iterable<Contraceptive> contraceptives = contraceptiveService.findAllContraceptives();
@@ -63,10 +63,10 @@ public class ContraceptiveController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		Iterable<Contraceptive> contraceptives = contraceptiveService.findAllContraceptives();
@@ -88,20 +88,20 @@ public class ContraceptiveController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
 			contraceptiveService.addContraceptive(userId, addContraceptiveForm.getName());
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		} catch (DuplicateInstanceException e) {
 			return "redirect:/contraceptive/contraceptive-list-error";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/contraceptive/contraceptive-list";
@@ -119,10 +119,10 @@ public class ContraceptiveController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
@@ -132,7 +132,7 @@ public class ContraceptiveController {
 		} catch (DuplicateInstanceException e) {
 			return "redirect:/contraceptive/contraceptive-list-error";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/contraceptive/contraceptive-list";
@@ -149,10 +149,10 @@ public class ContraceptiveController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
@@ -160,7 +160,7 @@ public class ContraceptiveController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/contraceptive/contraceptive-list";
@@ -177,10 +177,10 @@ public class ContraceptiveController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		Iterable<Contraceptive> contraceptives;
@@ -191,7 +191,7 @@ public class ContraceptiveController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		prepareModel(model, contraceptives);

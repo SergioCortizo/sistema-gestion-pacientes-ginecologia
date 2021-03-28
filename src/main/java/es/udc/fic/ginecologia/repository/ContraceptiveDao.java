@@ -13,4 +13,6 @@ public interface ContraceptiveDao extends CrudRepository<Contraceptive, Integer>
 	public boolean existsByName(String name);
 	
 	public Optional<Contraceptive> findByName(String name);
+	
+	public Iterable<Contraceptive> findByEnabled(Boolean enabled);
 }

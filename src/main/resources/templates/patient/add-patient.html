@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{/patient/patient-list}"
+								th:text="#{label.watchpatients}">Ver pacientes</a></li>
+						<li class="breadcrumb-item active">
+							<span th:text="#{label.addpatient}">Registrar paciente</span>
+						</li>
+					</ol>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-book-medical mr-1"></i>
+							<span th:text="#{label.addpatient}">Add patient</span>
+						</div>
+						<div class="card-body">
+							<div th:if="${duplicatePatient}" class="alert alert-danger" role="alert">
+								<span th:text="#{label.patientexists}">Patient already exists.</span>
+							</div>
+							<form id="register-form" th:object="${addPatientForm}" th:action="@{/patient/add-patient}"
+								method="POST">
+								<div class="form-row">
+									<div class="col-md-5">
+										<div class="form-group">
+											<label class="small mb-1" for="inputName"
+												th:text="#{label.name}">Name</label>
+											<input class="form-control py-4" th:field="*{name}" id="inputName"
+												name="inputName" type="text" th:placeholder="#{label.name}"
+												minlength="3" maxlength="60" required />
+										</div>
+									</div>
+									<div class="col-md-3">
+										<div class="form-group">
+											<label class="small mb-1" for="inputDNI_NIF"
+												th:text="#{label.dni_nif}">DNI/NIF</label>
+											<input class="form-control py-4" th:field="*{DNI_NIF}" id="inputDNI_NIF"
+												name="inputDNI_NIF" type="text" th:placeholder="#{label.dni_nif}"
+												minlength="3" maxlength="60" required />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="small mb-1" for="inputMobilePhone"
+												th:text="#{label.mobilephone}">Mobile phone</label>
+											<input class="form-control py-4" th:field="*{mobile_phone}"
+												id="inputMobilePhone" name="inputMobilePhone" type="text"
+												th:placeholder="#{label.mobilephone}" minlength="3" maxlength="60"
+												required />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="small mb-1" for="inputLandline"
+												th:text="#{label.landline}">Landline</label>
+											<input class="form-control py-4" th:field="*{landline}" id="inputLandline"
+												name="inputLandline" type="text" th:placeholder="#{label.landline}"
+												minlength="3" maxlength="60" required />
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="col md-4">
+										<div class="form-group">
+											<label for="dateBirthday" class="small mb-1"
+												th:text="#{label.birthday}">Birthday</label>
+											<input class="form-control py-4" id="dateBirthday" name="dateBirthday"
+												placeholder="DD/MM/YYYY" type="text" th:field="*{birthday}" required />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="small mb-1" for="inputHistNumSERGAS"
+												th:text="#{label.hist_numsergas}">History Number in SERGAS</label>
+											<input class="form-control py-4" th:field="*{hist_numsergas}"
+												id="inputHistNumSERGAS" name="inputHistNumSERGAS" type="text"
+												th:placeholder="#{label.hist_numsergas}" minlength="3" maxlength="60"
+												required />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label class="small mb-1" for="inputPostalAddress"
+												th:text="#{label.postalAddress}">Postal address</label>
+											<input class="form-control py-4" th:field="*{postal_address}"
+												id="inputPostalAddress" name="inputPostalAddress" type="text"
+												th:placeholder="#{label.postalAddress}" minlength="3" maxlength="60"
+												required />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="small mb-1" for="inputLocation"
+												th:text="#{label.location}">Location</label>
+											<input class="form-control py-4" th:field="*{location}" id="inputLocation"
+												name="inputLocation" type="text" th:placeholder="#{label.location}"
+												minlength="3" maxlength="60" required />
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="col-md-12">
+										<div class="form-group">
+											<label class="small mb-1" for="inputEmailAddress"
+												th:text="#{label.email}">Email</label>
+											<input class="form-control py-4" th:field="*{email}" id="inputEmailAddress"
+												type="email" aria-describedby="emailHelp"
+												placeholder="Correo electronico" required />
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<h5 th:text="#{label.personalantecedents}">Personal antecedents</h5>
+								</div>
+
+								<div class="form-row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="small mb-1" for="inputAllergies"
+												th:text="#{label.allergies}">Allergies</label>
+											<textarea class="form-control" th:field="*{allergies}" id="inputAllergies"
+												name="inputAllergies" rows="5" th:placeholder="#{label.allergies}"
+												maxlength="1000" />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="small mb-1" for="inputDiseases"
+												th:text="#{label.diseases}">Diseases</label>
+											<textarea class="form-control" th:field="*{diseases}" id="inputDiseases"
+												name="inputDiseases" rows="5" th:placeholder="#{label.diseases}"
+												maxlength="1000" />
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="small mb-1" for="inputInterventions"
+												th:text="#{label.interventions}">Interventions</label>
+											<textarea class="form-control" th:field="*{interventions}"
+												id="inputInterventions" name="inputInterventions" rows="5"
+												th:placeholder="#{label.interventions}" maxlength="1000" />
+										</div>
+									</div>
+									<div class="col-md-6">
+										<div class="form-group">
+											<label class="small mb-1" for="inputFamilyBackground"
+												th:text="#{label.family_background}">Family background</label>
+											<textarea class="form-control" th:field="*{diseases}"
+												id="inputFamilyBackground" name="inputFamilyBackground" rows="5"
+												th:placeholder="#{label.family_background}" maxlength="1000" />
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row mb-4">
+									<div class="form-check">
+										<input class="form-check-input" type="checkbox" id="checkSmoker"
+											th:field="*{smoker}">
+										<label class="form-check-label" for="checkSmoker" th:text="#{label.smoker}">
+											Smoker
+										</label>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<h5 th:text="#{label.ginecologycalantecedents}">Ginecologycal antecedents</h5>
+								</div>
+
+								<div class="form-row">
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="small mb-1" for="inputMenarche"
+												th:text="#{label.menarchyage}">Menarche age</label>
+											<input class="form-control py-4" th:field="*{menarche}" id="inputMenarche"
+												type="number" min="0" value="0" />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="small mb-1" for="inputMenopause"
+												th:text="#{label.menopauseage}">Menopause age</label>
+											<input class="form-control py-4" th:field="*{menopause}" id="inputMenopause"
+												type="number" min="0" value="0" />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="small mb-1" for="inputPregnancies"
+												th:text="#{label.pregnancies}">Pregnancies</label>
+											<input class="form-control py-4" th:field="*{pregnancies}"
+												id="inputPregnancies" type="number" min="0" value="0" />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="small mb-1" for="inputChildbirths"
+												th:text="#{label.childbirths}">Childbirths</label>
+											<input class="form-control py-4" th:field="*{childbirths}"
+												id="inputChildbirths" type="number" min="0" value="0" />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="small mb-1" for="inputCesareanSections"
+												th:text="#{label.cesareansections}">Cesarean sections</label>
+											<input class="form-control py-4" th:field="*{cesarean_sections}"
+												id="inputCesareanSections" type="number" min="0" value="0" />
+										</div>
+									</div>
+									<div class="col-md-2">
+										<div class="form-group">
+											<label class="small mb-1" for="inputMisbirths"
+												th:text="#{label.misbirths}">Misbirths</label>
+											<input class="form-control py-4" th:field="*{misbirths}" id="inputMisbirths"
+												type="number" min="0" value="0" />
+										</div>
+									</div>
+								</div>
+
+								<div class="form-row">
+									<div class="col md-4">
+										<div class="form-group">
+											<label for="dateLastMenstruationDate" class="small mb-1"
+												th:text="#{label.lastmenstruationdate}">Last menstruation date</label>
+											<input class="form-control py-4" id="dateLastMenstruationDate"
+												name="dateLastMenstruationDate" placeholder="DD/MM/YYY" type="text"
+												th:field="*{last_menstruation_date}" />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label class="small mb-1" for="inputMenstrualType"
+												th:text="#{label.menstrualtype}">Menstrual type</label>
+											<input class="form-control py-4" th:field="*{menstrual_type}"
+												id="inputMenstrualType" name="inputMenstrualType" type="text"
+												th:placeholder="#{label.menstrualtype}" minlength="3" maxlength="60" />
+										</div>
+									</div>
+									<div class="col-md-4">
+										<div class="form-group">
+											<label class="small mb-1" for="inputContraceptives"
+												th:text="#{label.contraceptives}">Contraceptives</label>
+											<div>
+												<select id="contraceptives" class="form-control py-4"
+													multiple="multiple" th:field="*{contraceptives}">
+													<option th:each="contraceptive : ${contraceptives}" th:value="${contraceptive.id}">
+														<span th:text="${contraceptive.name}">Contraceptive</span>
+													</option>
+												</select>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<button type="submit" class="btn btn-primary" th:text="#{label.addpatient}">Add
+									patient</button>
+
+							</form>
+						</div>
+					</div>
+
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+			<script th:src="@{/js/add-patient.js}"></script>
+
+		</div>
+	</div>
+</body>
+
+</html>

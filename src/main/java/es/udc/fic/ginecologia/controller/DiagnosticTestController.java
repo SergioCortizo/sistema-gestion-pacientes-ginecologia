@@ -39,10 +39,10 @@ public class DiagnosticTestController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		Iterable<DiagnosticTest> diagnosticTests = diagnosticTestService.findAllDiagnosticTests();
@@ -63,10 +63,10 @@ public class DiagnosticTestController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		Iterable<DiagnosticTest> diagnosticTests = diagnosticTestService.findAllDiagnosticTests();
@@ -88,20 +88,20 @@ public class DiagnosticTestController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
 			diagnosticTestService.addDiagnosticTest(userId, addDiagnosticTestForm.getName());
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		} catch (DuplicateInstanceException e) {
 			return "redirect:/diagnostic-test/diagnostic-test-list-error";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/diagnostic-test/diagnostic-test-list";
@@ -119,10 +119,10 @@ public class DiagnosticTestController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
@@ -132,7 +132,7 @@ public class DiagnosticTestController {
 		} catch (DuplicateInstanceException e) {
 			return "redirect:/diagnostic-test/diagnostic-test-list-error";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/diagnostic-test/diagnostic-test-list";
@@ -149,10 +149,10 @@ public class DiagnosticTestController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
@@ -160,7 +160,7 @@ public class DiagnosticTestController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/diagnostic-test/diagnostic-test-list";
@@ -177,10 +177,10 @@ public class DiagnosticTestController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		Iterable<DiagnosticTest> diagnosticTests;
@@ -191,7 +191,7 @@ public class DiagnosticTestController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 		
 		prepareModel(model, diagnosticTests);

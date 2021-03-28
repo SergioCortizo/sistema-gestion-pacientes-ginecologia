@@ -28,6 +28,11 @@ public class ContraceptiveServiceImpl implements ContraceptiveService {
 	}
 	
 	@Override
+	public Iterable<Contraceptive> findAllActiveContraceptives() {
+		return contraceptiveDao.findByEnabled(true);
+	}
+	
+	@Override
 	public void addContraceptive(Integer adminId, String name)
 			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException {
 		

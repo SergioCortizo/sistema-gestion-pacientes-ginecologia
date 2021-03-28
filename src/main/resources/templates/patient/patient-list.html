@@ -28,6 +28,14 @@
 						</li>
 					</ol>
 
+					<div class="mb-4">
+						<a th:href="@{/patient/add-patient}" class="btn btn-primary btn-lg active" role="button"
+							aria-pressed="true">
+							<span th:text="#{label.addpatient}">Add patient</span>
+							<i class="fas fa-plus"></i>
+						</a>
+					</div>
+
 					<div class="card mb-4">
 						<div class="card-header">
 							<i class="fas fa-hospital-user mr-1"></i>
@@ -77,7 +85,7 @@
 													</div>
 												</div>
 											</div>
-											<div class="form-check">
+											<div class="form-check" sec:authorize="hasRole('ADMIN')">
 												<input class="form-check-input" type="checkbox" id="checkEnabled"
 													th:field="*{enabled}">
 												<label class="form-check-label" for="checkEnabled"
@@ -101,6 +109,7 @@
 											<th th:text="#{label.hist_numsergas}">History Number in SERGAS</th>
 											<th th:text="#{label.name}">Name</th>
 											<th th:text="#{label.enabled}">Enabled</th>
+											<th th:text="#{label.actions}">Actions</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -111,6 +120,23 @@
 											<td th:text="${patient.hist_numsergas}">History Number in SERGAS</td>
 											<td th:text="${patient.name}">Name</td>
 											<td th:text="${patient.enabled} ? #{label.yes} : #{label.no}">Enabled
+											</td>
+											<td>
+												<div class="row">
+													<form th:action="@{/patient/update-patient/{id}(id=${patient.id})}"
+														method="GET">
+														<button class="btn btn-link" type="submit"><i
+																class="fas fa-edit"></i></button>
+													</form>
+													<form sec:authorize="hasRole('ADMIN')"
+														th:action="@{/patient/change-patient-state/{id}(id=${patient.id})}"
+														method="POST">
+														<button class="btn btn-link" type="submit">
+															<i class="fas fa-check" th:if="${!patient.enabled}"></i>
+															<i class="fas fa-times" th:if="${patient.enabled}"></i>
+														</button>
+													</form>
+												</div>
 											</td>
 										</tr>
 									</tbody>

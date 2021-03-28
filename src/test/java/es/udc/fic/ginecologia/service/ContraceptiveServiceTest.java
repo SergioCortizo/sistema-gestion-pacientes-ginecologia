@@ -69,6 +69,26 @@ public class ContraceptiveServiceTest {
 
 		assertEquals(expectedResult, result);
 	}
+	
+	@Test
+	public void findAllActiveContraceptivesTest() {
+
+		Contraceptive contraceptive1 = new Contraceptive("contraceptive1");
+		Contraceptive contraceptive2 = new Contraceptive("contraceptive2");
+		Contraceptive contraceptive3 = new Contraceptive("contraceptive3");
+		contraceptive3.setEnabled(false);
+		Contraceptive contraceptive4 = new Contraceptive("contraceptive4");
+
+		contraceptiveDao.save(contraceptive1);
+		contraceptiveDao.save(contraceptive2);
+		contraceptiveDao.save(contraceptive3);
+		contraceptiveDao.save(contraceptive4);
+
+		Iterable<Contraceptive> result = contraceptiveService.findAllActiveContraceptives();
+		Iterable<Contraceptive> expectedResult = Arrays.asList(contraceptive1, contraceptive2, contraceptive4);
+
+		assertEquals(expectedResult, result);
+	}
 
 	@Test
 	public void addContraceptiveTest()

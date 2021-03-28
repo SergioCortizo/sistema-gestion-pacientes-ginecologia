@@ -38,10 +38,10 @@ public class SettingsController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		SettingsForm settingsForm = new SettingsForm();
@@ -64,10 +64,10 @@ public class SettingsController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		try {
@@ -75,7 +75,7 @@ public class SettingsController {
 		} catch (InstanceNotFoundException | IOException e) {
 			return "/error/500";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/settings/name-and-logo";

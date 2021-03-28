@@ -137,7 +137,7 @@ public class UserController {
 		try {
 			user = userService.findUserById(userId);
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		prepareModelUpdateTemplate(model, user);
@@ -158,7 +158,7 @@ public class UserController {
 		try {
 			user = userService.findUserById(userId);
 		} catch (InstanceNotFoundException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		prepareModelUpdateTemplate(model, user);
@@ -182,10 +182,10 @@ public class UserController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
-					return "/error/401";
+					return "/error/403";
 				}
 			} catch (InstanceNotFoundException e1) {
-				return "/error/401";
+				return "/error/403";
 			}
 			return "/error/404";
 		}
@@ -212,10 +212,10 @@ public class UserController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
-					return "/error/401";
+					return "/error/403";
 				}
 			} catch (InstanceNotFoundException e1) {
-				return "/error/401";
+				return "/error/403";
 			}
 			return "/error/404";
 		}
@@ -240,10 +240,10 @@ public class UserController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
-					return "/error/401";
+					return "/error/403";
 				}
 			} catch (InstanceNotFoundException e1) {
-				return "/error/401";
+				return "/error/403";
 			}
 			return "/error/404";
 		}
@@ -255,7 +255,7 @@ public class UserController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/user/update/" + id;
@@ -270,7 +270,7 @@ public class UserController {
 		Integer userId = userDetails.getId();
 
 		if (!userService.existsUserById(userId))
-			return "/error/401";
+			return "/error/403";
 
 		User newUser;
 
@@ -303,7 +303,7 @@ public class UserController {
 		Integer userId = userDetails.getId();
 
 		if (!userService.existsUserById(userId))
-			return "/error/401";
+			return "/error/403";
 
 		try {
 			userService.changePassword(userId, changePasswordForm.getOldPassword(),
@@ -331,10 +331,10 @@ public class UserController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
-					return "/error/401";
+					return "/error/403";
 				}
 			} catch (InstanceNotFoundException e1) {
-				return "/error/401";
+				return "/error/403";
 			}
 			return "/error/404";
 		}
@@ -347,7 +347,7 @@ public class UserController {
 		} catch (IncorrectPasswordException e) {
 			return "redirect:/user/update/" + id + "/wrong-password";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/user/update/" + id;
@@ -367,10 +367,10 @@ public class UserController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
-					return "/error/401";
+					return "/error/403";
 				}
 			} catch (InstanceNotFoundException e1) {
-				return "/error/401";
+				return "/error/403";
 			}
 			return "/error/404";
 		}
@@ -380,7 +380,7 @@ public class UserController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/user/user-list";
@@ -397,10 +397,10 @@ public class UserController {
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
-				return "/error/401";
+				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e1) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		String username = userSearchForm.getLogin().trim().equals("") ? null : userSearchForm.getLogin().trim();
@@ -419,7 +419,7 @@ public class UserController {
 			userList = UserListElemConversor.generateUserList(
 					userService.findUsers(userId, username, name, email, dateFrom, dateTo, enabled, roleId), userId);
 		} catch (InstanceNotFoundException | PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		List<Role> roles = prepareRoleSelectorElements();
@@ -446,10 +446,10 @@ public class UserController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
-					return "/error/401";
+					return "/error/403";
 				}
 			} catch (InstanceNotFoundException e1) {
-				return "/error/401";
+				return "/error/403";
 			}
 			return "/error/404";
 		}
@@ -461,14 +461,14 @@ public class UserController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
-					return "/error/401";
+					return "/error/403";
 				}
 			} catch (InstanceNotFoundException e1) {
-				return "/error/401";
+				return "/error/403";
 			}
 			return "/error/404";
 		} catch (PermissionException e) {
-			return "/error/401";
+			return "/error/403";
 		}
 
 		return "redirect:/user/update/" + id;

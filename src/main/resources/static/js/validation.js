@@ -6,6 +6,8 @@ $.extend(
 		email: jQuery.validator.format("Por favor introduzca un email válido."),
 		equalTo: jQuery.validator.format("Por favor introduzca el mismo valor de nuevo."),
 		extension: jQuery.validator.format("Por favor introduzca un archivo con una extensión válida."),
+		min: jQuery.validator.format("Por favor introduzca un valor mayor o igual a {0}."),
+		max: jQuery.validator.format("Por favor introduzca un valor menor o igual a {0}."),
 	}
 );
 
