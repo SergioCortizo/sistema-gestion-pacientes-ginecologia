@@ -13,18 +13,23 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "answer")
 public class Answer {
-	
+
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String answer;
-	
+
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="question_id")
+	@JoinColumn(name = "question_id")
 	private Question question;
-	
-	public Answer() {}
+
+	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name = "meeting_id")
+	private Meeting meeting;
+
+	public Answer() {
+	}
 
 	public Integer getId() {
 		return id;
@@ -48,6 +53,14 @@ public class Answer {
 
 	public void setQuestion(Question question) {
 		this.question = question;
+	}
+
+	public Meeting getMeeting() {
+		return meeting;
+	}
+
+	public void setMeeting(Meeting meeting) {
+		this.meeting = meeting;
 	}
 
 }

@@ -319,21 +319,6 @@
 																</li>
 																<li>
 																	<span class="text-muted"
-																		th:text="#{label.state}">State</span>
-																	<th:block th:switch="${meeting.state.name}">
-																		<span th:case="'opened'"
-																			class="badge badge-success"
-																			th:text="#{label.opened}">Opened</span>
-																		<span th:case="'closed'"
-																			class="badge badge-danger"
-																			th:text="#{label.closed}">Closed</span>
-																		<span th:case="'cancelled'"
-																			class="badge badge-warning"
-																			th:text="#{label.cancelled}">Cancelled</span>
-																	</th:block>
-																</li>
-																<li>
-																	<span class="text-muted"
 																		th:text="#{label.facultativeprofile}">Facultative
 																		profile</span>
 																	<span th:text="${meeting.user.username}">Facultative
@@ -342,10 +327,7 @@
 																<li>
 																	<span class="text-muted"
 																		th:text="#{label.comments}">Comments</span>
-																	<div>
-																		<span
-																			th:text="${meeting.comments}">Comments</span>
-																	</div>
+																	<div class="content" th:utext="${meeting.comments}" />
 																</li>
 																<li>
 																	<span class="text-muted"

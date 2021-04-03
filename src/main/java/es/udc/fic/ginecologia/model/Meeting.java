@@ -5,10 +5,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -32,10 +29,6 @@ public class Meeting {
 	
 	private LocalDateTime meeting_date;
 	
-	@Column(columnDefinition = "ENUM('opened', 'closed', 'cancelled')")
-    @Enumerated(EnumType.STRING)
-	private MeetingState state;
-	
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="patient_id")
 	private Patient patient;
@@ -54,6 +47,13 @@ public class Meeting {
 
 	public Meeting() {
 
+	}
+	
+	public Meeting (String activity, String comments) {
+		this.meeting_date = LocalDateTime.now();
+		
+		this.activity = activity;
+		this.comments = comments;
 	}
 
 	public Integer getId() {
@@ -86,14 +86,6 @@ public class Meeting {
 
 	public void setMeeting_date(LocalDateTime meeting_date) {
 		this.meeting_date = meeting_date;
-	}
-
-	public MeetingState getState() {
-		return state;
-	}
-
-	public void setState(MeetingState state) {
-		this.state = state;
 	}
 
 	public Patient getPatient() {

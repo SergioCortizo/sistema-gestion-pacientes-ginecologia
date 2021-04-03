@@ -1,5 +1,10 @@
 package es.udc.fic.ginecologia.controller;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.StreamSupport;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,18 +15,25 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import es.udc.fic.ginecologia.common.MeetingByDateDescendingComparator;
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
+import es.udc.fic.ginecologia.form.MeetingForm;
 import es.udc.fic.ginecologia.form.PatientConversor;
 import es.udc.fic.ginecologia.form.PatientDetails;
 import es.udc.fic.ginecologia.form.PatientForm;
 import es.udc.fic.ginecologia.form.SearchPatientsForm;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
+import es.udc.fic.ginecologia.model.DiagnosticTest;
+import es.udc.fic.ginecologia.model.Meeting;
 import es.udc.fic.ginecologia.model.Patient;
+import es.udc.fic.ginecologia.model.Question;
 import es.udc.fic.ginecologia.service.ContraceptiveService;
+import es.udc.fic.ginecologia.service.DiagnosticTestService;
 import es.udc.fic.ginecologia.service.PatientService;
+import es.udc.fic.ginecologia.service.QuestionService;
 
 @Controller
 public class PatientController {
@@ -34,6 +46,12 @@ public class PatientController {
 
 	@Autowired
 	ContraceptiveService contraceptiveService;
+
+	@Autowired
+	QuestionService questionService;
+
+	@Autowired
+	DiagnosticTestService diagnosticTestService;
 
 	// Patients list
 	@GetMapping("/patient/patient-list")
@@ -219,17 +237,33 @@ public class PatientController {
 		}
 
 		PatientForm patientForm = new PatientForm();
+		Patient patient;
+		Iterable<Question> questions;
 
 		try {
-			patientForm = PatientConversor.convertToPatientForm(patientService.findPatient(userId, id));
+			patient = patientService.findPatient(userId, id);
+			patientForm = PatientConversor.convertToPatientForm(patient);
+			questions = questionService.findAllQuestions(userId);
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
 			return "/error/403";
 		}
 
+		Iterable<DiagnosticTest> diagnosticTests = () -> StreamSupport
+				.stream(diagnosticTestService.findAllDiagnosticTests().spliterator(), false)
+				.filter(dt -> dt.isEnabled())
+				.iterator();
+
+		List<Meeting> meetings = new ArrayList<>(patient.getMeetings());
+		Collections.sort(meetings, new MeetingByDateDescendingComparator());
+
 		model.addAttribute("updatePatientForm", patientForm);
 		model.addAttribute("patientId", id);
+		model.addAttribute("meetings", meetings);
+		model.addAttribute("questions", questions);
+		model.addAttribute("diagnosticTests", diagnosticTests);
+		model.addAttribute("addMeetingForm", new MeetingForm());
 		model.addAttribute("contraceptives", contraceptiveService.findAllActiveContraceptives());
 
 		return "patient/update-patient";
@@ -252,17 +286,33 @@ public class PatientController {
 		}
 
 		PatientForm patientForm = new PatientForm();
+		Patient patient;
+		Iterable<Question> questions;
 
 		try {
-			patientForm = PatientConversor.convertToPatientForm(patientService.findPatient(userId, id));
+			patient = patientService.findPatient(userId, id);
+			patientForm = PatientConversor.convertToPatientForm(patient);
+			questions = questionService.findAllQuestions(userId);
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
 			return "/error/403";
 		}
+		
+		Iterable<DiagnosticTest> diagnosticTests = () -> StreamSupport
+				.stream(diagnosticTestService.findAllDiagnosticTests().spliterator(), false)
+				.filter(dt -> dt.isEnabled())
+				.iterator();
+
+		List<Meeting> meetings = new ArrayList<>(patient.getMeetings());
+		Collections.sort(meetings, new MeetingByDateDescendingComparator());
 
 		model.addAttribute("updatePatientForm", patientForm);
 		model.addAttribute("patientId", id);
+		model.addAttribute("meetings", meetings);
+		model.addAttribute("questions", questions);
+		model.addAttribute("diagnosticTests", diagnosticTests);
+		model.addAttribute("addMeetingForm", new MeetingForm());
 		model.addAttribute("contraceptives", contraceptiveService.findAllActiveContraceptives());
 		model.addAttribute("duplicatePatient", true);
 

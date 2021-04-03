@@ -31,6 +31,10 @@ public class ComplementaryTest {
     @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name="diagnostic_test_id")
     private DiagnosticTest diagnosticTest;
+    
+    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinColumn(name="meeting_id")
+    private Meeting meeting;
 
 	public ComplementaryTest() {}
 
@@ -72,6 +76,14 @@ public class ComplementaryTest {
 
 	public void setDiagnosticTest(DiagnosticTest diagnosticTest) {
 		this.diagnosticTest = diagnosticTest;
+	}
+
+	public Meeting getMeeting() {
+		return meeting;
+	}
+
+	public void setMeeting(Meeting meeting) {
+		this.meeting = meeting;
 	}
 	
 }

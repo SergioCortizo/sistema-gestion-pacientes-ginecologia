@@ -38,8 +38,8 @@
 							<div th:if="${duplicatePatient}" class="alert alert-danger" role="alert">
 								<span th:text="#{label.patientexists}">Patient already exists.</span>
 							</div>
-							<form id="update-form" th:object="${updatePatientForm}" th:action="@{/patient/update-patient/{id}(id=${patientId})}"
-								method="POST">
+							<form id="update-form" th:object="${updatePatientForm}"
+								th:action="@{/patient/update-patient/{id}(id=${patientId})}" method="POST">
 								<div class="form-row">
 									<div class="col-md-5">
 										<div class="form-group">
@@ -132,147 +132,189 @@
 									</div>
 								</div>
 
-								<div class="form-row">
-									<h5 th:text="#{label.personalantecedents}">Personal antecedents</h5>
-								</div>
+								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingPersonalAntecedents">
+											<h5 class="panel-title">
+												<a role="button" data-toggle="collapse" data-parent="#accordion"
+													href="#collapsePersonalAntecedents" aria-expanded="true"
+													aria-controls="collapsePersonalAntecedents">
+													<span th:text="#{label.personalantecedents}">Personal
+														antecedents</span>
+												</a>
+											</h5>
+										</div>
+										<div id="collapsePersonalAntecedents" class="panel-collapse collapse in"
+											role="tabpanel" aria-labelledby="headingPersonalAntecedents">
+											<div class="panel-body">
+												<div class="form-row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="small mb-1" for="inputAllergies"
+																th:text="#{label.allergies}">Allergies</label>
+															<textarea class="form-control" th:field="*{allergies}"
+																id="inputAllergies" name="inputAllergies" rows="5"
+																th:placeholder="#{label.allergies}" maxlength="1000" />
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="small mb-1" for="inputDiseases"
+																th:text="#{label.diseases}">Diseases</label>
+															<textarea class="form-control" th:field="*{diseases}"
+																id="inputDiseases" name="inputDiseases" rows="5"
+																th:placeholder="#{label.diseases}" maxlength="1000" />
+														</div>
+													</div>
+												</div>
 
-								<div class="form-row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="small mb-1" for="inputAllergies"
-												th:text="#{label.allergies}">Allergies</label>
-											<textarea class="form-control" th:field="*{allergies}" id="inputAllergies"
-												name="inputAllergies" rows="5" th:placeholder="#{label.allergies}"
-												maxlength="1000" />
-										</div>
-									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="small mb-1" for="inputDiseases"
-												th:text="#{label.diseases}">Diseases</label>
-											<textarea class="form-control" th:field="*{diseases}" id="inputDiseases"
-												name="inputDiseases" rows="5" th:placeholder="#{label.diseases}"
-												maxlength="1000" />
-										</div>
-									</div>
-								</div>
+												<div class="form-row">
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="small mb-1" for="inputInterventions"
+																th:text="#{label.interventions}">Interventions</label>
+															<textarea class="form-control" th:field="*{interventions}"
+																id="inputInterventions" name="inputInterventions"
+																rows="5" th:placeholder="#{label.interventions}"
+																maxlength="1000" />
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-group">
+															<label class="small mb-1" for="inputFamilyBackground"
+																th:text="#{label.family_background}">Family
+																background</label>
+															<textarea class="form-control"
+																th:field="*{family_background}"
+																id="inputFamilyBackground" name="inputFamilyBackground"
+																rows="5" th:placeholder="#{label.family_background}"
+																maxlength="1000" />
+														</div>
+													</div>
+												</div>
 
-								<div class="form-row">
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="small mb-1" for="inputInterventions"
-												th:text="#{label.interventions}">Interventions</label>
-											<textarea class="form-control" th:field="*{interventions}"
-												id="inputInterventions" name="inputInterventions" rows="5"
-												th:placeholder="#{label.interventions}" maxlength="1000" />
+												<div class="form-row mb-4">
+													<div class="form-check">
+														<input class="form-check-input" type="checkbox" id="checkSmoker"
+															th:field="*{smoker}">
+														<label class="form-check-label" for="checkSmoker"
+															th:text="#{label.smoker}">
+															Smoker
+														</label>
+													</div>
+												</div>
+											</div>
 										</div>
 									</div>
-									<div class="col-md-6">
-										<div class="form-group">
-											<label class="small mb-1" for="inputFamilyBackground"
-												th:text="#{label.family_background}">Family background</label>
-											<textarea class="form-control" th:field="*{diseases}"
-												id="inputFamilyBackground" name="inputFamilyBackground" rows="5"
-												th:placeholder="#{label.family_background}" maxlength="1000" />
-										</div>
-									</div>
-								</div>
 
-								<div class="form-row mb-4">
-									<div class="form-check">
-										<input class="form-check-input" type="checkbox" id="checkSmoker"
-											th:field="*{smoker}">
-										<label class="form-check-label" for="checkSmoker" th:text="#{label.smoker}">
-											Smoker
-										</label>
-									</div>
-								</div>
+									<div class="panel panel-default">
+										<div class="panel-heading" role="tab" id="headingGinecologycalAntecedents">
+											<h5 class="panel-title">
+												<a role="button" data-toggle="collapse" data-parent="#accordion"
+													href="#collapseGinecologycalAntecedents" aria-expanded="true"
+													aria-controls="collapseGinecologycalAntecedents">
+													<span th:text="#{label.ginecologycalantecedents}">Ginecologycal
+														antecedents</span>
+												</a>
+											</h5>
+										</div>
+										<div id="collapseGinecologycalAntecedents" class="panel-collapse collapse in"
+											role="tabpanel" aria-labelledby="headingGinecologycalAntecedents">
+											<div class="panel-body">
+												<div class="form-row">
+													<div class="col-md-2">
+														<div class="form-group">
+															<label class="small mb-1" for="inputMenarche"
+																th:text="#{label.menarchyage}">Menarche age</label>
+															<input class="form-control py-4" th:field="*{menarche}"
+																id="inputMenarche" type="number" min="0" value="0" />
+														</div>
+													</div>
+													<div class="col-md-2">
+														<div class="form-group">
+															<label class="small mb-1" for="inputMenopause"
+																th:text="#{label.menopauseage}">Menopause age</label>
+															<input class="form-control py-4" th:field="*{menopause}"
+																id="inputMenopause" type="number" min="0" value="0" />
+														</div>
+													</div>
+													<div class="col-md-2">
+														<div class="form-group">
+															<label class="small mb-1" for="inputPregnancies"
+																th:text="#{label.pregnancies}">Pregnancies</label>
+															<input class="form-control py-4" th:field="*{pregnancies}"
+																id="inputPregnancies" type="number" min="0" value="0" />
+														</div>
+													</div>
+													<div class="col-md-2">
+														<div class="form-group">
+															<label class="small mb-1" for="inputChildbirths"
+																th:text="#{label.childbirths}">Childbirths</label>
+															<input class="form-control py-4" th:field="*{childbirths}"
+																id="inputChildbirths" type="number" min="0" value="0" />
+														</div>
+													</div>
+													<div class="col-md-2">
+														<div class="form-group">
+															<label class="small mb-1" for="inputCesareanSections"
+																th:text="#{label.cesareansections}">Cesarean
+																sections</label>
+															<input class="form-control py-4"
+																th:field="*{cesarean_sections}"
+																id="inputCesareanSections" type="number" min="0"
+																value="0" />
+														</div>
+													</div>
+													<div class="col-md-2">
+														<div class="form-group">
+															<label class="small mb-1" for="inputMisbirths"
+																th:text="#{label.misbirths}">Misbirths</label>
+															<input class="form-control py-4" th:field="*{misbirths}"
+																id="inputMisbirths" type="number" min="0" value="0" />
+														</div>
+													</div>
+												</div>
 
-								<div class="form-row">
-									<h5 th:text="#{label.ginecologycalantecedents}">Ginecologycal antecedents</h5>
-								</div>
-
-								<div class="form-row">
-									<div class="col-md-2">
-										<div class="form-group">
-											<label class="small mb-1" for="inputMenarche"
-												th:text="#{label.menarchyage}">Menarche age</label>
-											<input class="form-control py-4" th:field="*{menarche}" id="inputMenarche"
-												type="number" min="0" value="0" />
-										</div>
-									</div>
-									<div class="col-md-2">
-										<div class="form-group">
-											<label class="small mb-1" for="inputMenopause"
-												th:text="#{label.menopauseage}">Menopause age</label>
-											<input class="form-control py-4" th:field="*{menopause}" id="inputMenopause"
-												type="number" min="0" value="0" />
-										</div>
-									</div>
-									<div class="col-md-2">
-										<div class="form-group">
-											<label class="small mb-1" for="inputPregnancies"
-												th:text="#{label.pregnancies}">Pregnancies</label>
-											<input class="form-control py-4" th:field="*{pregnancies}"
-												id="inputPregnancies" type="number" min="0" value="0" />
-										</div>
-									</div>
-									<div class="col-md-2">
-										<div class="form-group">
-											<label class="small mb-1" for="inputChildbirths"
-												th:text="#{label.childbirths}">Childbirths</label>
-											<input class="form-control py-4" th:field="*{childbirths}"
-												id="inputChildbirths" type="number" min="0" value="0" />
-										</div>
-									</div>
-									<div class="col-md-2">
-										<div class="form-group">
-											<label class="small mb-1" for="inputCesareanSections"
-												th:text="#{label.cesareansections}">Cesarean sections</label>
-											<input class="form-control py-4" th:field="*{cesarean_sections}"
-												id="inputCesareanSections" type="number" min="0" value="0" />
-										</div>
-									</div>
-									<div class="col-md-2">
-										<div class="form-group">
-											<label class="small mb-1" for="inputMisbirths"
-												th:text="#{label.misbirths}">Misbirths</label>
-											<input class="form-control py-4" th:field="*{misbirths}" id="inputMisbirths"
-												type="number" min="0" value="0" />
-										</div>
-									</div>
-								</div>
-
-								<div class="form-row">
-									<div class="col md-4">
-										<div class="form-group">
-											<label for="dateLastMenstruationDate" class="small mb-1"
-												th:text="#{label.lastmenstruationdate}">Last menstruation date</label>
-											<input class="form-control py-4" id="dateLastMenstruationDate"
-												name="dateLastMenstruationDate" placeholder="DD/MM/YYY" type="text"
-												th:field="*{last_menstruation_date}" />
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label class="small mb-1" for="inputMenstrualType"
-												th:text="#{label.menstrualtype}">Menstrual type</label>
-											<input class="form-control py-4" th:field="*{menstrual_type}"
-												id="inputMenstrualType" name="inputMenstrualType" type="text"
-												th:placeholder="#{label.menstrualtype}" minlength="3" maxlength="60" />
-										</div>
-									</div>
-									<div class="col-md-4">
-										<div class="form-group">
-											<label class="small mb-1" for="inputContraceptives"
-												th:text="#{label.contraceptives}">Contraceptives</label>
-											<div>
-												<select id="contraceptives" class="form-control py-4"
-													multiple="multiple" th:field="*{contraceptives}">
-													<option th:each="contraceptive : ${contraceptives}" th:value="${contraceptive.id}">
-														<span th:text="${contraceptive.name}">Contraceptive</span>
-													</option>
-												</select>
+												<div class="form-row">
+													<div class="col md-4">
+														<div class="form-group">
+															<label for="dateLastMenstruationDate" class="small mb-1"
+																th:text="#{label.lastmenstruationdate}">Last
+																menstruation date</label>
+															<input class="form-control py-4"
+																id="dateLastMenstruationDate"
+																name="dateLastMenstruationDate" placeholder="DD/MM/YYY"
+																type="text" th:field="*{last_menstruation_date}" />
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label class="small mb-1" for="inputMenstrualType"
+																th:text="#{label.menstrualtype}">Menstrual type</label>
+															<input class="form-control py-4"
+																th:field="*{menstrual_type}" id="inputMenstrualType"
+																name="inputMenstrualType" type="text"
+																th:placeholder="#{label.menstrualtype}" minlength="3"
+																maxlength="60" />
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<label class="small mb-1" for="inputContraceptives"
+																th:text="#{label.contraceptives}">Contraceptives</label>
+															<div>
+																<select id="contraceptives" class="form-control py-4"
+																	multiple="multiple" th:field="*{contraceptives}">
+																	<option th:each="contraceptive : ${contraceptives}"
+																		th:value="${contraceptive.id}">
+																		<span
+																			th:text="${contraceptive.name}">Contraceptive</span>
+																	</option>
+																</select>
+															</div>
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
@@ -282,6 +324,200 @@
 									patient</button>
 
 							</form>
+						</div>
+					</div>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-calendar-alt mr-1"></i>
+							<span th:text="#{label.cliniccourse}">Clinic course</span>
+						</div>
+						<div class="card-body">
+
+							<form id="add-meeting-form" class="mb-4" method="POST"
+								th:action="@{/patient/add-meeting/{id}(id=${patientId})}" th:object="${addMeetingForm}"
+								enctype="multipart/form-data">
+								<div class="form-group">
+									<label class="small mb-1" for="activity"
+										th:text="#{label.activity}">Activity</label>
+									<input class="form-control py-4" id="activity" name="activity" type="text"
+										th:placeholder="#{label.activity}" minlength="3" maxlength="60" required
+										th:field="*{activity}" />
+								</div>
+								<div class="form-group">
+									<label class="small mb-1" for="comments"
+										th:text="#{label.comments}">Comments</label>
+									<textarea id="comments" maxlength="1000" th:field="*{comments}"></textarea>
+								</div>
+								<div class="form-group">
+									<label class="small mb-1" for="questions"
+										th:text="#{label.questions}">Questions</label>
+
+									<div class="alert alert-danger" role="alert" id="error-question"
+										style="display:none">
+										<span th:text="#{label.requiredfields}">Required fields.</span>
+									</div>
+
+									<div class="input-group mb-3">
+										<div class="input-group-prepend">
+											<button class="btn btn-outline-secondary dropdown-toggle" type="button"
+												data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+												th:text="#{label.question}">Question</button>
+											<ul class="dropdown-menu" id="dropdown-questions">
+												<li th:each="question : ${questions}">
+													<span class="dropdown-item"
+														th:text="${question.question}">Question</span>
+												</li>
+											</ul>
+										</div>
+										<input type="text" class="form-control" id="question-input" />
+									</div>
+									<div class="mb-3">
+										<textarea class="form-control" id="answer-input"></textarea>
+									</div>
+									<div class="d-flex justify-content-end mb-3">
+										<button id="add-question" type="button" class="btn btn-success question-option"
+											th:text="#{label.addquestion}">Add question</button>
+									</div>
+
+									<table class="table" id="table-questions">
+										<thead>
+											<tr>
+												<th scope="col" th:text="#{label.question}">Question</th>
+												<th scope="col" th:text="#{label.answer}">Answer</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+
+								</div>
+
+								<div class="form-group">
+									<label class="small mb-1" for="diagnostic-tests"
+										th:text="#{label.diagnostictests}">Diagnostic tests</label>
+
+									<div class="alert alert-danger" role="alert" id="error-diagnostic-test"
+										style="display:none">
+										<span th:text="#{label.requiredfields}">Required fields.</span>
+									</div>
+
+									<div class="form-row">
+										<div class="col-md-5 mb-3">
+											<select class="browser-default custom-select" id="diagnostic-test">
+												<option selected="" th:text="#{label.selectdiagnostictest}" value="0">
+													Select diagnostic test</option>
+												<option th:each="diagnosticTest : ${diagnosticTests}"
+													th:value="${diagnosticTest.id}" th:text="${diagnosticTest.name}">
+													Diagnostic test</option>
+											</select>
+										</div>
+										<div class="col-md-5 mb-3">
+											<div class="custom-file">
+												<input type="file" class="custom-file-input" id="file-diagnostic-test">
+												<label class="custom-file-label" for="file-diagnostic-test"></label>
+											</div>
+										</div>
+										<div class="col-md-2 mb-3">
+											<button id="add-diagnostic-test" type="button"
+												class="btn btn-success diagnostic-test-option"
+												th:text="#{label.adddiagnostictest}">Add diagnostic test</button>
+										</div>
+									</div>
+
+									<table class="table" id="table-diagnostic-tests">
+										<thead>
+											<tr>
+												<th scope="col" th:text="#{label.diagnostictest}">Diagnostic test</th>
+												<th scope="col" th:text="#{label.file}">File</th>
+											</tr>
+										</thead>
+										<tbody>
+										</tbody>
+									</table>
+
+								</div>
+
+								<button id="add-entry-submit" type="submit" class="btn btn-primary"
+									th:text="#{label.addentry}">Add
+									entry</button>
+							</form>
+
+							<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default" th:each="meeting, rowStat : ${meetings}">
+									<div class="panel-heading" role="tab"
+										th:id="'headingCourseClinic-' + ${meeting.id}">
+										<h6 class="panel-title">
+											<a role="button" data-toggle="collapse" data-parent="#accordion"
+												th:href="'#collapseHeadingCourseClinic-' + ${meeting.id}"
+												aria-expanded="true"
+												th:attr="aria-controls='collapseHeadingCourseClinic-' + ${meeting.id}">
+												<span
+													th:text="${meeting.meeting_date.toLocalDate()} + ' ' + ${meeting.meeting_date.toLocalTime()}">Meeting
+													date</span>
+											</a>
+										</h6>
+									</div>
+									<div th:id="'collapseHeadingCourseClinic-' + ${meeting.id}"
+										class="panel-collapse collapse in" role="tabpanel"
+										th:attr="aria-labelledby='collapseHeadingCourseClinic-' + ${meeting.id}"
+										th:classappend="${rowStat.index} == 0 ? show : ''">
+										<div class="panel-body">
+											<ul>
+												<li>
+													<span class="text-muted" th:text="#{label.activity}">Activity</span>
+													<span th:text="${meeting.activity}">Activity</span>
+												</li>
+												<li>
+													<span class="text-muted"
+														th:text="#{label.facultativeprofile}">Facultative
+														profile</span>
+													<span th:text="${meeting.user.username}">Facultative
+														profile</span>
+												</li>
+												<li>
+													<span class="text-muted" th:text="#{label.comments}">Comments</span>
+													<div class="content" th:utext="${meeting.comments}" />
+												</li>
+												<li>
+													<span class="text-muted"
+														th:text="#{label.questions}">Questions</span>
+													<ul>
+														<li th:each="answer : ${meeting.answers}">
+															<div>
+																<span class="text-muted"
+																	th:text="${answer.question.question}">Question</span>
+															</div>
+															<div>
+																<span th:text="${answer.answer}">Answer</span>
+															</div>
+														</li>
+													</ul>
+												</li>
+												<li>
+													<span class="text-muted"
+														th:text="#{label.complementarytests}">Pruebas
+														complementarias</span>
+													<ul>
+														<li th:each="complementaryTest : ${meeting.complementaryTests}">
+															<a
+																th:href="@{/downloadFile/{id}(id=${complementaryTest.id})}">
+																<span
+																	th:text="${complementaryTest.fileName} + ' - '">Complementary
+																	test name</span>
+															</a>
+															<span
+																th:text="${complementaryTest.diagnosticTest.name}">Diagnostic
+																test name</span>
+														</li>
+													</ul>
+												</li>
+
+											</ul>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
 

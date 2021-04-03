@@ -203,9 +203,8 @@ CREATE TABLE patient_contraceptive
 CREATE TABLE meeting (
 	id BIGINT NOT NULL AUTO_INCREMENT,
 	activity VARCHAR(100) COLLATE latin1_bin NOT NULL,
-	comments VARCHAR(1000) COLLATE latin1_bin NOT NULL,
+	comments LONGBLOB,
 	meeting_date TIMESTAMP NOT NULL,
-	state ENUM ('opened', 'closed', 'cancelled') DEFAULT 'opened',
 	patient_id BIGINT NOT NULL,
 	user_id BIGINT NOT NULL,
 	CONSTRAINT MeetingPK PRIMARY KEY(id),
