@@ -6,13 +6,23 @@ import java.util.ArrayList;
 import java.util.List;
 
 import es.udc.fic.ginecologia.model.Patient;
+import es.udc.fic.ginecologia.model.User;
 
 public class PatientConversor {
-	public final static List<PatientElemList> createPatientElemList(Iterable<Patient> patients) {
+	public final static List<PatientElemList> createPatientElemList(Iterable<Patient> patients, Integer userId) {
 		List<PatientElemList> result = new ArrayList<>();
 
 		patients.forEach(p -> {
 			PatientElemList patient = new PatientElemList(p);
+			
+			for (User user : p.getUsersInterestedByPatient()) {
+				if(user.getId() == userId) {
+					patient.setPatientOfInterest(true);
+					break;
+				}
+				else patient.setPatientOfInterest(false);
+			}
+			
 			result.add(patient);
 		});
 

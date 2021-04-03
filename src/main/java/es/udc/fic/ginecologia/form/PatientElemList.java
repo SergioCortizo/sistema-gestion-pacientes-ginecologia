@@ -13,6 +13,8 @@ public class PatientElemList {
 	
 	private boolean enabled;
 	
+	private boolean patientOfInterest;
+	
 	public PatientElemList() {
 		
 	}
@@ -63,6 +65,14 @@ public class PatientElemList {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public boolean isPatientOfInterest() {
+		return patientOfInterest;
+	}
+
+	public void setPatientOfInterest(boolean patientOfInterest) {
+		this.patientOfInterest = patientOfInterest;
 	}
 	
 }

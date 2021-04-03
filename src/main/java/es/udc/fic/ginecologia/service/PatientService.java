@@ -25,4 +25,9 @@ public interface PatientService {
 	void updatePatient(Integer userId, Long patientId, Patient patient, List<Integer> contraceptivesIds)
 			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException;
 
+	void changeAsPatientOfInterest(Integer userId, Long patientId)
+			throws InstanceNotFoundException, PermissionException;
+
+	Iterable<Patient> findLastSeenPatients(Integer userId) throws InstanceNotFoundException, PermissionException;
+
 }

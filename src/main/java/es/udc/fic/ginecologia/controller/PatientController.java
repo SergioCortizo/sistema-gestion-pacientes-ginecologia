@@ -30,6 +30,7 @@ import es.udc.fic.ginecologia.model.DiagnosticTest;
 import es.udc.fic.ginecologia.model.Meeting;
 import es.udc.fic.ginecologia.model.Patient;
 import es.udc.fic.ginecologia.model.Question;
+import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.service.ContraceptiveService;
 import es.udc.fic.ginecologia.service.DiagnosticTestService;
 import es.udc.fic.ginecologia.service.PatientService;
@@ -77,7 +78,7 @@ public class PatientController {
 			return "/error/403";
 		}
 
-		prepareModel(model, patients);
+		prepareModel(model, patients, userId);
 
 		return "patient/patient-list";
 	}
@@ -108,7 +109,7 @@ public class PatientController {
 			return "/error/403";
 		}
 
-		prepareModel(model, patients);
+		prepareModel(model, patients, userId);
 
 		return "patient/patient-list";
 	}
@@ -252,8 +253,7 @@ public class PatientController {
 
 		Iterable<DiagnosticTest> diagnosticTests = () -> StreamSupport
 				.stream(diagnosticTestService.findAllDiagnosticTests().spliterator(), false)
-				.filter(dt -> dt.isEnabled())
-				.iterator();
+				.filter(dt -> dt.isEnabled()).iterator();
 
 		List<Meeting> meetings = new ArrayList<>(patient.getMeetings());
 		Collections.sort(meetings, new MeetingByDateDescendingComparator());
@@ -298,11 +298,10 @@ public class PatientController {
 		} catch (PermissionException e) {
 			return "/error/403";
 		}
-		
+
 		Iterable<DiagnosticTest> diagnosticTests = () -> StreamSupport
 				.stream(diagnosticTestService.findAllDiagnosticTests().spliterator(), false)
-				.filter(dt -> dt.isEnabled())
-				.iterator();
+				.filter(dt -> dt.isEnabled()).iterator();
 
 		List<Meeting> meetings = new ArrayList<>(patient.getMeetings());
 		Collections.sort(meetings, new MeetingByDateDescendingComparator());
@@ -378,8 +377,94 @@ public class PatientController {
 		return "redirect:/patient/patient-list";
 	}
 
-	private void prepareModel(Model model, Iterable<Patient> patients) {
-		model.addAttribute("patients", PatientConversor.createPatientElemList(patients));
+	// Set/unset patient as patient of interest
+	@PostMapping("/patient/change-patient-of-interest/{id}")
+	public String changePatientAsatientOfInterest(@PathVariable Long id, @ModelAttribute PatientForm updatePatientForm,
+			Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsFacultative(userId)) {
+				return "/error/403";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/403";
+		}
+
+		try {
+			patientService.changeAsPatientOfInterest(userId, id);
+		} catch (InstanceNotFoundException e) {
+			return "/error/404";
+		} catch (PermissionException e) {
+			return "/error/403";
+		}
+
+		return "redirect:/patient/patient-list";
+	}
+
+	// Patients of interest
+	@GetMapping("/patient/patients-of-interest")
+	public String goToPatientsOfInterest(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		User user;
+
+		try {
+			if (!permissionChecker.checkIsFacultative(userId)) {
+				return "/error/403";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/403";
+		}
+
+		try {
+			user = permissionChecker.checkUser(userId);
+		} catch (InstanceNotFoundException e) {
+			return "/error/403";
+		}
+
+		prepareModel(model, user.getPatientsOfInterest(), userId);
+
+		return "patient/patients-of-interest";
+	}
+
+	// Last seen patients
+	@GetMapping("/patient/last-seen-patients")
+	public String goToLastSeenPatients(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsFacultative(userId)) {
+				return "/error/403";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/403";
+		}
+
+		Iterable<Patient> patients;
+		
+		try {
+			patients = patientService.findLastSeenPatients(userId);
+		} catch (InstanceNotFoundException | PermissionException e) {
+			return "/error/403";
+		}
+		
+		prepareModel(model, patients, userId);
+
+		return "patient/last-seen-patients";
+	}
+
+	private void prepareModel(Model model, Iterable<Patient> patients, Integer userId) {
+		model.addAttribute("patients", PatientConversor.createPatientElemList(patients, userId));
 		model.addAttribute("searchPatientsForm", new SearchPatientsForm());
 	}
 }

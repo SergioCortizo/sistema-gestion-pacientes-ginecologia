@@ -18,6 +18,7 @@ import es.udc.fic.ginecologia.model.Contraceptive;
 import es.udc.fic.ginecologia.model.Patient;
 import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.repository.ContraceptiveDao;
+import es.udc.fic.ginecologia.repository.MeetingDao;
 import es.udc.fic.ginecologia.repository.PatientDao;
 
 @Transactional
@@ -33,6 +34,9 @@ public class PatientServiceImpl implements PatientService {
 	@Autowired
 	private ContraceptiveDao contraceptiveDao;
 
+	@Autowired
+	private MeetingDao meetingDao;
+
 	@Override
 	public Iterable<Patient> findAllPatients(Integer userId) throws InstanceNotFoundException, PermissionException {
 		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
@@ -44,6 +48,20 @@ public class PatientServiceImpl implements PatientService {
 		}
 
 		return patientDao.findAllByOrderByIdDesc();
+	}
+
+	@Override
+	public Iterable<Patient> findLastSeenPatients(Integer userId)
+			throws InstanceNotFoundException, PermissionException {
+		if (!permissionChecker.checkIsFacultative(userId)) {
+			throw new PermissionException();
+		}
+
+		if (permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+			return patientDao.findByEnabledOrderByIdDesc(true);
+		}
+		
+		return meetingDao.findLastSeenPatients(userId);
 	}
 
 	@Override
@@ -110,13 +128,13 @@ public class PatientServiceImpl implements PatientService {
 		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
 			throw new PermissionException();
 		}
-		
+
 		Optional<Patient> patientInDB = patientDao.findById(patientId);
 
 		if (!patientInDB.isPresent()) {
 			throw new InstanceNotFoundException("entities.patient", patientId);
 		}
-		
+
 		Patient result = patientInDB.get();
 
 		if (!patient.getDNI_NIF().equals(result.getDNI_NIF())) {
@@ -130,13 +148,13 @@ public class PatientServiceImpl implements PatientService {
 				throw new DuplicateInstanceException("entities.patient", patient.getHist_numsergas());
 			}
 		}
-		
+
 		Iterable<Contraceptive> contraceptives = contraceptiveDao.findAllById(contraceptivesIds);
 		Set<Contraceptive> contraceptivesToAdd = new HashSet<Contraceptive>(
 				(Collection<? extends Contraceptive>) contraceptives);
-		
+
 		result.setContraceptives(contraceptivesToAdd);
-		
+
 		result.setName(patient.getName());
 		result.setDNI_NIF(patient.getDNI_NIF());
 		result.setMobile_phone(patient.getMobile_phone());
@@ -153,11 +171,11 @@ public class PatientServiceImpl implements PatientService {
 		result.setSmoker(patient.isSmoker());
 		result.setMenarche(patient.getMenarche());
 		result.setMenopause(patient.getMenopause());
-		
+
 		if (patient.getLast_menstruation_date() != null) {
 			result.setLast_menstruation_date(patient.getLast_menstruation_date());
 		}
-		
+
 		result.setPregnancies(patient.getPregnancies());
 		result.setChildbirths(patient.getChildbirths());
 		result.setCesarean_sections(patient.getCesarean_sections());
@@ -182,5 +200,33 @@ public class PatientServiceImpl implements PatientService {
 
 		result.setEnabled(!result.isEnabled());
 
+	}
+
+	@Override
+	public void changeAsPatientOfInterest(Integer userId, Long patientId)
+			throws InstanceNotFoundException, PermissionException {
+		if (!permissionChecker.checkIsFacultative(userId)) {
+			throw new PermissionException();
+		}
+
+		User user = permissionChecker.checkUser(userId);
+
+		Optional<Patient> patient = patientDao.findById(patientId);
+
+		if (!patient.isPresent()) {
+			throw new InstanceNotFoundException("entities.patient", patientId);
+		}
+
+		Patient result = patient.get();
+
+		Set<Patient> patientsOfInterest = user.getPatientsOfInterest();
+
+		if (patientsOfInterest.contains(result)) {
+			patientsOfInterest.remove(result);
+		} else {
+			patientsOfInterest.add(result);
+		}
+
+		user.setPatientsOfInterest(patientsOfInterest);
 	}
 }

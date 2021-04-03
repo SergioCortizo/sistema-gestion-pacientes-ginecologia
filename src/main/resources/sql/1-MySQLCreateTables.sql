@@ -1,3 +1,4 @@
+DROP TABLE patients_of_interest;
 DROP TABLE complementary_test;
 DROP TABLE answer;
 DROP TABLE question;
@@ -240,7 +241,13 @@ CREATE TABLE complementary_test (
 	CONSTRAINT ComplementaryTestMeetingFK FOREIGN KEY (meeting_id) REFERENCES meeting (id)
 );
 
-
+CREATE TABLE patients_of_interest (
+	user_id BIGINT NOT NULL,
+	patient_id BIGINT NOT NULL,
+	CONSTRAINT PatientsOfInterestPK PRIMARY KEY (user_id, patient_id),
+	CONSTRAINT PatientsOfInterestUserFK FOREIGN KEY (user_id) REFERENCES user (id),
+	CONSTRAINT PatientsOfInterestPatientFK FOREIGN KEY (patient_id) REFERENCES patient (id)
+);
 
 
 

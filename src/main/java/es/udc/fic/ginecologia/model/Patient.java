@@ -66,6 +66,10 @@ public class Patient {
     @JoinColumn(name="patient_id", referencedColumnName="id")
     private Set<Meeting> meetings = new HashSet<>();
 	
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "patients_of_interest", joinColumns = @JoinColumn(name = "patient_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+	private Set<User> usersInterestedByPatient = new HashSet<>();
+	
 	public Patient() {
 		
 	}
@@ -326,5 +330,13 @@ public class Patient {
 	public void setMeetings(Set<Meeting> meetings) {
 		this.meetings = meetings;
 	}
-	
+
+	public Set<User> getUsersInterestedByPatient() {
+		return usersInterestedByPatient;
+	}
+
+	public void setUsersInterestedByPatient(Set<User> usersInterestedByPatient) {
+		this.usersInterestedByPatient = usersInterestedByPatient;
+	}
+
 }

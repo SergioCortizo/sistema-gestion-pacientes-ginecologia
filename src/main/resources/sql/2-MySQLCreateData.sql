@@ -180,7 +180,14 @@ INSERT INTO complementary_test (id, file_name, file_type, diagnostic_test_id, me
 		   (UUID(), 'prueba_complementaria_8.txt', 'text/plain', 7, 3, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
 		   (UUID(), 'prueba_complementaria_9', 'application/octet-stream', 6, 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.');
 
-
+INSERT INTO patients_of_interest (user_id, patient_id)
+	VALUES (1, 1),
+		   (1, 2),
+		   (1, 3),
+		   (1, 5),
+		   (3, 1),
+		   (3, 4);
+		   
 
 
 

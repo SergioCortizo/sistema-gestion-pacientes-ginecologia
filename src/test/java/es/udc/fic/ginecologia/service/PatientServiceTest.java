@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -624,7 +625,7 @@ public class PatientServiceTest {
 
 		assertTrue(patient.isEnabled());
 	}
-	
+
 	@Test
 	public void changePatientEnablingStateTestExpectUserNotFound()
 			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
@@ -652,7 +653,7 @@ public class PatientServiceTest {
 				() -> patientService.changePatientEnablingState(-1, patient.getId()));
 
 	}
-	
+
 	@Test
 	public void changePatientEnablingStateTestExpectPatientNotFound()
 			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
@@ -680,7 +681,7 @@ public class PatientServiceTest {
 				() -> patientService.changePatientEnablingState(user.getId(), -1L));
 
 	}
-	
+
 	@Test
 	public void changePatientEnablingStateTestExpectPermissionException()
 			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
@@ -703,5 +704,120 @@ public class PatientServiceTest {
 		assertThrows(PermissionException.class,
 				() -> patientService.changePatientEnablingState(user.getId(), patient.getId()));
 
+	}
+
+	@Test
+	public void changeAsPatientOfInterestTest()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role);
+
+		Iterable<Integer> roles = Arrays.asList(role.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		Patient patient = new Patient("Patient 1", "11111111A", "630882421", "981088021", LocalDateTime.now(),
+				"121416ABCD1011", "Postal address 1", "Location 1", "email1@example.com", "", "", "", "", false, 10, 50,
+				LocalDateTime.now(), 0, 0, 0, 0, "", user);
+
+		List<Integer> ids = new ArrayList<>();
+
+		patientService.addPatient(user.getId(), patient, ids);
+
+		patient = patientDao.findByDNI_NIF("11111111A").get();
+
+		patientService.changeAsPatientOfInterest(user.getId(), patient.getId());
+
+		user = userService.findUserById(user.getId());
+
+		Set<Patient> patientsOfInterest = user.getPatientsOfInterest();
+
+		assertTrue(patientsOfInterest.contains(patient));
+
+		patientService.changeAsPatientOfInterest(user.getId(), patient.getId());
+
+		user = userService.findUserById(user.getId());
+
+		patientsOfInterest = user.getPatientsOfInterest();
+
+		assertFalse(patientsOfInterest.contains(patient));
+	}
+
+	@Test
+	public void changeAsPatientOfInterestTestExpectUserNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role);
+
+		Iterable<Integer> roles = Arrays.asList(role.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		Patient patient = new Patient("Patient 1", "11111111A", "630882421", "981088021", LocalDateTime.now(),
+				"121416ABCD1011", "Postal address 1", "Location 1", "email1@example.com", "", "", "", "", false, 10, 50,
+				LocalDateTime.now(), 0, 0, 0, 0, "", user);
+
+		List<Integer> ids = new ArrayList<>();
+
+		patientService.addPatient(user.getId(), patient, ids);
+
+		assertThrows(InstanceNotFoundException.class,
+				() -> patientService.changeAsPatientOfInterest(-1, patient.getId()));
+	}
+	
+	@Test
+	public void changeAsPatientOfInterestTestExpectPatientNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role);
+
+		Iterable<Integer> roles = Arrays.asList(role.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		Patient patient = new Patient("Patient 1", "11111111A", "630882421", "981088021", LocalDateTime.now(),
+				"121416ABCD1011", "Postal address 1", "Location 1", "email1@example.com", "", "", "", "", false, 10, 50,
+				LocalDateTime.now(), 0, 0, 0, 0, "", user);
+
+		List<Integer> ids = new ArrayList<>();
+
+		patientService.addPatient(user.getId(), patient, ids);
+
+		assertThrows(InstanceNotFoundException.class,
+				() -> patientService.changeAsPatientOfInterest(user.getId(), -1L));
+	}
+	
+	@Test
+	public void changeAsPatientOfInterestTestExpectPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+		Role role = createRole("ROLE");
+
+		roleDao.save(role);
+
+		Iterable<Integer> roles = Arrays.asList(role.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		assertThrows(PermissionException.class,
+				() -> patientService.changeAsPatientOfInterest(user.getId(), 1L));
 	}
 }

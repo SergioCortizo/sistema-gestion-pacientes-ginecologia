@@ -19,58 +19,55 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user")
 public class User {
-	
-	@Id 
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
-	
-    private String name;
-    
-    private String username;
-	
-    private String password;
-	
-    private String email;
-    
-    private boolean enabled;
-    
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id")
-            )
-    private Set<Role> roles = new HashSet<>(); 
-    
-    private String postal_address;
-    
-    private String location;
-    
-    private String dni;
-    
-    private String phone_number;
-        
-    private LocalDateTime discharge_date;
-    
-    private String collegiate_number;
-    
-    @OneToMany
-    @JoinColumn(name="user_id", referencedColumnName="id")
-    private Set<Schedule> schedules = new HashSet<>();
-    
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_speciality",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "speciality_id")
-            )
-    private Set<Speciality> specialities = new HashSet<>();
-    
-    public User() {}
 
-    public User(String name, String username, String email, String postalAddress, String location, String dNI,
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
+	private String name;
+
+	private String username;
+
+	private String password;
+
+	private String email;
+
+	private boolean enabled;
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private Set<Role> roles = new HashSet<>();
+
+	private String postal_address;
+
+	private String location;
+
+	private String dni;
+
+	private String phone_number;
+
+	private LocalDateTime discharge_date;
+
+	private String collegiate_number;
+
+	@OneToMany
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private Set<Schedule> schedules = new HashSet<>();
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "user_speciality", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "speciality_id"))
+	private Set<Speciality> specialities = new HashSet<>();
+
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JoinTable(name = "patients_of_interest", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "patient_id"))
+	private Set<Patient> patientsOfInterest = new HashSet<>();
+
+	public User() {
+	}
+
+	public User(String name, String username, String email, String postalAddress, String location, String dNI,
 			String phoneNumber, String collegiateNumber) {
-    	
+
 		this.name = name;
 		this.username = username;
 		this.email = email;
@@ -79,7 +76,7 @@ public class User {
 		dni = dNI;
 		this.phone_number = phoneNumber;
 		this.collegiate_number = collegiateNumber;
-		
+
 		this.discharge_date = LocalDateTime.now();
 		this.enabled = true;
 	}
@@ -203,5 +200,13 @@ public class User {
 	public void setSpecialities(Set<Speciality> specialities) {
 		this.specialities = specialities;
 	}
-    
+
+	public Set<Patient> getPatientsOfInterest() {
+		return patientsOfInterest;
+	}
+
+	public void setPatientsOfInterest(Set<Patient> patientsOfInterest) {
+		this.patientsOfInterest = patientsOfInterest;
+	}
+
 }
