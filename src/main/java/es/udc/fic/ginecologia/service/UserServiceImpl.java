@@ -217,4 +217,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 			scheduleRepo.save(schedule);
 		}
 	}
+
+	@Override
+	public Iterable<User> findAllFacultatives() {
+		return userRepo.findFacultatives();
+	}
 }

@@ -147,6 +147,7 @@ INSERT INTO meeting(activity, comments, meeting_date, patient_id, user_id)
 		   ('Tercera cita', '<p>Tercera cita para la paciente</p>', '2004-02-05 14:16:00', 2, 3),
 		   ('Primera cita', '<p>Primera cita para la paciente</p>', '2021-08-10 17:30:00', 3, 1);
 
+--Datos para question
 INSERT INTO question(question)
 	VALUES ('¿Es activa sexualmente?'),
 		   ('¿Cuándo fue su última relación sexual?'),
@@ -154,7 +155,8 @@ INSERT INTO question(question)
 		   ('¿Realiza prácticas sexuales de riesgo?'),
 		   ('¿Ha tenido algún tipo de ETS?'),
 		   ('¿Cuándo se realizó la última citología?');
-		   
+		
+--Datos para answer   
 INSERT INTO answer(answer, question_id, meeting_id)
 	VALUES ('Si', 1, 1),
 		   ('Hace 3 días', 2, 1),
@@ -169,6 +171,7 @@ INSERT INTO answer(answer, question_id, meeting_id)
 		   ('Hace 2 años', 6, 4),
 		   ('No', 3, 5);
 
+--Datos para complementary_test
 INSERT INTO complementary_test (id, file_name, file_type, diagnostic_test_id, meeting_id, data)
 	VALUES (UUID(), 'prueba_complementaria_1', 'application/octet-stream', 1, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
 		   (UUID(), 'prueba_complementaria_2.txt', 'text/plain', 5, 1, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
@@ -180,6 +183,7 @@ INSERT INTO complementary_test (id, file_name, file_type, diagnostic_test_id, me
 		   (UUID(), 'prueba_complementaria_8.txt', 'text/plain', 7, 3, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.'),
 		   (UUID(), 'prueba_complementaria_9', 'application/octet-stream', 6, 4, 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc sollicitudin risus non turpis luctus, at interdum tortor tristique. Duis consequat facilisis felis, sit amet aliquam enim suscipit vel. Quisque egestas pulvinar faucibus. Aliquam malesuada vel ligula at dictum. Donec non nisl vel odio pulvinar porta sed eget elit. Phasellus sem lacus, pretium ut fermentum sed, porttitor quis leo. Fusce efficitur eu ipsum ut fringilla. Cras eros enim, dapibus eget tempus eget, placerat quis justo. Aenean nec lobortis diam, accumsan accumsan ipsum.');
 
+--Datos para patients_of_interest
 INSERT INTO patients_of_interest (user_id, patient_id)
 	VALUES (1, 1),
 		   (1, 2),
@@ -188,7 +192,42 @@ INSERT INTO patients_of_interest (user_id, patient_id)
 		   (3, 1),
 		   (3, 4);
 		   
-
+--Datos para calendar_entry
+INSERT INTO calendar_entry (entry_date, state, reason, user_id, patient_id) 
+	VALUES ('2002-02-05 14:16:00', 'closed', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 1),
+		   ('2003-02-05 15:30:00', 'closed', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 2),
+		   ('2005-02-05 19:45:00', 'closed', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 3),
+		   ('2006-02-05 16:00:00', 'cancelled', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 4),
+		   ('2007-02-05 17:00:00', 'cancelled', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 5),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '0 09:00' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 3),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '0 12:00' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 4),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '0 17:40' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 5),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '1 20:45' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 3),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '1 15:30' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 4),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '1 18:10' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 2),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '1 12:30' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 5),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '2 20:45' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 3),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '3 15:30' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 4),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '4 18:10' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 2),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '5 12:30' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 1, 5),
+		   ('2002-02-05 14:16:00', 'closed', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 2, 1),
+		   ('2003-02-05 15:30:00', 'closed', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 3, 2),
+		   ('2005-02-05 19:45:00', 'closed', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 4, 3),
+		   ('2006-02-05 16:00:00', 'cancelled', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 5, 4),
+		   ('2007-02-05 17:00:00', 'cancelled', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 2, 5),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '0 09:00' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 3, 3),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '0 12:00' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 4, 4),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '0 17:40' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 5, 5),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '1 20:45' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 2, 3),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '1 15:30' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 3, 4),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '1 18:10' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 4, 2),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '1 12:30' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 5, 5),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '2 20:45' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 2, 3),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '3 15:30' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 3, 4),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '4 18:10' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 4, 2),
+		   (DATE_ADD(DATE(NOW()), INTERVAL '5 12:30' DAY_MINUTE), 'opened', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ac lectus et mauris tempor consectetur. Sed vitae lacus volutpat mauris egestas fermentum. In hac habitasse platea dictumst. Quisque viverra ipsum ac velit ultrices, vel luctus enim viverra. ', 5, 5);
+		   
+		   
 
 
 	       

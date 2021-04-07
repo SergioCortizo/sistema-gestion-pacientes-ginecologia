@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+
+			<main>
+
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{/calendar/meetings-management}"
+								th:text="#{label.meetingsmanagement}">Meetings management</a></li>
+						<li class="breadcrumb-item active">
+							<span th:text="#{label.updatemeeting}">Update meeting</span>
+						</li>
+					</ol>
+
+					<form method="POST" id="update-calendar-entry-form"
+						th:action="@{/calendar/update-calendar-entry/{id}(id=${lineId})}"
+						th:object="${updateCalendarEntryForm}">
+						<div class="form-row">
+							<div class="col-md-8">
+								<div class="form-group">
+									<label class="small mb-1" for="inputReason" th:text="#{label.reason}">Reason</label>
+									<input class="form-control" id="inputReason" th:field="*{reason}" type="text"
+										th:placeholder="#{label.reason}" minlength="10" maxlength="255" required />
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label class="small mb-1" for="dateEntry" th:text="#{label.entrydate}">Entry
+										date</label>
+									<input class="form-control" id="dateEntry" name="dateEntry" type="text"
+										th:placeholder="#{label.entrydate}" th:field="*{dateEntry}" required />
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label class="small mb-1" for="hourEntry" th:text="#{label.entryhour}">Entry
+										hour</label>
+									<input type="time" class="form-control" id="hourEntry" name="hourEntry"
+										th:value="${#temporals.format(updateCalendarEntryForm.hourEntry, 'HH:mm')}" min="00:00" max="23:59"
+										required />
+								</div>
+							</div>
+						</div>
+						<div class="form-row">
+							<div class="col-md-2">
+								<div class="form-group">
+									<label class="small mb-1" for="facultatives"
+										th:text="#{label.facultative}">Facultative</label>
+									<div class="mb-2">
+										<select id="facultatives" th:field="*{facultative}" class="form-control py-4">
+											<option th:text="#{label.selectfacultative}" value="">
+												Select a facultative</option>
+											<option th:each="f : ${facultatives}" th:value="${f.id}">
+												<span th:text="${f.name}">Facultative name</span>
+											</option>
+										</select>
+									</div>
+									<div th:each="f : ${facultatives}" th:id="'schedule-' + ${f.id}"
+										th:style="${f.id == updateCalendarEntryForm.facultative ? 'display: none;' : ''}">
+										<ul>
+											<li th:each="s : ${f.schedules}">
+												<th:block th:switch="${s.pk.weekday.name}">
+													<span th:case="'monday'" th:text="#{label.monday}"
+														class="font-weight-bold">Monday</span>
+													<span th:case="'tuesday'" th:text="#{label.tuesday}"
+														class="font-weight-bold">Tuesday</span>
+													<span th:case="'wednesday'" th:text="#{label.wednesday}"
+														class="font-weight-bold">Wednesday</span>
+													<span th:case="'thursday'" th:text="#{label.thursday}"
+														class="font-weight-bold">Thursday</span>
+													<span th:case="'friday'" th:text="#{label.friday}"
+														class="font-weight-bold">Friday</span>
+												</th:block>
+												<span th:text="${s.initial_hour} + ' - '">Initial
+													hour</span>
+												<span th:text="${s.final_hour}">Final hour</span>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-2">
+								<div class="form-group">
+									<label class="small mb-1" for="patients" th:text="#{label.patient}">Patient</label>
+									<div>
+										<select id="patients" th:field="*{patient}" class="form-control py-4">
+											<option th:text="#{label.selectpatient}" value="">
+												Select a patient</option>
+											<option th:each="p : ${patients}" th:value="${p.id}" th:text="${p.name}">
+												Patient</option>
+										</select>
+									</div>
+								</div>
+							</div>
+						</div>
+						<button type="submit" class="btn btn-primary">
+							<span th:text="#{label.save}">Save</span>
+						</button>
+					</form>
+
+				</div>
+
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+			<script th:src="@{/js/update-meeting.js}"></script>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>

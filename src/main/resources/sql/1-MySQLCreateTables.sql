@@ -1,3 +1,4 @@
+DROP TABLE calendar_entry;
 DROP TABLE patients_of_interest;
 DROP TABLE complementary_test;
 DROP TABLE answer;
@@ -249,7 +250,17 @@ CREATE TABLE patients_of_interest (
 	CONSTRAINT PatientsOfInterestPatientFK FOREIGN KEY (patient_id) REFERENCES patient (id)
 );
 
-
+CREATE TABLE calendar_entry (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	entry_date TIMESTAMP NOT NULL,
+	state ENUM ('opened', 'closed', 'cancelled') NOT NULL,
+	reason VARCHAR(255) NOT NULL,
+	user_id BIGINT NOT NULL,
+	patient_id BIGINT NOT NULL,
+	CONSTRAINT CalendarEntryPK PRIMARY KEY (id),
+	CONSTRAINT CalendarEntryUserFK FOREIGN KEY (user_id) REFERENCES user (id),
+	CONSTRAINT CalendarEntryPatientFK FOREIGN KEY (patient_id) REFERENCES patient (id)
+);
 
 
 

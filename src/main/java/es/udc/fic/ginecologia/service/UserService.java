@@ -14,6 +14,8 @@ import es.udc.fic.ginecologia.model.User;
 public interface UserService {
 	Iterable<User> findAllUsers();
 	
+	Iterable<User> findAllFacultatives();
+	
 	void registerUser(User user, Iterable<Integer> roles) throws DuplicateInstanceException;
 	
 	Iterable<Role> findAllRoles();

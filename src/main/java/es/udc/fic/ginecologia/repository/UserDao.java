@@ -20,4 +20,7 @@ public interface UserDao extends CrudRepository<User, Integer>, CustomizedUserDa
 	Optional<User> findById(Long id);
 	Optional<User> findByUsername(String username);
 	
+	@Query("SELECT u FROM User u JOIN u.roles r WHERE r.name = 'ROLE_FACULTATIVE' AND u.enabled=1")
+	public Iterable<User> findFacultatives();
+	
 }

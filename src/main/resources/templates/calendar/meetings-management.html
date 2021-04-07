@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+
+			<main>
+
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item active">
+							<span th:text="#{label.meetingsmanagement}">Meetings management</span>
+						</li>
+					</ol>
+
+					<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+						<div class="panel panel-default">
+							<div class="panel-heading" role="tab" id="headingAddCalendarEntry">
+								<a role="button" data-toggle="collapse" data-parent="#accordion"
+									href="#collapseAddCalendarEntry" aria-expanded="true"
+									aria-controls="collapseAddCalendarEntry" class="btn btn-primary mb-3">
+									<span th:text="#{label.addcalendarentry}">Add calendar entry</span>
+									<i class="fas fa-plus"></i>
+								</a>
+							</div>
+							<div id="collapseAddCalendarEntry" class="panel-collapse collapse in mb-4" role="tabpanel"
+								aria-labelledby="headingAddCalendarEntry">
+								<div class="panel-body">
+									<form method="POST" id="add-calendar-entry-form"
+										th:action="@{/calendar/add-calendar-entry}" th:object="${addCalendarEntryForm}">
+										<div class="form-row">
+											<div class="col-md-8">
+												<div class="form-group">
+													<label class="small mb-1" for="inputReason"
+														th:text="#{label.reason}">Reason</label>
+													<input class="form-control" id="inputReason" th:field="*{reason}"
+														type="text" th:placeholder="#{label.reason}" minlength="10"
+														maxlength="255" required />
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label class="small mb-1" for="dateEntry"
+														th:text="#{label.entrydate}">Entry date</label>
+													<input class="form-control" id="dateEntry" name="dateEntry"
+														type="text" th:placeholder="#{label.entrydate}"
+														th:field="*{dateEntry}" required />
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label class="small mb-1" for="hourEntry"
+														th:text="#{label.entryhour}">Entry hour</label>
+													<input class="form-control" id="hourEntry" name="hourEntry"
+														type="time" th:placeholder="#{label.entryhour}"
+														th:field="*{hourEntry}" required />
+												</div>
+											</div>
+										</div>
+										<div class="form-row">
+											<div class="col-md-2">
+												<div class="form-group">
+													<label class="small mb-1" for="facultatives"
+														th:text="#{label.facultative}">Facultative</label>
+													<div class="mb-2">
+														<select id="facultatives" th:field="*{facultative}"
+															class="form-control py-4">
+															<option th:text="#{label.selectfacultative}" value="">
+																Select a facultative</option>
+															<option th:each="f : ${facultatives}" th:value="${f.id}">
+																<span th:text="${f.name}">Facultative name</span>
+															</option>
+														</select>
+													</div>
+													<div th:each="f : ${facultatives}" th:id="'schedule-' + ${f.id}"
+														style="display: none;">
+														<ul>
+															<li th:each="s : ${f.schedules}">
+																<th:block th:switch="${s.pk.weekday.name}">
+																	<span th:case="'monday'" th:text="#{label.monday}"
+																		class="font-weight-bold">Monday</span>
+																	<span th:case="'tuesday'" th:text="#{label.tuesday}"
+																		class="font-weight-bold">Tuesday</span>
+																	<span th:case="'wednesday'"
+																		th:text="#{label.wednesday}"
+																		class="font-weight-bold">Wednesday</span>
+																	<span th:case="'thursday'"
+																		th:text="#{label.thursday}"
+																		class="font-weight-bold">Thursday</span>
+																	<span th:case="'friday'" th:text="#{label.friday}"
+																		class="font-weight-bold">Friday</span>
+																</th:block>
+																<span th:text="${s.initial_hour} + ' - '">Initial
+																	hour</span>
+																<span th:text="${s.final_hour}">Final hour</span>
+															</li>
+														</ul>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-2">
+												<div class="form-group">
+													<label class="small mb-1" for="patients"
+														th:text="#{label.patient}">Patient</label>
+													<div>
+														<select id="patients" th:field="*{patient}"
+															class="form-control py-4">
+															<option th:text="#{label.selectpatient}" value="">
+																Select a patient</option>
+															<option th:each="p : ${patients}" th:value="${p.id}"
+																th:text="${p.name}">
+																Patient</option>
+														</select>
+													</div>
+												</div>
+											</div>
+										</div>
+										<button type="submit" class="btn btn-primary">
+											<span th:text="#{label.save}">Save</span>
+										</button>
+									</form>
+								</div>
+							</div>
+
+							<div class="panel-heading" role="tab" id="headingToday">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" data-parent="#accordion"
+										href="#collapseToday" aria-expanded="true" aria-controls="collapseToday">
+										<span th:text="#{label.today} + ' - ' + ${today}">Today</span>
+									</a>
+								</h4>
+							</div>
+							<div id="collapseToday" class="panel-collapse collapse in" role="tabpanel"
+								aria-labelledby="headingToday">
+								<div class="panel-body">
+									<ul th:each="line : ${todayLines}">
+										<li>
+											<span th:text="${line.hour} + ' - '">Hour</span>
+											<span th:text="${line.patient} + ' - '">Patient</span>
+											<th:block th:switch="${line.state.name}">
+												<span th:case="'opened'" th:text="#{label.opened}"
+													class="badge badge-success">Opened</span>
+												<span th:case="'closed'" th:text="#{label.closed}"
+													class="badge badge-warning">Closed</span>
+												<span th:case="'cancelled'" th:text="#{label.cancelled}"
+													class="badge badge-danger">Cancelled</span>
+											</th:block>
+											<div class="row">
+												<span th:text="#{label.assignedfacultative}"
+													class="font-weight-bold mr-1">Assigned facultative</span>
+												<span th:text="${line.user}">User</span>
+											</div>
+											<div class="row">
+												<span th:text="${line.reason}">Reason</span>
+											</div>
+											<div class="row">
+												<form method="POST" th:if="${line.state.name} == 'opened'"
+													th:action="@{/calendar/cancel-meeting/{id}(id=${line.id})}"
+													class="mr-2">
+													<button class="btn btn-danger btn-sm"
+														th:text="#{label.cancelmeeting}">Cancel meeting</button>
+												</form>
+												<form method="GET" th:if="${line.state.name} == 'opened'"
+													th:action="@{/calendar/update-meeting/{id}(id=${line.id})}">
+													<button class="btn btn-primary btn-sm"
+														th:text="#{label.updatemeeting}">Update meeting</button>
+												</form>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="panel-heading" role="tab" id="headingTomorrow">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" data-parent="#accordion"
+										href="#collapseTomorrow" aria-expanded="true" aria-controls="collapseTomorrow">
+										<span th:text="#{label.tomorrow} + ' - ' + ${tomorrow}">Tomorrow</span>
+									</a>
+								</h4>
+							</div>
+							<div id="collapseTomorrow" class="panel-collapse collapse in" role="tabpanel"
+								aria-labelledby="headingTomorrow">
+								<div class="panel-body">
+									<ul th:each="line : ${tomorrowLines}">
+										<li>
+											<span th:text="${line.hour} + ' - '">Hour</span>
+											<span th:text="${line.patient} + ' - '">Patient</span>
+											<th:block th:switch="${line.state.name}">
+												<span th:case="'opened'" th:text="#{label.opened}"
+													class="badge badge-success">Opened</span>
+												<span th:case="'closed'" th:text="#{label.closed}"
+													class="badge badge-warning">Closed</span>
+												<span th:case="'cancelled'" th:text="#{label.cancelled}"
+													class="badge badge-danger">Cancelled</span>
+											</th:block>
+											<div class="row">
+												<span th:text="#{label.assignedfacultative}"
+													class="font-weight-bold mr-1">Assigned facultative</span>
+												<span th:text="${line.user}">User</span>
+											</div>
+											<div class="row">
+												<span th:text="${line.reason}">Reason</span>
+											</div>
+											<form method="POST" th:if="${line.state.name} == 'opened'"
+												th:action="@{/calendar/cancel-meeting/{id}(id=${line.id})}">
+												<button class="btn btn-danger btn-sm"
+													th:text="#{label.cancelmeeting}">Cancel meeting</button>
+											</form>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="panel-heading" role="tab" id="headingNextDays">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" data-parent="#accordion"
+										href="#collapseNextDays" aria-expanded="true" aria-controls="collapseNextDays">
+										<span th:text="#{label.nextdays}">Next days</span>
+									</a>
+								</h4>
+							</div>
+							<div id="collapseNextDays" class="panel-collapse collapse in" role="tabpanel"
+								aria-labelledby="headingNextDays">
+								<div class="panel-body">
+									<ul th:each="line : ${nextDays}">
+										<li>
+											<span th:text="${line.date} + ' - '">Date</span>
+											<span th:text="${line.hour} + ' - '">Hour</span>
+											<span th:text="${line.patient} + ' - '">Patient</span>
+											<th:block th:switch="${line.state.name}">
+												<span th:case="'opened'" th:text="#{label.opened}"
+													class="badge badge-success">Opened</span>
+												<span th:case="'closed'" th:text="#{label.closed}"
+													class="badge badge-warning">Closed</span>
+												<span th:case="'cancelled'" th:text="#{label.cancelled}"
+													class="badge badge-danger">Cancelled</span>
+											</th:block>
+											<div class="row">
+												<span th:text="#{label.assignedfacultative}"
+													class="font-weight-bold mr-1">Assigned facultative</span>
+												<span th:text="${line.user}">User</span>
+											</div>
+											<div class="row">
+												<span th:text="${line.reason}">Reason</span>
+											</div>
+											<form method="POST" th:if="${line.state.name} == 'opened'"
+												th:action="@{/calendar/cancel-meeting/{id}(id=${line.id})}">
+												<button class="btn btn-danger btn-sm"
+													th:text="#{label.cancelmeeting}">Cancel meeting</button>
+											</form>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+							<div class="panel-heading" role="tab" id="headingPreviousDays">
+								<h4 class="panel-title">
+									<a role="button" data-toggle="collapse" data-parent="#accordion"
+										href="#collapsePreviousDays" aria-expanded="true"
+										aria-controls="collapsePreviousDays">
+										<span th:text="#{label.previousdays}">Previous days</span>
+									</a>
+								</h4>
+							</div>
+							<div id="collapsePreviousDays" class="panel-collapse collapse in" role="tabpanel"
+								aria-labelledby="headingPreviousDays">
+								<div class="panel-body">
+									<ul th:each="line : ${previousDays}">
+										<li>
+											<span th:text="${line.date} + ' - '">Date</span>
+											<span th:text="${line.hour} + ' - '">Hour</span>
+											<span th:text="${line.patient} + ' - '">Patient</span>
+											<th:block th:switch="${line.state.name}">
+												<span th:case="'opened'" th:text="#{label.opened}"
+													class="badge badge-success">Opened</span>
+												<span th:case="'closed'" th:text="#{label.closed}"
+													class="badge badge-warning">Closed</span>
+												<span th:case="'cancelled'" th:text="#{label.cancelled}"
+													class="badge badge-danger">Cancelled</span>
+											</th:block>
+
+											<div class="row">
+												<span th:text="#{label.assignedfacultative}"
+													class="font-weight-bold mr-1">Assigned facultative</span>
+												<span th:text="${line.user}">User</span>
+											</div>
+											<div class="row">
+												<span th:text="${line.reason}">Reason</span>
+											</div>
+											<form method="POST" th:if="${line.state.name} == 'opened'"
+												th:action="@{/calendar/cancel-meeting/{id}(id=${line.id})}">
+												<button class="btn btn-danger btn-sm"
+													th:text="#{label.cancelmeeting}">Cancel meeting</button>
+											</form>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+			<script th:src="@{/js/meetings-management.js}"></script>
+
+		</div>
+	</div>
+
+</body>
