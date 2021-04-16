@@ -1,0 +1,44 @@
+table {
+	table-layout: fixed;
+}
+
+h1, h3 {
+	text-decoration: underline;
+}
+
+div.content {
+	margin: 0 0 2.5%;
+}
+
+table#medicines {
+	margin: 1.5% 0 1.5%;
+	border-spacing: 5%;
+	table-layout: fixed;
+}
+
+table#medicines th, table#medicines td {
+  	padding: 5px;
+}
+
+table#medicines thead td {
+	font-size: 90%;
+}
+
+div#signature-info {
+	margin-top: 7.5%;
+}
+
+table.medicine-details {
+	margin: 1.5% 0 1.5%;
+	border-spacing: 5%;
+	table-layout: fixed;
+	font-size: 85%;
+}
+
+table.medicine-details th, table.medicine-details td {
+  	padding: 5px;
+}
+
+table.medicine-details thead td {
+	font-size: 90%;
+}

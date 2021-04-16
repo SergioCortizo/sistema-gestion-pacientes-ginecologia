@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header-pdf :: header">
+</head>
+
+<body>
+	<main>
+
+		<div th:include="fragments/name-and-logo-pdf :: name-and-logo-pdf"></div>
+
+		<div class="content">
+			<h3 th:text="#{label.patientdata}">Patient data</h3>
+
+			<ul>
+				<li>
+					<span class="text-muted" th:text="#{label.historynumber}">History
+						number</span>
+					<span class="ml-5" th:text="${patient.patient.id}">Id</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.name}">Name</span>
+					<span class="ml-5" th:text="${patient.patient.name}">Name</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.dni_nif}">DNI/NIF</span>
+					<span class="ml-5" th:text="${patient.patient.DNI_NIF}">DNI/NIF</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.mobilephone}">Mobile phone</span>
+					<span class="ml-5" th:text="${patient.patient.mobile_phone}">Mobile
+						phone</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.landline}">Landline</span>
+					<span class="ml-5" th:text="${patient.patient.landline}">Landline</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.birthday}">Birthday</span>
+					<span class="ml-5" th:text="${patient.patient.birthday.toLocalDate()}">Birthday</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.age}">Age</span>
+					<span class="ml-5" th:text="${patient.age}">Age</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.hist_numsergas}">History number in
+						SERGAS</span>
+					<span class="ml-5" th:text="${patient.patient.hist_numsergas}">History
+						number in
+						SERGAS</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.postalAddress}">Postal
+						address</span>
+					<span class="ml-5" th:text="${patient.patient.postal_address}">Postal
+						address</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.location}">Location</span>
+					<span class="ml-5" th:text="${patient.patient.location}">Location</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.email}">Email</span>
+					<span class="ml-5" th:text="${patient.patient.email}">Email</span>
+				</li>
+				<li>
+					<span class="text-muted" th:text="#{label.dischargedate}">Discarge
+						date</span>
+					<span class="ml-5" th:text="${patient.patient.discharge_date.toLocalDate()}">Discharge
+						date</span>
+				</li>
+			</ul>
+		</div>
+
+		<div class="content">
+			<h3 th:text="#{label.personalantecedents}">Personal antecedents</h3>
+
+			<ul>
+				<li>
+					<div class="row mb-2">
+						<span class="text-muted" th:text="#{label.allergies}">Allergies</span>
+					</div>
+					<div class="row mb-4">
+						<span th:text="${patient.patient.allergies}">Allergies</span>
+					</div>
+				</li>
+				<li>
+					<div class="row mb-2">
+						<span class="text-muted" th:text="#{label.diseases}">Diseases</span>
+					</div>
+					<div class="row mb-4">
+						<span th:text="${patient.patient.diseases}">Diseases</span>
+					</div>
+				</li>
+				<li>
+					<div class="row mb-2">
+						<span class="text-muted" th:text="#{label.interventions}">Interventions</span>
+					</div>
+					<div class="row mb-4">
+						<span th:text="${patient.patient.interventions}">Interventions</span>
+					</div>
+				</li>
+				<li>
+					<div class="row mb-2">
+						<span class="text-muted" th:text="#{label.family_background}">Family
+							background</span>
+					</div>
+					<div class="row mb-4">
+						<span
+							th:text="${patient.patient.family_background} == '' ? #{label.notregistered} : ${patient.patient.family_background}">Family
+							background</span>
+					</div>
+				</li>
+				<li>
+					<span class="text-muted mr-2" th:text="#{label.smoker}">Smoker</span>
+					<span th:if="${patient.patient.smoker}" th:text="#{label.yes}">Yes</span>
+					<span th:if="${!patient.patient.smoker}" th:text="#{label.no}">No</span>
+				</li>
+			</ul>
+
+		</div>
+
+		<div class="content">
+			<h3 th:text="#{label.ginecologycalantecedents}">Ginecologycal antecedents</h3>
+
+			<ul>
+				<li>
+					<span class="text-muted mr-2" th:text="#{label.menarchyage}">Menarche
+						age</span>
+					<span th:text="${patient.patient.menarche}">Menarche age</span>
+				</li>
+				<li>
+					<span class="text-muted mr-2" th:text="#{label.menopauseage}">Menopause
+						age</span>
+					<span th:text="${patient.patient.menopause}">Menopause age</span>
+				</li>
+				<li>
+					<span class="text-muted mr-2" th:text="#{label.lastmenstruationdate}">Last menstruation
+						date</span>
+					<span th:text="${patient.patient.last_menstruation_date.toLocalDate()}">Last
+						menstruation date</span>
+				</li>
+				<li>
+					<span class="text-muted mr-2" th:text="#{label.menstrualtype}">Menstrual type</span>
+					<span th:text="${patient.patient.menstrual_type}">Menstrual
+						type</span>
+				</li>
+				<li>
+					<span class="text-muted mr-2" th:text="#{label.pregnancies}">Pregnancies</span>
+					<span th:text="${patient.patient.pregnancies}">Pregnancies</span>
+				</li>
+				<li>
+					<span class="text-muted mr-2" th:text="#{label.childbirths}">Childbirths</span>
+					<span th:text="${patient.patient.childbirths}">Childbirths</span>
+				</li>
+				<li>
+					<span class="text-muted mr-2" th:text="#{label.cesareansections}">Cesarean sections</span>
+					<span th:text="${patient.patient.cesarean_sections}">Cesarean
+						sections</span>
+				</li>
+				<li>
+					<span class="text-muted mr-2" th:text="#{label.misbirths}">Misbirths</span>
+					<span th:text="${patient.patient.misbirths}">Misbirths</span>
+				</li>
+				<li>
+					<span class="text-muted mr-2" th:text="#{label.contraceptives}">Contraceptives</span>
+					<ul th:each="contraceptive : ${patient.patient.contraceptives}">
+						<li><span th:text="${contraceptive.name}">Contraceptive</span></li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+		<div class="content">
+			<h3 th:text="#{label.cliniccourse}">Clinic course</h3>
+
+			<ul th:each="meeting : ${patient.meetings}">
+				<li>
+					<span
+						th:text="${meeting.meeting_date.toLocalDate()} + ' ' + ${meeting.meeting_date.toLocalTime()}">Meeting
+						date</span>
+					<ul>
+						<li>
+							<span class="text-muted" th:text="#{label.activity}">Activity</span>
+							<span th:text="${meeting.activity}">Activity</span>
+						</li>
+						<li>
+							<span class="text-muted" th:text="#{label.facultativeprofile}">Facultative
+								profile</span>
+							<span th:text="${meeting.user.username}">Facultative
+								profile</span>
+						</li>
+						<li>
+							<span class="text-muted" th:text="#{label.comments}">Comments</span>
+							<div class="content" th:utext="${meeting.comments}" />
+						</li>
+						<li>
+							<span class="text-muted" th:text="#{label.questions}">Questions</span>
+							<ul>
+								<li th:each="answer : ${meeting.answers}">
+									<div>
+										<span class="text-muted" th:text="${answer.question.question}">Question</span>
+									</div>
+									<div>
+										<span th:text="${answer.answer}">Answer</span>
+									</div>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<span class="text-muted" th:text="#{label.complementarytests}">Complementary tests</span>
+							<ul>
+								<li th:each="complementaryTest : ${meeting.complementaryTests}">
+									<span th:text="${complementaryTest.fileName} + ' - '">Complementary
+										test name</span>
+									<span th:text="${complementaryTest.diagnosticTest.name}">Diagnostic
+										test name</span>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<span class="text-muted" th:text="#{label.recipes}">Recipes</span>
+							<div th:each="recipe : ${meeting.recipes}" style="margin: 0 0 2.5%">
+								<u><span class="text-muted" th:text="#{label.recipedispensedfor}">Recipe
+									dispensed for</span></u>
+								<span class="ml-2" th:text="${recipe.dispensingDate}">Dispensing
+									date</span>
+								<div>
+									<span class="font-weight-bold"
+										th:text="#{label.clarifications}">Clarifications</span>
+								</div>
+								<div th:utext="${recipe.clarifications}"></div>
+								<table class="table table-wrap w-auto medicine-details">
+									<thead>
+										<tr>
+											<td class="text-center">
+												<u th:text="#{label.medicine}">Medicine</u>
+											</td>
+											<td class="text-center">
+												<u th:text="#{label.denomination}">Denomination</u>
+											</td>
+											<td class="text-center">
+												<u th:text="#{label.dosification}">Dosification</u>
+											</td>
+											<td class="text-center">
+												<u th:text="#{label.formofadministration}">Form of administration</u>
+											</td>
+											<td class="text-center">
+												<u th:text="#{label.format}">Format</u>
+											</td>
+											<td class="text-center">
+												<u th:text="#{label.units}">Units</u>
+											</td>
+											<td class="text-center">
+												<u th:text="#{label.posology}">Posology</u>
+											</td>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="medicine : ${recipe.medicines}">
+											<td class="text-center">
+												<small th:text="${medicine.medicine.name}">Medicine</small>
+											</td>
+											<td class="text-center">
+												<small th:text="${medicine.denomination}">Denomination</small>
+											</td>
+											<td class="text-center">
+												<small th:text="${medicine.dosification}">Dosification</small>
+											</td>
+											<td class="text-center">
+												<small th:text="${medicine.formOfAdministration}">Form of
+													administration</small>
+											</td>
+											<td class="text-center">
+												<small th:text="${medicine.format}">Format</small>
+											</td>
+											<td class="text-center">
+												<small th:text="${medicine.units}">Units</small>
+											</td>
+											<td class="text-center">
+												<small th:text="${medicine.posology}">Posology</small>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+	</main>
+</body>
+
+</html>

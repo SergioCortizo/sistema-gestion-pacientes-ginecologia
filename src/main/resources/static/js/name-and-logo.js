@@ -9,7 +9,7 @@ $(document).ready(function() {
 			logo: {
 				required: false,
 				extension: "png|jpe?g|gif",
-				filesize: 1,
+				filesize: 10,
 				imagedim: [200, 200]
 			}
 		}

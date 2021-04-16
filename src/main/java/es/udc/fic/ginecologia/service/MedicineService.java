@@ -1,5 +1,7 @@
 package es.udc.fic.ginecologia.service;
 
+import java.util.List;
+
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
@@ -21,4 +23,7 @@ public interface MedicineService {
 	Iterable<Medicine> findMedicines(Integer adminId, String name, boolean enabled)
 			throws InstanceNotFoundException, PermissionException;
 
+	Medicine findMedicineById(Integer id) throws InstanceNotFoundException;
+
+	Iterable<Medicine> findMedicinesById(List<Integer> ids);
 }

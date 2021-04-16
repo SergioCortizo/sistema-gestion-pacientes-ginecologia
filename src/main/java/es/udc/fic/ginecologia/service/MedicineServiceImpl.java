@@ -1,5 +1,6 @@
 package es.udc.fic.ginecologia.service;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,22 @@ public class MedicineServiceImpl implements MedicineService {
 	public Iterable<Medicine> findAllMedicines() {
 		return medicineDao.findAll();
 	}
+	
+	@Override
+	public Medicine findMedicineById(Integer id) throws InstanceNotFoundException {
+		Optional<Medicine> foundMedicine = medicineDao.findById(id);
+		
+		if(!foundMedicine.isPresent()) {
+			throw new InstanceNotFoundException("entities.medicine", id);
+		}
+		
+		return foundMedicine.get();
+	}
+	
+	@Override
+	public Iterable<Medicine> findMedicinesById(List<Integer> ids) {
+		return medicineDao.findAllById(ids);
+	} 
 	
 	@Override
 	public void addMedicine(Integer adminId, String name)

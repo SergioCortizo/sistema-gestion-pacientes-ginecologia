@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header-pdf :: header">
+</head>
+
+<body>
+	<main>
+
+		<div th:include="fragments/name-and-logo-pdf :: name-and-logo-pdf"></div>
+
+		<div class="content">
+			<h3 th:text="#{label.patientdata}">Patient data</h3>
+
+			<ul>
+				<li>
+					<span class="font-weight-bold" th:text="#{label.patientname}">Patient name</span>
+					<span th:text="${recipe.meeting.patient.name}">Patient name</span>
+				</li>
+				<li>
+					<span class="font-weight-bold" th:text="#{label.birthday}">Birthday</span>
+					<span th:text="${recipe.meeting.patient.birthday.toLocalDate()}">Birthday</span>
+				</li>
+				<li>
+					<span class="font-weight-bold" th:text="#{label.dni_nif}">DNI/NIF</span>
+					<span th:text="${recipe.meeting.patient.DNI_NIF}">DNI/NIF</span>
+				</li>
+			</ul>
+		</div>
+
+		<div class="content">
+			<h3 th:text="#{label.facultativedata}">Facultative data</h3>
+
+			<ul id="facultative-data">
+				<li>
+					<span class="font-weight-bold" th:text="#{label.facultativename}">Facultative name</span>
+					<span th:text="${recipe.meeting.user.name}">Facultative name</span>
+				</li>
+				<li>
+					<span class="font-weight-bold" th:text="#{label.collegiatenumber}">Collegiate number</span>
+					<span th:text="${recipe.meeting.user.collegiate_number}">Collegiate number</span>
+				</li>
+				<li>
+					<span class="font-weight-bold" th:text="#{label.specialities}">Specialities</span>
+					<ul>
+						<li th:each="speciality : ${recipe.meeting.user.specialities}" th:if="${speciality.enabled}">
+							<span th:text="${speciality.name}">Speciality</span>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+
+		<div class="content">
+			<h3 th:text="#{label.recipedata}">Recipe data</h3>
+
+			<ul>
+				<li>
+					<span class="font-weight-bold" th:text="#{label.prescriptiondate}">Prescription date</span>
+					<span th:text="${recipe.meeting.meeting_date.toLocalDate()}">Prescription date</span>
+				</li>
+				<li>
+					<span class="font-weight-bold" th:text="#{label.dispensingdate}">Dispensing date</span>
+					<span th:text="${recipe.dispensingDate}">Dispensing date</span>
+				</li>
+			</ul>
+
+			<table id="medicines" class="table table-wrap w-auto" th:if="${#lists.size(recipe.medicines)} > '0'">
+				<thead>
+					<tr>
+						<td class="text-center">
+							<u th:text="#{label.medicine}">Medicine</u>
+						</td>
+						<td class="text-center">
+							<u th:text="#{label.denomination}">Denomination</u>
+						</td>
+						<td class="text-center">
+							<u th:text="#{label.dosification}">Dosification</u>
+						</td>
+						<td class="text-center">
+							<u th:text="#{label.formofadministration}">Form of administration</u>
+						</td>
+						<td class="text-center">
+							<u th:text="#{label.format}">Format</u>
+						</td>
+						<td class="text-center">
+							<u th:text="#{label.units}">Units</u>
+						</td>
+						<td class="text-center">
+							<u th:text="#{label.posology}">Posology</u>
+						</td>
+					</tr>
+				</thead>
+				<tbody>
+					<tr th:each="medicine : ${recipe.medicines}">
+						<td class="text-center">
+							<small th:text="${medicine.medicine.name}">Medicine</small>
+						</td>
+						<td class="text-center">
+							<small th:text="${medicine.denomination}">Denomination</small>
+						</td>
+						<td class="text-center">
+							<small th:text="${medicine.dosification}">Dosification</small>
+						</td>
+						<td class="text-center">
+							<small th:text="${medicine.formOfAdministration}">Form of administration</small>
+						</td>
+						<td class="text-center">
+							<small th:text="${medicine.format}">Format</small>
+						</td>
+						<td class="text-center">
+							<small th:text="${medicine.units}">Units</small>
+						</td>
+						<td class="text-center">
+							<small th:text="${medicine.posology}">Posology</small>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+	
+			<span class="font-weight-bold" th:text="#{label.clarifications}">Clarifications</span>
+	
+			<div th:utext="${recipe.clarifications}"></div>
+		
+		</div>
+		
+		<div id="signature" class="content">
+			
+			<span class="font-weight-bold" id="signature-title" th:text="#{label.signature}">Signature</span>
+			<div id="signature-info">
+				<span th:text="${recipe.meeting.user.name} + ', ' + ${recipe.meeting.user.location} + ', ' + ${recipe.meeting.meeting_date.toLocalDate()}">
+					Signature info</span>
+			</div>
+			
+		</div>
+
+	</main>
+</body>
+
+</html>

@@ -44,6 +44,10 @@ public class Meeting {
 	@OneToMany
     @JoinColumn(name="meeting_id", referencedColumnName="id")
     private Set<ComplementaryTest> complementaryTests = new HashSet<>();
+	
+	@OneToMany
+    @JoinColumn(name="meeting_id", referencedColumnName="id")
+    private Set<Recipe> recipes = new HashSet<>();
 
 	public Meeting() {
 
@@ -120,4 +124,12 @@ public class Meeting {
 		this.complementaryTests = complementaryTests;
 	}
 
+	public Set<Recipe> getRecipes() {
+		return recipes;
+	}
+
+	public void setRecipes(Set<Recipe> recipes) {
+		this.recipes = recipes;
+	}
+	
 }

@@ -68,7 +68,7 @@ public class MeetingServiceTest {
 		
 		patientDao.save(patient);
 		
-		meetingService.addMeeting(user.getId(), patient.getId(), "Activity", "Comments", null, null, null);
+		meetingService.addMeeting(user.getId(), patient.getId(), "Activity", "Comments", null, null, null, null);
 		
 		final Patient patientUpdated = patientDao.findById(patient.getId()).get();
 		

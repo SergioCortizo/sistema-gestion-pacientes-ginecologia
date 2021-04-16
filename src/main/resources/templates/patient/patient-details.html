@@ -29,6 +29,13 @@
 						</li>
 					</ol>
 
+					<form id="monitoring-report-form" method="GET" class="mb-3"
+						th:action="@{/patient/monitoring-report/{id}(id=${patient.patient.id})}">
+						<button type="submit" class="btn btn-primary">
+							<span th:text="#{label.generatemonitoringreport}">Generate monitoring report</span>
+						</button>
+					</form>
+
 					<div class="card mb-4">
 						<div class="card-header">
 							<i class="fas fa-hospital-user mr-1"></i>
@@ -327,7 +334,8 @@
 																<li>
 																	<span class="text-muted"
 																		th:text="#{label.comments}">Comments</span>
-																	<div class="content" th:utext="${meeting.comments}" />
+																	<div class="content"
+																		th:utext="${meeting.comments}" />
 																</li>
 																<li>
 																	<span class="text-muted"
@@ -347,22 +355,128 @@
 																</li>
 																<li>
 																	<span class="text-muted"
-																		th:text="#{label.complementarytests}">Pruebas
-																		complementarias</span>
+																		th:text="#{label.complementarytests}">Complementary
+																		tests</span>
 																	<ul>
 																		<li
 																			th:each="complementaryTest : ${meeting.complementaryTests}">
-																			<a th:href="@{/downloadFile/{id}(id=${complementaryTest.id})}">
-																				<span th:text="${complementaryTest.fileName} + ' - '">Complementary
-																				test name</span>
+																			<a
+																				th:href="@{/downloadFile/{id}(id=${complementaryTest.id})}">
+																				<span
+																					th:text="${complementaryTest.fileName} + ' - '">Complementary
+																					test name</span>
 																			</a>
-																			<span th:text="${complementaryTest.diagnosticTest.name}">Diagnostic
+																			<span
+																				th:text="${complementaryTest.diagnosticTest.name}">Diagnostic
 																				test name</span>
 																		</li>
 																	</ul>
 																</li>
 
-															</ul>
+																<li>
+																	<span class="text-muted"
+																		th:text="#{label.recipes}">Recipes</span>
+																	<ul>
+																		<li th:each="recipe : ${meeting.recipes}">
+																			<span class="text-muted"
+																				th:text="#{label.recipedispensedfor}">Recipe
+																				dispensed for</span>
+																			<span class="ml-2"
+																				th:text="${recipe.dispensingDate}">Dispensing
+																				date</span>
+
+																			<ul>
+																				<li>
+																					<span class="font-weight-bold"
+																						th:text="#{label.clarifications}">Clarifications</span>
+																					<div
+																						th:utext="${recipe.clarifications}">
+																					</div>
+																				</li>
+																				<li>
+																					<span class="font-weight-bold"
+																						th:text="#{label.medicines}">Medicines</span>
+																					<table
+																						class="table table-sm table-responsive"
+																						id="table-medicines">
+																						<thead>
+																							<tr>
+																								<th scope="col"
+																									th:text="#{label.medicine}">
+																									Medicine
+																								</th>
+																								<th scope="col"
+																									th:text="#{label.denomination}">
+																									Denomination
+																								</th>
+																								<th scope="col"
+																									th:text="#{label.dosification}">
+																									Dosification
+																								</th>
+																								<th scope="col"
+																									th:text="#{label.formofadministration}">
+																									Form
+																									of
+																									administration</th>
+																								<th scope="col"
+																									th:text="#{label.format}">
+																									Format
+																								</th>
+																								<th scope="col"
+																									th:text="#{label.units}">
+																									Units</th>
+																								<th scope="col"
+																									th:text="#{label.posology}">
+																									Posology
+																								</th>
+																							</tr>
+																						</thead>
+																						<tbody>
+																							<tr
+																								th:each="medicine : ${recipe.medicines}">
+																								<th scope="row"
+																									th:text="${medicine.medicine.name}">
+																									Medicine</th>
+																								<td
+																									th:text="${medicine.denomination}">
+																									Denomination</td>
+																								<td
+																									th:text="${medicine.dosification}">
+																									Dosification</td>
+																								<td
+																									th:text="${medicine.formOfAdministration}">
+																									Form of
+																									administration</td>
+																								<td
+																									th:text="${medicine.format}">
+																									Format</td>
+																								<td
+																									th:text="${medicine.units}">
+																									Units</td>
+																								<td
+																									th:text="${medicine.posology}">
+																									Posology</td>
+																							</tr>
+																						</tbody>
+																					</table>
+																				</li>
+																			</ul>
+
+																			<div class="row">
+																				<form method="GET"
+																					th:action="@{/recipe/get-recipe/{id}(id=${recipe.id})}">
+																					<button class="btn btn-link"
+																						type="submit">
+																						<span
+																							th:text="#{label.generaterecipe}">Generate
+																							recipe</span>
+																					</button>
+																				</form>
+																			</div>
+																		</li>
+
+																	</ul>
+
 														</div>
 													</div>
 												</div>

@@ -17,6 +17,8 @@ public class MeetingForm {
 	private List<Integer> diagnosticTestIds;
 
 	private List<MultipartFile> files;
+	
+	private List<RecipeItem> recipes;
 
 	public MeetingForm() {
 
@@ -68,6 +70,14 @@ public class MeetingForm {
 
 	public void setFiles(List<MultipartFile> files) {
 		this.files = files;
+	}
+
+	public List<RecipeItem> getRecipes() {
+		return recipes;
+	}
+
+	public void setRecipes(List<RecipeItem> recipes) {
+		this.recipes = recipes;
 	}
 
 }

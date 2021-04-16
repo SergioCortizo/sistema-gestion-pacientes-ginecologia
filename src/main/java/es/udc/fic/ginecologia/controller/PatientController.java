@@ -27,12 +27,14 @@ import es.udc.fic.ginecologia.form.PatientForm;
 import es.udc.fic.ginecologia.form.SearchPatientsForm;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
 import es.udc.fic.ginecologia.model.DiagnosticTest;
+import es.udc.fic.ginecologia.model.Medicine;
 import es.udc.fic.ginecologia.model.Meeting;
 import es.udc.fic.ginecologia.model.Patient;
 import es.udc.fic.ginecologia.model.Question;
 import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.service.ContraceptiveService;
 import es.udc.fic.ginecologia.service.DiagnosticTestService;
+import es.udc.fic.ginecologia.service.MedicineService;
 import es.udc.fic.ginecologia.service.PatientService;
 import es.udc.fic.ginecologia.service.QuestionService;
 
@@ -53,6 +55,9 @@ public class PatientController {
 
 	@Autowired
 	DiagnosticTestService diagnosticTestService;
+	
+	@Autowired
+	MedicineService medicineService;
 
 	// Patients list
 	@GetMapping("/patient/patient-list")
@@ -257,12 +262,17 @@ public class PatientController {
 
 		List<Meeting> meetings = new ArrayList<>(patient.getMeetings());
 		Collections.sort(meetings, new MeetingByDateDescendingComparator());
+		
+		Iterable<Medicine> medicines = () -> StreamSupport
+				.stream(medicineService.findAllMedicines().spliterator(), false)
+				.filter(m -> m.isEnabled()).iterator();
 
 		model.addAttribute("updatePatientForm", patientForm);
 		model.addAttribute("patientId", id);
 		model.addAttribute("meetings", meetings);
 		model.addAttribute("questions", questions);
 		model.addAttribute("diagnosticTests", diagnosticTests);
+		model.addAttribute("medicines", medicines);
 		model.addAttribute("addMeetingForm", new MeetingForm());
 		model.addAttribute("contraceptives", contraceptiveService.findAllActiveContraceptives());
 

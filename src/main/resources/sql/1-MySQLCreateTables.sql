@@ -1,3 +1,5 @@
+DROP TABLE recipe_medicine;
+DROP TABLE recipe;
 DROP TABLE calendar_entry;
 DROP TABLE patients_of_interest;
 DROP TABLE complementary_test;
@@ -261,6 +263,33 @@ CREATE TABLE calendar_entry (
 	CONSTRAINT CalendarEntryUserFK FOREIGN KEY (user_id) REFERENCES user (id),
 	CONSTRAINT CalendarEntryPatientFK FOREIGN KEY (patient_id) REFERENCES patient (id)
 );
+
+CREATE TABLE recipe (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	dispensing_date DATETIME NOT NULL DEFAULT NOW(),
+	clarifications LONGBLOB,
+	meeting_id BIGINT NOT NULL,
+	CONSTRAINT RecipePK PRIMARY KEY (id),
+	CONSTRAINT RecipeMeetingFK FOREIGN KEY (meeting_id) REFERENCES meeting (id)
+);
+
+CREATE TABLE recipe_medicine (
+	recipe_id BIGINT NOT NULL,
+	medicine_id BIGINT NOT NULL,
+	denomination VARCHAR(100),
+	dosification VARCHAR(200),
+	form_of_administration VARCHAR(200),
+	format BIGINT DEFAULT 0,
+	units BIGINT DEFAULT 0,
+	posology VARCHAR(100),
+	CONSTRAINT RecipeMedicinePK PRIMARY KEY (recipe_id, medicine_id),
+	CONSTRAINT RecipeMedicineRecipeFK FOREIGN KEY (recipe_id) REFERENCES recipe (id),
+	CONSTRAINT RecipeMedicineMedicineFK FOREIGN KEY (medicine_id) REFERENCES medicine (id)
+);
+
+
+
+
 
 
 

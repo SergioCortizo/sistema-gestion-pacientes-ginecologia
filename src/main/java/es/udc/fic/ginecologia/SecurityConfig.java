@@ -105,6 +105,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        .antMatchers("/calendar/update-calendar-entry/{id}").hasRole("ADMIN")
 	        .antMatchers("/calendar/cancel-meeting/{id}").hasRole("ADMIN")
 	        .antMatchers("/calendar/set-entry-as-closed/{id}").hasRole("ADMIN")
+	        .antMatchers("/downloadFile/{fileName:.+}").hasRole("FACULTATIVE")
+	        .antMatchers("/recipe/get-recipe/{id}").hasRole("FACULTATIVE")
 	        .anyRequest().authenticated()
 	        .and()
 		        .formLogin()
