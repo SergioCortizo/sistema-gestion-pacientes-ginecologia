@@ -21,6 +21,7 @@ import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
 import es.udc.fic.ginecologia.form.MeetingForm;
+import es.udc.fic.ginecologia.form.MessageForm;
 import es.udc.fic.ginecologia.form.PatientConversor;
 import es.udc.fic.ginecologia.form.PatientDetails;
 import es.udc.fic.ginecologia.form.PatientForm;
@@ -37,6 +38,7 @@ import es.udc.fic.ginecologia.service.DiagnosticTestService;
 import es.udc.fic.ginecologia.service.MedicineService;
 import es.udc.fic.ginecologia.service.PatientService;
 import es.udc.fic.ginecologia.service.QuestionService;
+import es.udc.fic.ginecologia.service.UserService;
 
 @Controller
 public class PatientController {
@@ -58,6 +60,9 @@ public class PatientController {
 	
 	@Autowired
 	MedicineService medicineService;
+	
+	@Autowired
+	UserService userService;
 
 	// Patients list
 	@GetMapping("/patient/patient-list")
@@ -146,6 +151,8 @@ public class PatientController {
 		}
 
 		model.addAttribute("patient", patient);
+		model.addAttribute("messageForm", new MessageForm());
+		model.addAttribute("facultatives", userService.findAllFacultatives());
 
 		return "patient/patient-details";
 	}
@@ -274,6 +281,9 @@ public class PatientController {
 		model.addAttribute("diagnosticTests", diagnosticTests);
 		model.addAttribute("medicines", medicines);
 		model.addAttribute("addMeetingForm", new MeetingForm());
+		model.addAttribute("messageForm", new MessageForm());
+		model.addAttribute("facultatives", userService.findAllFacultatives());
+		
 		model.addAttribute("contraceptives", contraceptiveService.findAllActiveContraceptives());
 
 		return "patient/update-patient";

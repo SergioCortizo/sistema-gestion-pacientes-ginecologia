@@ -1,3 +1,4 @@
+DROP TABLE message;
 DROP TABLE recipe_medicine;
 DROP TABLE recipe;
 DROP TABLE calendar_entry;
@@ -287,7 +288,22 @@ CREATE TABLE recipe_medicine (
 	CONSTRAINT RecipeMedicineMedicineFK FOREIGN KEY (medicine_id) REFERENCES medicine (id)
 );
 
-
+CREATE TABLE message (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	subject VARCHAR(100) NOT NULL,
+	message_body LONGBLOB,
+	message_date TIMESTAMP NOT NULL,
+	message_read TINYINT (4) DEFAULT NULL,
+	sender_id BIGINT NOT NULL,
+	receiver_id BIGINT NOT NULL,
+	replied_message_id BIGINT DEFAULT NULL,
+	interconsultation_meeting_id BIGINT DEFAULT NULL,
+	CONSTRAINT MessagePK PRIMARY KEY (id),
+	CONSTRAINT MessageSenderFK FOREIGN KEY (sender_id) REFERENCES user (id),
+	CONSTRAINT MessageReceiverFK FOREIGN KEY (receiver_id) REFERENCES user (id),
+	CONSTRAINT RepliedMessageFK FOREIGN KEY (replied_message_id) REFERENCES message (id),
+	CONSTRAINT InterconsultationMeetingFK FOREIGN KEY (interconsultation_meeting_id) REFERENCES meeting (id)
+);
 
 
 

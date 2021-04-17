@@ -231,7 +231,19 @@ INSERT INTO recipe_medicine (recipe_id, medicine_id, denomination, dosification,
 		   (3, 5, 'Sanofi', '1 mg/ciclo', 'Vía respiratoria', 2, 6, '2-0-1'),
 		   (3, 6, 'AbbVie', '32 cg', 'Vía transdérmica', 3, 3, '3 cada 12 horas');
 		   
-
+INSERT INTO message (subject, message_body, message_date, message_read, sender_id, receiver_id, replied_message_id, interconsultation_meeting_id)
+	VALUES ('Mensaje 1', '<p>Este es el mensaje 1.</p>', '2021-02-07 12:32:54', 1, 1, 2, null, null),
+		   ('Mensaje 2', '<p>Este es el mensaje 2.</p>', '2021-02-07 15:48:00', 1, 2, 1, 1, null),
+		   ('Mensaje 3', '<p>Este es el mensaje 3.</p>', '2021-02-08 12:32:54', 1, 1, 2, 2, null),
+		   ('Mensaje 4', '<p>Este es el mensaje 4.</p>', '2021-02-08 16:03:11', 0, 2, 1, 3, null),
+		   ('Mensaje 5', '<p>Este es el mensaje 5.</p>', '2021-03-01 15:00:25', 1, 2, 3, null, null),
+		   ('Mensaje 6', '<p>Este es el mensaje 6.</p>', '2021-03-02 12:32:54', 0, 3, 2, 5, null),
+		   ('Mensaje 7', '<p>Este es el mensaje 7.</p>', '2021-03-10 10:52:54', 1, 3, 4, null, null),
+		   ('Mensaje 8', '<p>Este es el mensaje 8.</p>', '2021-03-10 18:45:01', 1, 4, 3, 7, null),
+		   ('Mensaje 9', '<p>Este es el mensaje 9.</p>', '2021-03-11 09:05:16', 0, 3, 4, 8, null),
+		   ('Mensaje de interconsulta 1', '<p>Esto es un mensaje de interconsulta de prueba numero 1.</p>', '2021-03-11 13:33:11', 1, 1, 2, null, 2),
+		   ('Mensaje de interconsulta 2', '<p>Esto es un mensaje de interconsulta de prueba numero 2.</p>', '2021-03-11 15:20:03', 0, 2, 1, null, 1),
+		   ('Mensaje de interconsulta 3', '<p>Esto es un mensaje de interconsulta de prueba numero 3.</p>', '2021-03-12 12:02:48', 1, 3, 1, null, 3);
 
 
 

@@ -318,6 +318,96 @@
 														class="panel-collapse collapse in" role="tabpanel"
 														th:attr="aria-labelledby='collapseHeadingCourseClinic-' + ${meeting.id}">
 														<div class="panel-body">
+															<a href="#interconsultationModal" role="button"
+																class="btn btn-large btn-primary" data-toggle="modal"
+																th:text="#{label.openinterconsultation}">Open
+																interconsultation</a>
+
+															<div id="interconsultationModal" class="modal fade">
+																<div class="modal-dialog modal-lg">
+																	<div class="modal-content">
+																		<div class="modal-header">
+																			<h4 class="modal-title"
+																				th:text="#{label.openinterconsultation}">
+																				Open
+																				interconsultation</h4>
+																		</div>
+																		<div class="modal-body">
+																			<form id="open-interconsultation-form"
+																				method="POST"
+																				th:action="@{/messages/open-interconsultation/{id}(id=${meeting.id})}"
+																				th:object="${messageForm}">
+																				<div class="row">
+																					<div class="form-group">
+																						<label class="small mb-1"
+																							for="users"
+																							th:text="#{label.user}">User</label>
+																						<div>
+																							<select
+																								id="usersInterconsultation"
+																								th:field="*{receiverId}"
+																								class="form-control py-4">
+																								<option
+																									th:each="user : ${facultatives}"
+																									th:value="${user.id}">
+																									<span
+																										th:text="${user.name}">User</span>
+																								</option>
+																							</select>
+																						</div>
+																						<div
+																							th:each="user, rowStat : ${facultatives}">
+																							<ul th:id="'specialities-' + ${user.id}"
+																								th:style="${rowStat.index} == '0' ? '' : 'display:none;'">
+																								<li
+																									th:each="speciality : ${user.specialities}">
+																									<span
+																										th:text="${speciality.name}">Speciality</span>
+																								</li>
+																							</ul>
+																						</div>
+																					</div>
+																				</div>
+																				<div class="row">
+																					<label class="small mb-1"
+																						for="reasonInterconsultation"
+																						th:text="#{label.reason}">Reason</label>
+																					<input class="form-control py-4"
+																						id="reasonInterconsultation"
+																						th:field="*{subject}"
+																						type="text"
+																						th:placeholder="#{label.reason}"
+																						maxlength="100" required />
+																				</div>
+																				<div class="row">
+																					<label class="small mb-1"
+																						for="users"
+																						th:text="#{label.messagebody}">Message
+																						body</label>
+																				</div>
+																				<div class="row">
+																					<textarea id="interconsultationbody"
+																						th:field="*{message_body}"
+																						rows="15"></textarea>
+																				</div>
+																				<div class="row mt-3">
+																					<button
+																						id="submit-interconsultation"
+																						type="submit"
+																						th:text="#{label.send}"
+																						class="btn btn-primary">Send</button>
+																				</div>
+																			</form>
+																		</div>
+																		<div class="modal-footer">
+																			<button type="button"
+																				class="btn btn-default"
+																				data-dismiss="modal"
+																				th:text="#{label.close}">Close</button>
+																		</div>
+																	</div>
+																</div>
+															</div>
 															<ul>
 																<li>
 																	<span class="text-muted"

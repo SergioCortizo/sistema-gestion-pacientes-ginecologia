@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+			<main>
+
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item">
+							<a th:href="@{/messages/messages-list}" th:text="#{label.watchmailbox}">Watch mailbox</a>
+						</li>
+						<li class="breadcrumb-item active">
+							<span th:text="#{label.readmessage}">Read message</span>
+						</li>
+					</ol>
+
+					<a href="#reply-message-modal" role="button" class="btn btn-large btn-primary" data-toggle="modal">
+						<span th:text="#{label.replymessage}">Reply message</span>
+					</a>
+					<div id="reply-message-modal" class="modal fade">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title" th:text="#{label.replymessage}">Reply message</h4>
+								</div>
+								<div class="modal-body">
+									<form id="add-message-form" method="POST"
+										th:action="@{/messages/reply-message/{id}(id=${message.id})}"
+										th:object="${messageForm}">
+										<div class="row">
+											<label class="small mb-1" for="subject"
+												th:text="#{label.subject}">Subject</label>
+											<input class="form-control py-4" id="subject" name="subject"
+												th:field="*{subject}" type="text" th:placeholder="#{label.subject}"
+												maxlength="100" />
+										</div>
+										<div class="row">
+											<label class="small mb-1" for="users" th:text="#{label.messagebody}">Message
+												body</label>
+										</div>
+										<div class="row">
+											<textarea id="messagebody" th:field="*{message_body}" rows="15"></textarea>
+										</div>
+										<div class="row mt-3">
+											<button type="submit" th:text="#{label.send}"
+												class="btn btn-primary">Send</button>
+										</div>
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal"
+										th:text="#{label.close}">Close</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="card mb-4 mt-4">
+						<div class="card-header">
+							<i class="fas fa-envelope-open mr-1"></i>
+							<span th:text="#{label.message}">Message</span>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<ul>
+									<li>
+										<span th:text="#{label.sender}" class="font-weight-bold mr-2">Sender</span>
+										<span th:text="${message.sender.name}">Sender name</span>
+									</li>
+									<li>
+										<span th:text="#{label.subject}" class="font-weight-bold mr-2">Subject</span>
+										<span th:text="${message.subject}">Subject</span>
+									</li>
+									<li>
+										<span th:text="#{label.date}" class="font-weight-bold mr-2">Date</span>
+										<span
+											th:text="${message.message_date.toLocalDate()} + ' ' + ${message.message_date.toLocalTime()}">Date</span>
+									</li>
+								</ul>
+							</div>
+
+							<div th:utext="${message.message_body}"></div>
+
+							<a th:if="${message.messageReplied}"
+								th:href="@{/messages/read-message/{id}(id=${message.messageReplied.id})}">
+								<h5 th:text="#{label.watchmessagereplied}">Watch message replied</h5>
+							</a>
+
+							<div th:if="${message.interconsultationMeeting}">
+								<h5 th:text="#{label.interconsultationreason}">Interconsultation reason</h5>
+
+								<a href="#interconsultationModal" role="button" class="btn btn-large btn-primary"
+									data-toggle="modal" th:text="#{label.openinterconsultation}">Open
+									interconsultation</a>
+
+								<div id="interconsultationModal" class="modal fade">
+									<div class="modal-dialog modal-lg">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h4 class="modal-title" th:text="#{label.openinterconsultation}">Open
+													interconsultation</h4>
+											</div>
+											<div class="modal-body">
+												<form id="open-interconsultation-form" method="POST"
+													th:action="@{/messages/open-interconsultation/{id}(id=${message.interconsultationMeeting.id})}"
+													th:object="${messageForm}">
+													<div class="row">
+														<div class="form-group">
+															<label class="small mb-1" for="users"
+																th:text="#{label.user}">User</label>
+															<div>
+																<select id="usersInterconsultation"
+																	th:field="*{receiverId}" class="form-control py-4">
+																	<option th:each="user : ${facultatives}"
+																		th:value="${user.id}">
+																		<span th:text="${user.name}">User</span>
+																	</option>
+																</select>
+															</div>
+															<div th:each="user, rowStat : ${facultatives}">
+																<ul th:id="'specialities-' + ${user.id}"
+																	th:style="${rowStat.index} == '0' ? '' : 'display:none;'">
+																	<li th:each="speciality : ${user.specialities}">
+																		<span
+																			th:text="${speciality.name}">Speciality</span>
+																	</li>
+																</ul>
+															</div>
+														</div>
+													</div>
+													<div class="row">
+														<label class="small mb-1" for="reasonInterconsultation"
+															th:text="#{label.reason}">Reason</label>
+														<input class="form-control py-4" id="reasonInterconsultation"
+															th:field="*{subject}" type="text"
+															th:placeholder="#{label.reason}" maxlength="100" required />
+													</div>
+													<div class="row">
+														<label class="small mb-1" for="users"
+															th:text="#{label.messagebody}">Message
+															body</label>
+													</div>
+													<div class="row">
+														<textarea id="interconsultationbody" th:field="*{message_body}"
+															rows="15"></textarea>
+													</div>
+													<div class="row mt-3">
+														<button id="submit-interconsultation" type="submit"
+															th:text="#{label.send}"
+															class="btn btn-primary">Send</button>
+													</div>
+												</form>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default" data-dismiss="modal"
+													th:text="#{label.close}">Close</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="row">
+									<ul>
+
+										<li>
+											<span class="text-muted" th:text="#{label.activity}">Activity</span>
+											<span th:text="${message.interconsultationMeeting.activity}">Activity</span>
+										</li>
+										<li>
+											<span class="text-muted" th:text="#{label.facultativeprofile}">Facultative
+												profile</span>
+											<span
+												th:text="${message.interconsultationMeeting.user.username}">Facultative
+												profile</span>
+										</li>
+										<li>
+											<span class="text-muted" th:text="#{label.comments}">Comments</span>
+											<div class="content"
+												th:utext="${message.interconsultationMeeting.comments}" />
+										</li>
+										<li>
+											<span class="text-muted" th:text="#{label.questions}">Questions</span>
+											<ul>
+												<li th:each="answer : ${message.interconsultationMeeting.answers}">
+													<div>
+														<span class="text-muted"
+															th:text="${answer.question.question}">Question</span>
+													</div>
+													<div>
+														<span th:text="${answer.answer}">Answer</span>
+													</div>
+												</li>
+											</ul>
+										</li>
+										<li>
+											<span class="text-muted" th:text="#{label.complementarytests}">Complementary
+												tests</span>
+											<ul>
+												<li
+													th:each="complementaryTest : ${message.interconsultationMeeting.complementaryTests}">
+													<a th:href="@{/downloadFile/{id}(id=${complementaryTest.id})}">
+														<span
+															th:text="${complementaryTest.fileName} + ' - '">Complementary
+															test name</span>
+													</a>
+													<span th:text="${complementaryTest.diagnosticTest.name}">Diagnostic
+														test name</span>
+												</li>
+											</ul>
+										</li>
+										<li>
+											<span class="text-muted" th:text="#{label.recipes}">Recipes</span>
+											<ul>
+												<li th:each="recipe : ${message.interconsultationMeeting.recipes}">
+													<span class="text-muted"
+														th:text="#{label.recipedispensedfor}">Recipe
+														dispensed for</span>
+													<span class="ml-2" th:text="${recipe.dispensingDate}">Dispensing
+														date</span>
+													<ul>
+														<li>
+															<span class="font-weight-bold"
+																th:text="#{label.clarifications}">Clarifications</span>
+															<div th:utext="${recipe.clarifications}"></div>
+														</li>
+														<li>
+															<span class="font-weight-bold"
+																th:text="#{label.medicines}">Medicines</span>
+															<table class="table table-sm table-responsive"
+																id="table-medicines">
+																<thead>
+																	<tr>
+																		<th scope="col" th:text="#{label.medicine}">
+																			Medicine
+																		</th>
+																		<th scope="col" th:text="#{label.denomination}">
+																			Denomination
+																		</th>
+																		<th scope="col" th:text="#{label.dosification}">
+																			Dosification
+																		</th>
+																		<th scope="col"
+																			th:text="#{label.formofadministration}">
+																			Form
+																			of
+																			administration</th>
+																		<th scope="col" th:text="#{label.format}">
+																			Format
+																		</th>
+																		<th scope="col" th:text="#{label.units}">
+																			Units</th>
+																		<th scope="col" th:text="#{label.posology}">
+																			Posology
+																		</th>
+																	</tr>
+																</thead>
+																<tbody>
+																	<tr th:each="medicine : ${recipe.medicines}">
+																		<th scope="row"
+																			th:text="${medicine.medicine.name}">
+																			Medicine</th>
+																		<td th:text="${medicine.denomination}">
+																			Denomination</td>
+																		<td th:text="${medicine.dosification}">
+																			Dosification</td>
+																		<td th:text="${medicine.formOfAdministration}">
+																			Form of
+																			administration</td>
+																		<td th:text="${medicine.format}">
+																			Format</td>
+																		<td th:text="${medicine.units}">
+																			Units</td>
+																		<td th:text="${medicine.posology}">
+																			Posology</td>
+																	</tr>
+																</tbody>
+															</table>
+														</li>
+													</ul>
+													<div class="row">
+														<form method="GET"
+															th:action="@{/recipe/get-recipe/{id}(id=${recipe.id})}">
+															<button class="btn btn-link" type="submit">
+																<span th:text="#{label.generaterecipe}">Generate
+																	recipe</span>
+															</button>
+														</form>
+													</div>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+				</div>
+
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+			<script th:src="@{/js/read-message.js}"></script>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>
