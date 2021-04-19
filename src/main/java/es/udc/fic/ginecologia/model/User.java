@@ -61,6 +61,10 @@ public class User {
 	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinTable(name = "patients_of_interest", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "patient_id"))
 	private Set<Patient> patientsOfInterest = new HashSet<>();
+	
+	@OneToMany
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private Set<CommonTaskUser> commonTaskUsers = new HashSet<>();
 
 	public User() {
 	}
@@ -207,6 +211,14 @@ public class User {
 
 	public void setPatientsOfInterest(Set<Patient> patientsOfInterest) {
 		this.patientsOfInterest = patientsOfInterest;
+	}
+
+	public Set<CommonTaskUser> getCommonTaskUsers() {
+		return commonTaskUsers;
+	}
+
+	public void setCommonTaskUsers(Set<CommonTaskUser> commonTaskUsers) {
+		this.commonTaskUsers = commonTaskUsers;
 	}
 
 }

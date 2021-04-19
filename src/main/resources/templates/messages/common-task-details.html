@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+			<main>
+
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item">
+							<a th:href="@{/messages/common-tasks-list}" th:text="#{label.commontasks}">Common tasks</a>
+						</li>
+						<li class="breadcrumb-item active">
+							<span th:text="#{label.watchcommontask}">Watch common task</span>
+						</li>
+					</ol>
+
+					<form id="open-common-task-form" method="POST" th:object="${addMessageForm}"
+						th:action="@{/messages/add-grupal-message/{id}(id=${commonTask.id})}">
+						<label class="small" for="message_body" th:text="#{label.messagebody}">Message
+							body</label>
+						<div class="form-group">
+							<textarea id="messagebody" th:field="*{message_body}" rows="5"></textarea>
+						</div>
+						<div class="form-group">
+							<button type="submit" th:text="#{label.send}" class="btn btn-primary">Send</button>
+						</div>
+					</form>
+
+					<div class="card mb-4 mt-4">
+						<div class="card-header">
+							<i class="fas fa-tasks mr-1"></i>
+							<span th:text="#{label.task}">Task</span>
+						</div>
+						<div class="card-body">
+							<div class="row ml-1">
+								<span th:text="#{label.title}" class="font-weight-bold mr-2">Title</span>
+								<span th:text="${commonTask.title}">Title</span>
+							</div>
+
+							<div th:utext="${commonTask.description}"></div>
+
+							<div class="card my-2" th:each="message : ${commonTask.messages}">
+								<div class="card-header">
+									<span th:text="${message.user.name}" class="font-weight-bold mr-2">User</span>
+									<span
+										th:text="${message.datetime.toLocalDate()} + ' ' + ${message.datetime.toLocalTime()}">Date</span>
+								</div>
+								<div class="card-body">
+									<div th:utext="${message.message_body}"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+		</div>
+	</div>
+</body>
+
+</html>

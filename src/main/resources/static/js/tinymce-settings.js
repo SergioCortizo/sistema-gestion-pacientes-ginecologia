@@ -25,3 +25,10 @@ tinymce.init({
 	plugins: 'lists advlist',
 	width: '100%',
 });
+
+tinymce.init({
+	language: "es",
+	selector: "#description",
+	plugins: 'lists advlist',
+	width: '100%',
+});

@@ -1,7 +1,10 @@
 package es.udc.fic.ginecologia.service;
 
+import java.util.List;
+
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
+import es.udc.fic.ginecologia.model.CommonTask;
 import es.udc.fic.ginecologia.model.Message;
 
 public interface MessageService {
@@ -18,4 +21,15 @@ public interface MessageService {
 
 	public void addInterconsultation(Integer senderId, Integer receiverId, Integer meetingId, String subject,
 			String message_body) throws InstanceNotFoundException, PermissionException;
+
+	public Iterable<CommonTask> findCommonTasks(Integer userId) throws InstanceNotFoundException, PermissionException;
+
+	public CommonTask findCommonTask(Integer userId, Integer commonTaskId)
+			throws InstanceNotFoundException, PermissionException;
+
+	public void addCommonTask(Integer userId, String title, String description, List<Integer> userIds)
+			throws InstanceNotFoundException, PermissionException;
+
+	public void addGrupalMessage(Integer userId, Integer commonTaskId, String message_body)
+			throws InstanceNotFoundException, PermissionException;
 }

@@ -1,3 +1,6 @@
+DROP TABLE common_task_user;
+DROP TABLE grupal_message;
+DROP TABLE common_task;
 DROP TABLE message;
 DROP TABLE recipe_medicine;
 DROP TABLE recipe;
@@ -305,8 +308,31 @@ CREATE TABLE message (
 	CONSTRAINT InterconsultationMeetingFK FOREIGN KEY (interconsultation_meeting_id) REFERENCES meeting (id)
 );
 
+CREATE TABLE common_task (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	title VARCHAR(100) NOT NULL,
+	description LONGBLOB,
+	CONSTRAINT CommonTaskPK PRIMARY KEY (id)
+);
 
+CREATE TABLE grupal_message (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	message_body LONGBLOB,
+	datetime TIMESTAMP NOT NULL,
+	common_task_id BIGINT NOT NULL,
+	user_id BIGINT NOT NULL,
+	CONSTRAINT GrupalMessagePK PRIMARY KEY (id),
+	CONSTRAINT GrupalMessageCommonTaskFK FOREIGN KEY (common_task_id) REFERENCES common_task (id),
+	CONSTRAINT GrupalMessageUserFK FOREIGN KEY (user_id) REFERENCES user (id)
+);
 
-
+CREATE TABLE common_task_user (
+	common_task_id BIGINT NOT NULL,
+	user_id BIGINT NOT NULL,
+	last_time_read TIMESTAMP,
+	CONSTRAINT CommonTaskUserPK PRIMARY KEY (common_task_id, user_id),
+	CONSTRAINT CommonTaskUserCommonTaskFK FOREIGN KEY (common_task_id) REFERENCES common_task (id),
+	CONSTRAINT CommonTaskUserUserFK FOREIGN KEY (user_id) REFERENCES user (id)
+);
 
 

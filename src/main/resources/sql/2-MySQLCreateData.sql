@@ -245,11 +245,38 @@ INSERT INTO message (subject, message_body, message_date, message_read, sender_i
 		   ('Mensaje de interconsulta 2', '<p>Esto es un mensaje de interconsulta de prueba numero 2.</p>', '2021-03-11 15:20:03', 0, 2, 1, null, 1),
 		   ('Mensaje de interconsulta 3', '<p>Esto es un mensaje de interconsulta de prueba numero 3.</p>', '2021-03-12 12:02:48', 1, 3, 1, null, 3);
 
+INSERT INTO common_task (title, description)
+	VALUES ('Tarea 1', '<p>Descripción de la tarea 1.</p>'),
+		   ('Tarea 2', '<p>Descripción de la tarea 2.</p>'),
+		   ('Tarea 3', '<p>Descripción de la tarea 3.</p>'),
+		   ('Tarea 4', '<p>Descripción de la tarea 4.</p>'),
+		   ('Tarea 5', '<p>Descripción de la tarea 5.</p>');
 
+INSERT INTO common_task_user (user_id, common_task_id, last_time_read)
+	VALUES (1, 1, '2021-03-20 09:32:14'),
+		   (1, 2, '2021-03-20 10:00:00'),
+		   (1, 3, '2021-03-20 10:02:00'),
+		   (1, 4, '2021-03-20 10:50:00'),
+		   (1, 5, '2021-03-20 12:15:00'),
+		   (2, 2, '2021-03-20 10:00:00'),
+		   (2, 3, '2021-03-20 10:02:00'),
+		   (2, 4, '2021-03-20 10:50:00'),
+		   (3, 3, '2021-03-20 10:02:00'),
+		   (3, 4, '2021-03-20 10:50:00'),
+		   (4, 1, '2021-03-20 10:50:00');
 
-
-
-
+INSERT INTO grupal_message (message_body, datetime, common_task_id, user_id)
+	VALUES ('<p>Mensaje 1 en tarea 1.</p>', '2021-03-21 09:32:14', 1, 4),
+		   ('<p>Mensaje 2 en tarea 1.</p>', '2021-03-21 10:32:14', 1, 4),
+		   ('<p>Mensaje 3 en tarea 1.</p>', '2021-03-21 11:32:14', 1, 4),
+		   ('<p>Mensaje 4 en tarea 1.</p>', '2021-03-21 12:32:14', 1, 4),
+		   ('<p>Mensaje 5 en tarea 1.</p>', '2021-03-21 13:32:14', 1, 4),
+		   ('<p>Mensaje 6 en tarea 1.</p>', '2021-03-21 14:32:14', 1, 4),
+		   ('<p>Mensaje 1 en tarea 2.</p>', '2021-03-21 09:32:14', 2, 4),
+		   ('<p>Mensaje 2 en tarea 2.</p>', '2021-03-21 09:34:14', 2, 3),
+		   ('<p>Mensaje 3 en tarea 2.</p>', '2021-03-21 09:36:14', 2, 2),
+		   ('<p>Mensaje 4 en tarea 2.</p>', '2021-03-21 09:38:14', 2, 3),
+		   ('<p>Mensaje 5 en tarea 2.</p>', '2021-03-21 09:40:14', 2, 4);
 
 
 

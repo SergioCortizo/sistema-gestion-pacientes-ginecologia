@@ -1,5 +1,8 @@
 package es.udc.fic.ginecologia.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +18,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
+import es.udc.fic.ginecologia.form.CommonTaskConversor;
+import es.udc.fic.ginecologia.form.CommonTaskElemList;
+import es.udc.fic.ginecologia.form.CommonTaskForm;
 import es.udc.fic.ginecologia.form.MessageForm;
+import es.udc.fic.ginecologia.model.CommonTask;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
 import es.udc.fic.ginecologia.model.Message;
 import es.udc.fic.ginecologia.model.User;
@@ -184,9 +191,37 @@ public class MessageController {
 
 	// Open interconsultation
 	@PostMapping("/messages/open-interconsultation/{id}")
-	public String openInterconsultation(@PathVariable Integer id, @ModelAttribute MessageForm messageForm,
-			Model model, HttpServletRequest request) {
-		
+	public String openInterconsultation(@PathVariable Integer id, @ModelAttribute MessageForm messageForm, Model model,
+			HttpServletRequest request) {
+
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsFacultative(userId)) {
+				return "/error/403";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/403";
+		}
+
+		try {
+			messageService.addInterconsultation(userId, messageForm.getReceiverId(), id, messageForm.getSubject(),
+					messageForm.getMessage_body());
+		} catch (InstanceNotFoundException e) {
+			return "/error/404";
+		} catch (PermissionException e) {
+			return "/error/403";
+		}
+
+		return "redirect:/messages/messages-list/";
+	}
+
+	// Get common tasks list
+	@GetMapping("/messages/common-tasks-list")
+	public String goToCommonTaskList(Model model) {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
@@ -199,16 +234,107 @@ public class MessageController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/403";
 		}
-		
+
+		List<CommonTaskElemList> commonTasks = new ArrayList<>();
+
 		try {
-			messageService.addInterconsultation(userId, messageForm.getReceiverId(), id, messageForm.getSubject(), messageForm.getMessage_body());
+			commonTasks = CommonTaskConversor.convertoToCommonTaskElemList(messageService.findCommonTasks(userId),
+					userId);
+		} catch (InstanceNotFoundException | PermissionException e) {
+			return "/error/403";
+		}
+
+		model.addAttribute("commonTasks", commonTasks);
+		model.addAttribute("users", userService.findAllUsers());
+		model.addAttribute("userId", userId);
+		model.addAttribute("commonTaskForm", new CommonTaskForm());
+
+		return "messages/common-tasks-list";
+	}
+
+	// Common task details
+	@GetMapping("/messages/common-task/{id}")
+	public String getCommonTaskDetails(@PathVariable Integer id, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				return "/error/403";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/403";
+		}
+
+		CommonTask commonTask = null;
+
+		try {
+			commonTask = messageService.findCommonTask(userId, id);
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
 			return "/error/403";
 		}
 
-		return "redirect:/messages/messages-list/";
+		model.addAttribute("commonTask", commonTask);
+		model.addAttribute("addMessageForm", new MessageForm());
+
+		return "messages/common-task-details";
+	}
+
+	// Open common task
+	@PostMapping("/messages/open-common-task/")
+	public String openCommonTask(@ModelAttribute CommonTaskForm commonTaskForm, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				return "/error/403";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/403";
+		}
+
+		try {
+			messageService.addCommonTask(userId, commonTaskForm.getTitle(), commonTaskForm.getDescription(),
+					commonTaskForm.getUserIds());
+		} catch (InstanceNotFoundException | PermissionException e) {
+			return "/error/403";
+		}
+
+		return "redirect:/messages/common-tasks-list";
+	}
+
+	// Add grupal message
+	@PostMapping("/messages/add-grupal-message/{id}")
+	public String addGrupalMessage(@PathVariable Integer id, @ModelAttribute MessageForm addMessageForm, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				return "/error/403";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/403";
+		}
+
+		if (!addMessageForm.getMessage_body().isEmpty()) {
+			try {
+				messageService.addGrupalMessage(userId, id, addMessageForm.getMessage_body());
+			} catch (InstanceNotFoundException | PermissionException e) {
+				return "/error/403";
+			}
+		}
+
+		return "redirect:/messages/common-task/" + id;
 	}
 
 }

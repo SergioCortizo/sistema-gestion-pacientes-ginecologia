@@ -6,7 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.StreamSupport;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
+import es.udc.fic.ginecologia.model.CommonTask;
+import es.udc.fic.ginecologia.model.GrupalMessage;
 import es.udc.fic.ginecologia.model.Meeting;
 import es.udc.fic.ginecologia.model.Message;
 import es.udc.fic.ginecologia.model.Patient;
@@ -765,7 +770,7 @@ public class MessageServiceTest {
 		assertThrows(InstanceNotFoundException.class, () -> messageService.addInterconsultation(user.getId(),
 				user2.getId(), -1, "Interconsultation 1", "Interconsultation 1"));
 	}
-	
+
 	@Test
 	public void testAddInterconsultationPermissionExceptionSender()
 			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
@@ -788,10 +793,10 @@ public class MessageServiceTest {
 		userService.registerUser(user, roles2);
 		userService.registerUser(user2, roles);
 
-		assertThrows(PermissionException.class, () -> messageService.addInterconsultation(user.getId(),
-				user2.getId(), 1, "Interconsultation 1", "Interconsultation 1"));
+		assertThrows(PermissionException.class, () -> messageService.addInterconsultation(user.getId(), user2.getId(),
+				1, "Interconsultation 1", "Interconsultation 1"));
 	}
-	
+
 	@Test
 	public void testAddInterconsultationPermissionExceptionReceiver()
 			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
@@ -814,8 +819,368 @@ public class MessageServiceTest {
 		userService.registerUser(user, roles);
 		userService.registerUser(user2, roles2);
 
-		assertThrows(PermissionException.class, () -> messageService.addInterconsultation(user.getId(),
-				user2.getId(), 1, "Interconsultation 1", "Interconsultation 1"));
+		assertThrows(PermissionException.class, () -> messageService.addInterconsultation(user.getId(), user2.getId(),
+				1, "Interconsultation 1", "Interconsultation 1"));
+	}
+
+	@Test
+	public void testFindCommonTasks()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		List<Integer> users = new ArrayList<>();
+
+		messageService.addCommonTask(user.getId(), "Title 1", "Description 1", users);
+		messageService.addCommonTask(user.getId(), "Title 2", "Description 2", users);
+		messageService.addCommonTask(user.getId(), "Title 3", "Description 3", users);
+		messageService.addCommonTask(user.getId(), "Title 4", "Description 4", users);
+
+		Iterable<CommonTask> result = messageService.findCommonTasks(user.getId());
+
+		for (CommonTask commonTask : result) {
+			User userResult = StreamSupport.stream(commonTask.getCommonTaskUsers().spliterator(), false)
+					.filter(ctu -> ctu.getUser().getId() == user.getId()).findFirst().get().getUser();
+
+			assertEquals(user, userResult);
+		}
+
+	}
+
+	@Test
+	public void testFindCommonTasksExpectUserNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		assertThrows(InstanceNotFoundException.class, () -> messageService.findCommonTasks(-1));
+
+	}
+
+	@Test
+	public void testFindCommonTasksExpectPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		assertThrows(PermissionException.class, () -> messageService.findCommonTasks(user.getId()));
+
+	}
+
+	@Test
+	public void testFindCommonTask() throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		List<Integer> users = new ArrayList<>();
+
+		messageService.addCommonTask(user.getId(), "Title 1", "Description 1", users);
+
+		Iterable<CommonTask> result = messageService.findCommonTasks(user.getId());
+
+		for (CommonTask commonTask : result) {
+			CommonTask resultCommonTask = messageService.findCommonTask(user.getId(), commonTask.getId());
+
+			assertEquals(commonTask, resultCommonTask);
+		}
+
+	}
+
+	@Test
+	public void testFindCommonTaskExpectUserNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		assertThrows(InstanceNotFoundException.class, () -> messageService.findCommonTask(-1, 1));
+
+	}
+
+	@Test
+	public void testFindCommonTaskExpectCommonTaskNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		assertThrows(InstanceNotFoundException.class, () -> messageService.findCommonTask(user.getId(), -1));
+
+	}
+
+	@Test
+	public void testFindCommonTaskPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		assertThrows(PermissionException.class, () -> messageService.findCommonTask(user.getId(), 1));
+
+	}
+
+	@Test
+	public void testFindCommonTaskExpectPermisionExceptionAccessNotAllowed()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654785123", "123112345");
+		user2.setPassword("password1");
+
+		userService.registerUser(user, roles);
+		userService.registerUser(user2, roles);
+
+		List<Integer> users = new ArrayList<>();
+
+		messageService.addCommonTask(user.getId(), "Title 1", "Description 1", users);
+
+		Iterable<CommonTask> result = messageService.findCommonTasks(user.getId());
+
+		for (CommonTask commonTask : result) {
+			assertThrows(PermissionException.class,
+					() -> messageService.findCommonTask(user2.getId(), commonTask.getId()));
+		}
+
+	}
+
+	@Test
+	public void testAddCommonTask() throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		List<Integer> users = new ArrayList<>();
+
+		messageService.addCommonTask(user.getId(), "Title 1", "Description 1", users);
+
+		Iterable<CommonTask> result = messageService.findCommonTasks(user.getId());
+
+		for (CommonTask commonTask : result) {
+			assertEquals("Title 1", commonTask.getTitle());
+			assertEquals("Description 1", commonTask.getDescription());
+
+			User userResult = StreamSupport.stream(commonTask.getCommonTaskUsers().spliterator(), false)
+					.filter(ctu -> ctu.getUser().getId() == user.getId()).findFirst().get().getUser();
+
+			assertEquals(user, userResult);
+		}
+
+	}
+
+	@Test
+	public void testAddCommonTaskExpectUserNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		List<Integer> users = new ArrayList<>();
+
+		assertThrows(InstanceNotFoundException.class,
+				() -> messageService.addCommonTask(-1, "Title 1", "Description 1", users));
+
+	}
+
+	@Test
+	public void testAddCommonTaskExpectPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		List<Integer> users = new ArrayList<>();
+
+		assertThrows(PermissionException.class,
+				() -> messageService.addCommonTask(user.getId(), "Title 1", "Description 1", users));
+
+	}
+
+	@Test
+	public void testAddGrupalMessage()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		List<Integer> users = new ArrayList<>();
+
+		messageService.addCommonTask(user.getId(), "Title 1", "Description 1", users);
+
+		Iterable<CommonTask> result = messageService.findCommonTasks(user.getId());
+
+		for (CommonTask commonTask : result) {
+			messageService.addGrupalMessage(user.getId(), commonTask.getId(), "Message 1.");
+
+			for (GrupalMessage message : commonTask.getMessages()) {
+				assertEquals("Message 1.", message.getMessage_body());
+				assertEquals(user, message.getUser());
+				assertEquals(commonTask, message.getCommonTask());
+			}
+		}
+
+	}
+
+	@Test
+	public void testAddGrupalMessageExpectUserNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		assertThrows(InstanceNotFoundException.class, () -> messageService.addGrupalMessage(-1, 1, "Message 1."));
+
+	}
+
+	@Test
+	public void testAddGrupalMessageExpectCommonTaskNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		List<Integer> users = new ArrayList<>();
+
+		messageService.addCommonTask(user.getId(), "Title 1", "Description 1", users);
+
+		assertThrows(InstanceNotFoundException.class,
+				() -> messageService.addGrupalMessage(user.getId(), -1, "Message 1."));
+
+	}
+	
+	@Test
+	public void testAddGrupalMessageExpectPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		assertThrows(PermissionException.class,
+				() -> messageService.addGrupalMessage(user.getId(), 1, "Message 1."));
+
+	}
+	
+	@Test
+	public void testAddGrupalMessageExpectPermissionExceptionAccesNotAllowed()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+		User user2 = createUser("User 2", "user2", "user2@example.com", "postalAddress 2", "location 2", "11111111B",
+				"654785123", "123112345");
+		user2.setPassword("password1");
+
+		userService.registerUser(user, roles);
+		userService.registerUser(user2, roles);
+
+		List<Integer> users = new ArrayList<>();
+
+		messageService.addCommonTask(user.getId(), "Title 1", "Description 1", users);
+
+		Iterable<CommonTask> result = messageService.findCommonTasks(user.getId());
+
+		for (CommonTask commonTask : result) {
+			assertThrows(PermissionException.class,
+					() -> messageService.addGrupalMessage(user2.getId(), commonTask.getId(), "Message 1."));
+		}
+
 	}
 
 }

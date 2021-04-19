@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+			<main>
+
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item active">
+							<span th:text="#{label.commontasks}">Common tasks</span>
+						</li>
+					</ol>
+
+					<a href="#openCommonTaskModal" role="button" class="btn btn-large btn-primary mb-4"
+						data-toggle="modal" th:text="#{label.opencommontaskmodal}">Open common task modal</a>
+
+					<div id="openCommonTaskModal" class="modal fade">
+						<div class="modal-dialog modal-lg">
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title" th:text="#{label.opencommontaskmodal}">Open common task
+										modal</h4>
+								</div>
+								<div class="modal-body">
+									<form id="open-common-task-form" method="POST"
+										th:action="@{/messages/open-common-task/}" th:object="${commonTaskForm}">
+										<div class="row">
+											<label class="small mb-1" for="users" th:text="#{label.user}">User</label>
+										</div>
+										<div class="row">
+											<div>
+												<select id="users" th:field="*{userIds}" class="form-control py-4"
+													multiple required>
+													<option th:each="user : ${users}" th:value="${user.id}"
+														th:if="${user.id} != ${userId}">
+														<span th:text="${user.name}">User</span>
+													</option>
+												</select>
+											</div>
+										</div>
+										<div class="row">
+											<label class="small mb-1" for="title" th:text="#{label.title}">Title</label>
+											<input class="form-control py-4" id="title" name="title" th:field="*{title}"
+												type="text" th:placeholder="#{label.title}" maxlength="100" required />
+										</div>
+										<div class="row">
+											<label class="small mb-1" for="description"
+												th:text="#{label.description}">Description</label>
+										</div>
+										<div class="row">
+											<textarea id="description" th:field="*{description}" rows="15"></textarea>
+										</div>
+										<div class="row mt-3">
+											<button type="submit" th:text="#{label.open}"
+												class="btn btn-primary">Open</button>
+										</div>
+
+									</form>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-default" data-dismiss="modal"
+										th:text="#{label.close}">Cerrar</button>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-tasks mr-1"></i>
+							<span th:text="#{label.commontasks}">Common tasks</span>
+						</div>
+						<div class="card-body">
+							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+								<thead>
+									<tr>
+										<th th:text="#{label.task}">Task</th>
+										<th th:text="#{label.lasttimeread}">Last time read</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="task : ${commonTasks}"
+										th:classappend="${task.newMessages} > 0 ? table-primary : (${task.isNew} ? table-warning : '')">
+										<td>
+											<span class="badge badge-primary" th:if="${task.newMessages} > 0"
+												th:text="${task.newMessages}">New messages</span>
+											<span class="badge badge-warning" th:if="${task.isNew}"
+												th:text="#{label.newtask}">New task</span>
+											<a th:href="@{/messages/common-task/{id}(id=${task.id})}"
+												th:text="${task.title}">Title</a>
+										</td>
+										<td
+											th:text="${task.lastTimeRead.toLocalDate()} + ' ' + ${task.lastTimeRead.toLocalTime()}">
+											Last time read</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+			<script th:src="@{/js/common-tasks-list.js}"></script>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>
