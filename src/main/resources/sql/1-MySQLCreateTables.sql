@@ -1,3 +1,4 @@
+DROP TABLE notice;
 DROP TABLE common_task_user;
 DROP TABLE grupal_message;
 DROP TABLE common_task;
@@ -36,6 +37,7 @@ CREATE TABLE user
    dni VARCHAR (9) COLLATE latin1_bin NOT NULL,
    phone_number VARCHAR (9) COLLATE latin1_bin NOT NULL,
    discharge_date TIMESTAMP NOT NULL,
+   last_time_seen_notices DATETIME DEFAULT NULL,
    collegiate_number VARCHAR (9) DEFAULT NULL,
    CONSTRAINT UserPK PRIMARY KEY (id),
    CONSTRAINT NameUniqueKey UNIQUE (username)
@@ -321,6 +323,7 @@ CREATE TABLE grupal_message (
 	datetime TIMESTAMP NOT NULL,
 	common_task_id BIGINT NOT NULL,
 	user_id BIGINT NOT NULL,
+	INDEX datetime_desc (datetime DESC),
 	CONSTRAINT GrupalMessagePK PRIMARY KEY (id),
 	CONSTRAINT GrupalMessageCommonTaskFK FOREIGN KEY (common_task_id) REFERENCES common_task (id),
 	CONSTRAINT GrupalMessageUserFK FOREIGN KEY (user_id) REFERENCES user (id)
@@ -335,4 +338,11 @@ CREATE TABLE common_task_user (
 	CONSTRAINT CommonTaskUserUserFK FOREIGN KEY (user_id) REFERENCES user (id)
 );
 
-
+CREATE TABLE notice (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	notice VARCHAR(1000),
+	datetime TIMESTAMP NOT NULL,
+	user_id BIGINT NOT NULL,
+	CONSTRAINT NoticePK PRIMARY KEY (id),
+	CONSTRAINT NoticeUserFK FOREIGN KEY (user_id) REFERENCES user (id)
+);

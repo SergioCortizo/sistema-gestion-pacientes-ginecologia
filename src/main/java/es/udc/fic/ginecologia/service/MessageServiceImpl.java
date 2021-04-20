@@ -20,12 +20,14 @@ import es.udc.fic.ginecologia.model.CommonTaskUserPK;
 import es.udc.fic.ginecologia.model.GrupalMessage;
 import es.udc.fic.ginecologia.model.Meeting;
 import es.udc.fic.ginecologia.model.Message;
+import es.udc.fic.ginecologia.model.Notice;
 import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.repository.CommonTaskDao;
 import es.udc.fic.ginecologia.repository.CommonTaskUserDao;
 import es.udc.fic.ginecologia.repository.GrupalMessageDao;
 import es.udc.fic.ginecologia.repository.MeetingDao;
 import es.udc.fic.ginecologia.repository.MessageDao;
+import es.udc.fic.ginecologia.repository.NoticeDao;
 import es.udc.fic.ginecologia.repository.UserDao;
 
 @Transactional
@@ -52,6 +54,9 @@ public class MessageServiceImpl implements MessageService {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private NoticeDao noticeDao;
 
 	@Override
 	public Iterable<Message> findMessages(Integer userId) throws InstanceNotFoundException, PermissionException {
@@ -270,6 +275,43 @@ public class MessageServiceImpl implements MessageService {
 		
 		grupalMessageDao.save(grupalMessage);
 		
+	}
+
+	@Override
+	public long countNewNotices(LocalDateTime datetime) {
+		if (datetime == null) {
+			return noticeDao.countNewNotices(LocalDateTime.now());
+		}
+		
+		return noticeDao.countNewNotices(datetime);
+	}
+
+	@Override
+	public Iterable<Notice> findNotices(Integer userId) throws PermissionException, InstanceNotFoundException {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+			throw new PermissionException();
+		}
+		
+		User user = permissionChecker.checkUser(userId);
+		user.setLast_time_seen_notices(LocalDateTime.now());
+		
+		return noticeDao.findAll();
+	}
+
+	@Override
+	public void addNotice(Integer userId, String notice) throws PermissionException, InstanceNotFoundException {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+			throw new PermissionException();
+		}
+		
+		User user = permissionChecker.checkUser(userId);
+		
+		Notice noticeToAdd = new Notice();
+		noticeToAdd.setNotice(notice);
+		noticeToAdd.setDatetime(LocalDateTime.now());
+		noticeToAdd.setUser(user);
+		
+		noticeDao.save(noticeToAdd);
 	}
 
 }

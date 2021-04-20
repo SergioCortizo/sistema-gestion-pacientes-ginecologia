@@ -24,10 +24,12 @@ import es.udc.fic.ginecologia.model.CommonTask;
 import es.udc.fic.ginecologia.model.GrupalMessage;
 import es.udc.fic.ginecologia.model.Meeting;
 import es.udc.fic.ginecologia.model.Message;
+import es.udc.fic.ginecologia.model.Notice;
 import es.udc.fic.ginecologia.model.Patient;
 import es.udc.fic.ginecologia.model.Role;
 import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.repository.MessageDao;
+import es.udc.fic.ginecologia.repository.NoticeDao;
 import es.udc.fic.ginecologia.repository.PatientDao;
 import es.udc.fic.ginecologia.repository.RoleDao;
 
@@ -53,6 +55,9 @@ public class MessageServiceTest {
 
 	@Autowired
 	private PatientDao patientDao;
+
+	@Autowired
+	private NoticeDao noticeDao;
 
 	private User createUser(String name, String username, String email, String postalAddress, String location,
 			String DNI, String phoneNumber, String collegiateNumber) {
@@ -1128,7 +1133,7 @@ public class MessageServiceTest {
 				() -> messageService.addGrupalMessage(user.getId(), -1, "Message 1."));
 
 	}
-	
+
 	@Test
 	public void testAddGrupalMessageExpectPermissionException()
 			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
@@ -1145,11 +1150,10 @@ public class MessageServiceTest {
 
 		userService.registerUser(user, roles);
 
-		assertThrows(PermissionException.class,
-				() -> messageService.addGrupalMessage(user.getId(), 1, "Message 1."));
+		assertThrows(PermissionException.class, () -> messageService.addGrupalMessage(user.getId(), 1, "Message 1."));
 
 	}
-	
+
 	@Test
 	public void testAddGrupalMessageExpectPermissionExceptionAccesNotAllowed()
 			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
@@ -1180,6 +1184,174 @@ public class MessageServiceTest {
 			assertThrows(PermissionException.class,
 					() -> messageService.addGrupalMessage(user2.getId(), commonTask.getId(), "Message 1."));
 		}
+
+	}
+
+	@Test
+	public void testCountNewNotices()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		messageService.addNotice(user.getId(), "Notice 1");
+		messageService.addNotice(user.getId(), "Notice 2");
+		messageService.addNotice(user.getId(), "Notice 3");
+		messageService.addNotice(user.getId(), "Notice 4");
+
+		LocalDateTime date = LocalDateTime.now().minusDays(1);
+
+		assertTrue(messageService.countNewNotices(date) == 4);
+	}
+
+	@Test
+	public void testCountNewNoticesDatetimeIsNull()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		messageService.addNotice(user.getId(), "Notice 1");
+		messageService.addNotice(user.getId(), "Notice 2");
+		messageService.addNotice(user.getId(), "Notice 3");
+		messageService.addNotice(user.getId(), "Notice 4");
+
+		long result = messageService.countNewNotices(null);
+
+		assertTrue(result >= 0);
+	}
+
+	@Test
+	public void testFindNotices() throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		Notice notice1 = new Notice("Notice 1");
+		notice1.setUser(user);
+		Notice notice2 = new Notice("Notice 2");
+		notice2.setUser(user);
+		Notice notice3 = new Notice("Notice 3");
+		notice3.setUser(user);
+		Notice notice4 = new Notice("Notice 4");
+		notice4.setUser(user);
+
+		noticeDao.save(notice1);
+		noticeDao.save(notice2);
+		noticeDao.save(notice3);
+		noticeDao.save(notice4);
+
+		Iterable<Notice> expectedNotices = Arrays.asList(notice1, notice2, notice3, notice4);
+		Iterable<Notice> result = messageService.findNotices(user.getId());
+
+		assertEquals(expectedNotices, result);
+
+	}
+
+	@Test
+	public void testFindNoticesExpectUserNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		assertThrows(InstanceNotFoundException.class, () -> messageService.findNotices(-1));
+
+	}
+
+	@Test
+	public void testFindNoticesExpectPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		assertThrows(PermissionException.class, () -> messageService.findNotices(user.getId()));
+
+	}
+
+	@Test
+	public void testAddNotice() throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE_FACULTATIVE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		messageService.addNotice(user.getId(), "Notice");
+
+		Notice notice = noticeDao.findByNotice("Notice").get();
+
+		assertEquals("Notice", notice.getNotice());
+		assertEquals(user, notice.getUser());
+		assertTrue(notice.getDatetime().isBefore(LocalDateTime.now()));
+	}
+
+	@Test
+	public void testAddNoticeExpectUserNotFound()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		assertThrows(InstanceNotFoundException.class, () -> messageService.addNotice(-1, "Notice"));
+
+	}
+	
+	@Test
+	public void testAddNoticeExpectPermissionException()
+			throws DuplicateInstanceException, InstanceNotFoundException, PermissionException {
+
+		Role role1 = createRole("ROLE");
+
+		roleDao.save(role1);
+
+		Iterable<Integer> roles = Arrays.asList(role1.getId());
+
+		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
+				"654789123", "122112345");
+		user.setPassword("password1");
+
+		userService.registerUser(user, roles);
+
+		assertThrows(PermissionException.class, () -> messageService.addNotice(user.getId(), "Notice"));
 
 	}
 

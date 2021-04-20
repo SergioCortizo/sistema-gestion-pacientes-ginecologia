@@ -1,11 +1,13 @@
 package es.udc.fic.ginecologia.service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.model.CommonTask;
 import es.udc.fic.ginecologia.model.Message;
+import es.udc.fic.ginecologia.model.Notice;
 
 public interface MessageService {
 
@@ -32,4 +34,11 @@ public interface MessageService {
 
 	public void addGrupalMessage(Integer userId, Integer commonTaskId, String message_body)
 			throws InstanceNotFoundException, PermissionException;
+	
+	public long countNewNotices(LocalDateTime datetime);
+	
+	public Iterable<Notice> findNotices(Integer userId) throws PermissionException, InstanceNotFoundException;
+	
+	public void addNotice(Integer userId, String notice) throws PermissionException, InstanceNotFoundException;
+
 }

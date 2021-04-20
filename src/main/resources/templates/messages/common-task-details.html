@@ -56,7 +56,7 @@
 
 							<div th:utext="${commonTask.description}"></div>
 
-							<div class="card my-2" th:each="message : ${commonTask.messages}">
+							<div class="card my-2" th:each="message : ${messages}">
 								<div class="card-header">
 									<span th:text="${message.user.name}" class="font-weight-bold mr-2">User</span>
 									<span

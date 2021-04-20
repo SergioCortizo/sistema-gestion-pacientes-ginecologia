@@ -1,6 +1,7 @@
 package es.udc.fic.ginecologia.controller;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import es.udc.fic.ginecologia.common.GrupalMessageByDateDescendingComparator;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
@@ -22,9 +24,12 @@ import es.udc.fic.ginecologia.form.CommonTaskConversor;
 import es.udc.fic.ginecologia.form.CommonTaskElemList;
 import es.udc.fic.ginecologia.form.CommonTaskForm;
 import es.udc.fic.ginecologia.form.MessageForm;
+import es.udc.fic.ginecologia.form.NoticeForm;
 import es.udc.fic.ginecologia.model.CommonTask;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
+import es.udc.fic.ginecologia.model.GrupalMessage;
 import es.udc.fic.ginecologia.model.Message;
+import es.udc.fic.ginecologia.model.Notice;
 import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.service.MessageService;
 import es.udc.fic.ginecologia.service.UserService;
@@ -278,8 +283,12 @@ public class MessageController {
 			return "/error/403";
 		}
 
+		List<GrupalMessage> messages = new ArrayList<>(commonTask.getMessages());
+		Collections.sort(messages, new GrupalMessageByDateDescendingComparator());
+
 		model.addAttribute("commonTask", commonTask);
 		model.addAttribute("addMessageForm", new MessageForm());
+		model.addAttribute("messages", messages);
 
 		return "messages/common-task-details";
 	}
@@ -335,6 +344,60 @@ public class MessageController {
 		}
 
 		return "redirect:/messages/common-task/" + id;
+	}
+
+	// Notices list
+	@GetMapping("/messages/notices-list/")
+	public String findNotices(Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				return "/error/403";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/403";
+		}
+
+		try {
+			Iterable<Notice> notices = messageService.findNotices(userId);
+			Collections.reverse((List<?>) notices);
+			model.addAttribute("notices", notices);
+		} catch (InstanceNotFoundException | PermissionException e) {
+			return "/error/403";
+		}
+		
+		model.addAttribute("noticeForm", new NoticeForm());
+
+		return "messages/notices-list";
+	}
+
+	// Add notice
+	@PostMapping("/messages/add-notice/")
+	public String addNotice(@ModelAttribute NoticeForm noticeForm, Model model) {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+
+		try {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				return "/error/403";
+			}
+		} catch (InstanceNotFoundException e) {
+			return "/error/403";
+		}
+		
+		try {
+			messageService.addNotice(userId, noticeForm.getNotice());
+		} catch (InstanceNotFoundException | PermissionException e) {
+			return "/error/403";
+		}
+		
+		return "redirect:/messages/notices-list/";
 	}
 
 }

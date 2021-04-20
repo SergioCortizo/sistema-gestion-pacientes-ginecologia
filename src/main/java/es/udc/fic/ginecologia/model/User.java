@@ -65,6 +65,8 @@ public class User {
 	@OneToMany
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private Set<CommonTaskUser> commonTaskUsers = new HashSet<>();
+	
+	private LocalDateTime last_time_seen_notices;
 
 	public User() {
 	}
@@ -219,6 +221,14 @@ public class User {
 
 	public void setCommonTaskUsers(Set<CommonTaskUser> commonTaskUsers) {
 		this.commonTaskUsers = commonTaskUsers;
+	}
+
+	public LocalDateTime getLast_time_seen_notices() {
+		return last_time_seen_notices;
+	}
+
+	public void setLast_time_seen_notices(LocalDateTime last_time_seen_notices) {
+		this.last_time_seen_notices = last_time_seen_notices;
 	}
 
 }

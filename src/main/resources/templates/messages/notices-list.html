@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+			<main>
+
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item active">
+							<span th:text="#{label.watchnotices}">Watch notices</span>
+						</li>
+					</ol>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-exclamation mr-1"></i>
+							<span th:text="#{label.notices}">Notices</span>
+						</div>
+						<div class="card-body">
+							<form id="add-notice-form" method="POST" th:object="${noticeForm}"
+								th:action="@{/messages/add-notice/}">
+								<label class="small" for="notice" th:text="#{label.notice}">Notice</label>
+								<div class="form-group">
+									<textarea class="form-control py-4" th:field="*{notice}" id="notice" name="notice"
+										type="text" minlength="3" rows="5"
+										maxlength="1000" required />
+								</div>
+								<div class="form-group">
+									<button type="submit" th:text="#{label.send}" class="btn btn-primary">Send</button>
+								</div>
+							</form>
+
+							<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+								<thead>
+									<tr>
+										<th th:text="#{label.date}">Date</th>
+										<th th:text="#{label.user}">User</th>
+										<th th:text="#{label.notice}">Notice</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr th:each="notice : ${notices}">
+										<td
+											th:text="${notice.datetime.toLocalDate()} + ' ' + ${notice.datetime.toLocalTime()}">
+											Date
+										</td>
+										<td th:text="${notice.user.name}">
+											User
+										</td>
+										<td th:text="${notice.notice}">
+											Notice
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+				</div>
+
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+			
+			<script th:src="@{/js/notices-list.js}"></script>
+
+		</div>
+
+	</div>
+
+</body>
+
+</html>
