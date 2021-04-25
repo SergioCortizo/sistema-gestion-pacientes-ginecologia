@@ -50,4 +50,9 @@ public class DiagnosticTest {
 		this.enabled = enabled;
 	}
 
+	@Override
+	public String toString() {
+		return "DiagnosticTest [id=" + id + ", name=" + name + ", enabled=" + enabled + "]";
+	}
+
 }

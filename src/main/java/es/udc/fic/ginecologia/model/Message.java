@@ -16,42 +16,42 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "message")
 public class Message {
-	@Id 
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
 	private String subject;
-	
+
 	private String message_body;
-	
+
 	private LocalDateTime message_date;
-	
+
 	private boolean message_read;
-	
+
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="sender_id")
+	@JoinColumn(name = "sender_id")
 	private User sender;
-	
+
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="receiver_id")
+	@JoinColumn(name = "receiver_id")
 	private User receiver;
-	
+
 	@OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "replied_message_id", referencedColumnName = "id")
-    private Message messageReplied;
-	
+	@JoinColumn(name = "replied_message_id", referencedColumnName = "id")
+	private Message messageReplied;
+
 	@ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="interconsultation_meeting_id")
+	@JoinColumn(name = "interconsultation_meeting_id")
 	private Meeting interconsultationMeeting;
 
 	public Message() {
-		
+
 	}
 
 	public Message(String subject, String message_body) {
 		this.subject = subject;
 		this.message_body = message_body;
-		
+
 		this.message_date = LocalDateTime.now();
 		this.message_read = false;
 	}
@@ -127,5 +127,10 @@ public class Message {
 	public void setInterconsultationMeeting(Meeting interconsultationMeeting) {
 		this.interconsultationMeeting = interconsultationMeeting;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Message [id=" + id + ", subject=" + subject + ", message_date=" + message_date.toString() + "]";
+	}
+
 }

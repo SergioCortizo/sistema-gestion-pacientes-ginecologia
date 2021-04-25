@@ -32,4 +32,10 @@ public class MessageForm {
 		this.message_body = message_body;
 	}
 
+	@Override
+	public String toString() {
+		return "MessageForm [receiverId=" + receiverId + ", subject=" + subject + ", message_body=" + message_body
+				+ "]";
+	}
+
 }

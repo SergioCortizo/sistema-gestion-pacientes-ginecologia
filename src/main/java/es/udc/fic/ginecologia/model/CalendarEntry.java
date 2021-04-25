@@ -22,25 +22,25 @@ public class CalendarEntry {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private LocalDateTime entryDate;
-	
+
 	@Column(columnDefinition = "ENUM('opened', 'closed', 'cancelled')")
-    @Enumerated(EnumType.STRING)
+	@Enumerated(EnumType.STRING)
 	private MeetingState state;
-	
+
 	private String reason;
-	
+
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="user_id")
+	@JoinColumn(name = "user_id")
 	private User user;
-	
+
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="patient_id")
+	@JoinColumn(name = "patient_id")
 	private Patient patient;
-	
+
 	public CalendarEntry() {
-		
+
 	}
 
 	public CalendarEntry(LocalDateTime entryDate, String reason, User user, Patient patient) {
@@ -97,6 +97,12 @@ public class CalendarEntry {
 
 	public void setPatient(Patient patient) {
 		this.patient = patient;
+	}
+
+	@Override
+	public String toString() {
+		return "CalendarEntry [id=" + id + ", entryDate=" + entryDate.toString() + ", state=" + state + ", reason="
+				+ reason + "]";
 	}
 
 }

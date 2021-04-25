@@ -85,5 +85,10 @@ public class ComplementaryTest {
 	public void setMeeting(Meeting meeting) {
 		this.meeting = meeting;
 	}
+
+	@Override
+	public String toString() {
+		return "ComplementaryTest [id=" + id + ", fileName=" + fileName + ", fileType=" + fileType + "]";
+	}
 	
 }

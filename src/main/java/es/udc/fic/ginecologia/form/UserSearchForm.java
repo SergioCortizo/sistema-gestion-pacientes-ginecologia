@@ -76,4 +76,11 @@ public class UserSearchForm {
 	public void setRoleId(Integer roleId) {
 		this.roleId = roleId;
 	}
+
+	@Override
+	public String toString() {
+		return "UserSearchForm [login=" + login + ", name=" + name + ", email=" + email + ", dateFrom=" + dateFrom.toString()
+				+ ", dateTo=" + dateTo.toString() + ", enabled=" + enabled + ", roleId=" + roleId + "]";
+	}
+	
 }

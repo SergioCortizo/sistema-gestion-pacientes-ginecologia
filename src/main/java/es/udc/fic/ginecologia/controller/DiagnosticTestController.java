@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
@@ -36,18 +37,23 @@ public class DiagnosticTestController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/diagnostic-test/diagnostic-test-list");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/diagnostic-test/diagnostic-test-list");
 			return "/error/403";
 		}
 
 		Iterable<DiagnosticTest> diagnosticTests = diagnosticTestService.findAllDiagnosticTests();
 
 		prepareModel(model, diagnosticTests);
+
+		LoggingUtility.logGetResource(username, "GET", "/diagnostic-test/diagnostic-test-list");
 
 		return "diagnostic-test/diagnostic-test-list";
 	}
@@ -60,12 +66,15 @@ public class DiagnosticTestController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/diagnostic-test/diagnostic-test-list-error");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/diagnostic-test/diagnostic-test-list-error");
 			return "/error/403";
 		}
 
@@ -73,6 +82,8 @@ public class DiagnosticTestController {
 
 		prepareModel(model, diagnosticTests);
 		model.addAttribute("duplicateDiagnosticTest", true);
+
+		LoggingUtility.logGetResource(username, "GET", "/diagnostic-test/diagnostic-test-list-error");
 
 		return "diagnostic-test/diagnostic-test-list";
 	}
@@ -85,24 +96,29 @@ public class DiagnosticTestController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/add-diagnostic-test");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/add-diagnostic-test");
 			return "/error/403";
 		}
 
 		try {
 			diagnosticTestService.addDiagnosticTest(userId, addDiagnosticTestForm.getName());
-		} catch (InstanceNotFoundException e) {
+		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/add-diagnostic-test");
 			return "/error/403";
 		} catch (DuplicateInstanceException e) {
+			LoggingUtility.logDuplicateDiagnosticTest(username, addDiagnosticTestForm);
 			return "redirect:/diagnostic-test/diagnostic-test-list-error";
-		} catch (PermissionException e) {
-			return "/error/403";
 		}
+
+		LoggingUtility.logAddedDiagnosticTest(username, addDiagnosticTestForm);
 
 		return "redirect:/diagnostic-test/diagnostic-test-list";
 	}
@@ -116,24 +132,33 @@ public class DiagnosticTestController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/update/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/update/" + id);
 			return "/error/403";
 		}
 
 		try {
 			diagnosticTestService.updateDiagnosticTest(userId, id, updateDiagnosticTestForm.getName());
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, DiagnosticTest.class.getSimpleName(), id, "POST",
+					"/diagnostic-test/update/" + id);
 			return "/error/404";
 		} catch (DuplicateInstanceException e) {
+			LoggingUtility.logDuplicateDiagnosticTest(username, updateDiagnosticTestForm);
 			return "redirect:/diagnostic-test/diagnostic-test-list-error";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/update/" + id);
 			return "/error/403";
 		}
+
+		LoggingUtility.logUpdatedDiagnosticTest(username, id, updateDiagnosticTestForm);
 
 		return "redirect:/diagnostic-test/diagnostic-test-list";
 	}
@@ -146,22 +171,30 @@ public class DiagnosticTestController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/change-diagnostic-test-state/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/change-diagnostic-test-state/" + id);
 			return "/error/403";
 		}
 
 		try {
 			diagnosticTestService.changeEnablingDiagnosticTest(userId, id);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, DiagnosticTest.class.getSimpleName(), id, "POST",
+					"/diagnostic-test/change-diagnostic-test-state/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/change-diagnostic-test-state/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logChangeEnablingState(username, DiagnosticTest.class.getSimpleName(), id);
 
 		return "redirect:/diagnostic-test/diagnostic-test-list";
 	}
@@ -174,27 +207,31 @@ public class DiagnosticTestController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/search-diagnostic-tests");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/search-diagnostic-tests");
 			return "/error/403";
 		}
 
 		Iterable<DiagnosticTest> diagnosticTests;
-		
+
 		try {
 			diagnosticTests = diagnosticTestService.findDiagnosticTests(userId, searchDiagnosticTestsForm.getName(),
 					searchDiagnosticTestsForm.isEnabled());
-		} catch (InstanceNotFoundException e) {
-			return "/error/404";
-		} catch (PermissionException e) {
+		} catch (PermissionException | InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/diagnostic-test/search-diagnostic-tests");
 			return "/error/403";
 		}
-		
+
 		prepareModel(model, diagnosticTests);
+		
+		LoggingUtility.logSearchDiagnosticTests(username, searchDiagnosticTestsForm, diagnosticTests);
 
 		return "diagnostic-test/diagnostic-test-list";
 	}

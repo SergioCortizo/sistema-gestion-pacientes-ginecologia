@@ -24,6 +24,18 @@ DROP TABLE medicine;
 DROP TABLE diagnostic_test;
 DROP TABLE contraceptive;
 
+DROP TABLE application_logs;
+
+CREATE TABLE application_logs (
+	id BIGINT NOT NULL AUTO_INCREMENT,
+	level VARCHAR(10) NOT NULL,
+	timestamp TIMESTAMP NOT NULL,
+	thread VARCHAR(100),
+	logger VARCHAR(100),
+	message LONGBLOB,
+	CONSTRAINT ApplicationLogsPK PRIMARY KEY (id)
+);
+
 CREATE TABLE user
 (
    id BIGINT NOT NULL AUTO_INCREMENT,

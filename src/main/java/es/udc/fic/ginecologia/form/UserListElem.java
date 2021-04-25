@@ -91,4 +91,11 @@ public class UserListElem {
 		this.id = id;
 	}
 
+	@Override
+	public String toString() {
+		return "UserListElem [id=" + id + ", name=" + name + ", username=" + username + ", email=" + email
+				+ ", enabled=" + enabled + ", discharge_date=" + discharge_date.toString() + ", roles=" + roles + "]";
+	}
+
+	
 }

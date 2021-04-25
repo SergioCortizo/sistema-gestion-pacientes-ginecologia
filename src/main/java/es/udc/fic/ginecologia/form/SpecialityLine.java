@@ -48,4 +48,9 @@ public class SpecialityLine {
 		this.updateSpecialityForm = updateSpecialityForm;
 	}
 
+	@Override
+	public String toString() {
+		return "SpecialityLine [id=" + id + ", name=" + name + ", enabled=" + enabled + "]";
+	}
+
 }

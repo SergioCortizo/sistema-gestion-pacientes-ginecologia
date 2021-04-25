@@ -43,5 +43,10 @@ public class Schedule implements Serializable{
 	public void setFinal_hour(LocalTime final_hour) {
 		this.final_hour = final_hour;
 	}
+
+	@Override
+	public String toString() {
+		return "Schedule [pk=" + pk.toString() + ", initial_hour=" + initial_hour.toString() + ", final_hour=" + final_hour.toString() + "]";
+	}
 	
 }

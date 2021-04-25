@@ -63,4 +63,9 @@ public class Answer {
 		this.meeting = meeting;
 	}
 
+	@Override
+	public String toString() {
+		return "Answer [id=" + id + ", answer=" + answer + ", question=" + question + "]";
+	}
+
 }

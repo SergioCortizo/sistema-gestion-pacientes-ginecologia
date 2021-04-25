@@ -19,43 +19,43 @@ import javax.persistence.Table;
 @Table(name = "meeting")
 public class Meeting {
 
-	@Id 
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer id;
-	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Integer id;
+
 	private String activity;
-	
+
 	private String comments;
-	
+
 	private LocalDateTime meeting_date;
-	
+
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="patient_id")
+	@JoinColumn(name = "patient_id")
 	private Patient patient;
-	
+
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name="user_id")
-	private User user;	
-	
+	@JoinColumn(name = "user_id")
+	private User user;
+
 	@OneToMany
-    @JoinColumn(name="meeting_id", referencedColumnName="id")
-    private Set<Answer> answers = new HashSet<>();
-	
+	@JoinColumn(name = "meeting_id", referencedColumnName = "id")
+	private Set<Answer> answers = new HashSet<>();
+
 	@OneToMany
-    @JoinColumn(name="meeting_id", referencedColumnName="id")
-    private Set<ComplementaryTest> complementaryTests = new HashSet<>();
-	
+	@JoinColumn(name = "meeting_id", referencedColumnName = "id")
+	private Set<ComplementaryTest> complementaryTests = new HashSet<>();
+
 	@OneToMany
-    @JoinColumn(name="meeting_id", referencedColumnName="id")
-    private Set<Recipe> recipes = new HashSet<>();
+	@JoinColumn(name = "meeting_id", referencedColumnName = "id")
+	private Set<Recipe> recipes = new HashSet<>();
 
 	public Meeting() {
 
 	}
-	
-	public Meeting (String activity, String comments) {
+
+	public Meeting(String activity, String comments) {
 		this.meeting_date = LocalDateTime.now();
-		
+
 		this.activity = activity;
 		this.comments = comments;
 	}
@@ -131,5 +131,10 @@ public class Meeting {
 	public void setRecipes(Set<Recipe> recipes) {
 		this.recipes = recipes;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Meeting [id=" + id + ", activity=" + activity + ", meeting_date=" + meeting_date.toString() + "]";
+	}
+
 }

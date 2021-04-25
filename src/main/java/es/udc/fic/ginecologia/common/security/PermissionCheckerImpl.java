@@ -19,7 +19,7 @@ public class PermissionCheckerImpl implements PermissionChecker {
 	private UserDao userDao;
 	
 	@Override
-	public void checkUserExists(Long userId) throws InstanceNotFoundException {
+	public void checkUserExists(Integer userId) throws InstanceNotFoundException {
 		if (!userDao.existsById(userId)) {
 			throw new InstanceNotFoundException("entities.user", userId);
 		}

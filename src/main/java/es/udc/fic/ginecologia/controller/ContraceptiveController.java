@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
@@ -36,18 +37,23 @@ public class ContraceptiveController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/contraceptive/contraceptive-list");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/contraceptive/contraceptive-list");
 			return "/error/403";
 		}
 
 		Iterable<Contraceptive> contraceptives = contraceptiveService.findAllContraceptives();
 
 		prepareModel(model, contraceptives);
+
+		LoggingUtility.logGetResource(username, "GET", "/contraceptive/contraceptive-list");
 
 		return "contraceptive/contraceptive-list";
 	}
@@ -60,12 +66,15 @@ public class ContraceptiveController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/contraceptive/contraceptive-list-error");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/contraceptive/contraceptive-list-error");
 			return "/error/403";
 		}
 
@@ -73,6 +82,8 @@ public class ContraceptiveController {
 
 		prepareModel(model, contraceptives);
 		model.addAttribute("duplicateContraceptive", true);
+
+		LoggingUtility.logGetResource(username, "GET", "/contraceptive/contraceptive-list");
 
 		return "contraceptive/contraceptive-list";
 	}
@@ -85,24 +96,29 @@ public class ContraceptiveController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/add-contraceptive");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/add-contraceptive");
 			return "/error/403";
 		}
 
 		try {
 			contraceptiveService.addContraceptive(userId, addContraceptiveForm.getName());
-		} catch (InstanceNotFoundException e) {
+		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/add-contraceptive");
 			return "/error/403";
 		} catch (DuplicateInstanceException e) {
+			LoggingUtility.logDuplicateContraceptive(username, addContraceptiveForm.getName());
 			return "redirect:/contraceptive/contraceptive-list-error";
-		} catch (PermissionException e) {
-			return "/error/403";
 		}
+		
+		LoggingUtility.logAddContraceptive(username, addContraceptiveForm);
 
 		return "redirect:/contraceptive/contraceptive-list";
 	}
@@ -116,24 +132,33 @@ public class ContraceptiveController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/update/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/update/" + id);
 			return "/error/403";
 		}
 
 		try {
 			contraceptiveService.updateContraceptive(userId, id, updateContraceptiveForm.getName());
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Contraceptive.class.getName(), id, "POST",
+					"/contraceptive/update/" + id);
 			return "/error/404";
 		} catch (DuplicateInstanceException e) {
+			LoggingUtility.logDuplicateContraceptive(username, updateContraceptiveForm.getName());
 			return "redirect:/contraceptive/contraceptive-list-error";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/update/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logUpdateContraceptive(username, id, updateContraceptiveForm);
 
 		return "redirect:/contraceptive/contraceptive-list";
 	}
@@ -146,22 +171,30 @@ public class ContraceptiveController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/change-contraceptive-state/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/change-contraceptive-state/" + id);
 			return "/error/403";
 		}
 
 		try {
 			contraceptiveService.changeEnablingContraceptive(userId, id);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Contraceptive.class.getName(), id, "POST",
+					"/contraceptive/change-contraceptive-state/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/change-contraceptive-state/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logChangeContraceptiveState(username, id);
 
 		return "redirect:/contraceptive/contraceptive-list";
 	}
@@ -174,12 +207,15 @@ public class ContraceptiveController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/search-contraceptives");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/search-contraceptives");
 			return "/error/403";
 		}
 
@@ -188,13 +224,14 @@ public class ContraceptiveController {
 		try {
 			contraceptives = contraceptiveService.findContraceptives(userId, searchContraceptivesForm.getName(),
 					searchContraceptivesForm.isEnabled());
-		} catch (InstanceNotFoundException e) {
-			return "/error/404";
-		} catch (PermissionException e) {
+		} catch (PermissionException | InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/contraceptive/search-contraceptives");
 			return "/error/403";
 		}
 
 		prepareModel(model, contraceptives);
+		
+		LoggingUtility.logSearchContraceptives(username, searchContraceptivesForm, contraceptives);
 
 		return "contraceptive/contraceptive-list";
 	}

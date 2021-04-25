@@ -58,5 +58,11 @@ public class CommonTaskUser {
 	public void setLast_time_read(LocalDateTime last_time_read) {
 		this.last_time_read = last_time_read;
 	}
+
+	@Override
+	public String toString() {
+		return "CommonTaskUser [pk=" + pk + ", user=" + user + ", commonTask=" + commonTask + ", last_time_read="
+				+ last_time_read.toString() + "]";
+	}
 	
 }

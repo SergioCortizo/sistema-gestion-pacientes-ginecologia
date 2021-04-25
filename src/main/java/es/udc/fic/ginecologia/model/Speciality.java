@@ -50,4 +50,9 @@ public class Speciality {
 		this.enabled = enabled;
 	}
 
+	@Override
+	public String toString() {
+		return "Speciality [id=" + id + ", name=" + name + ", enabled=" + enabled + "]";
+	}
+
 }

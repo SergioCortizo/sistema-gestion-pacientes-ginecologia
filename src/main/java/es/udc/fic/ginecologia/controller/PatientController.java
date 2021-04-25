@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.MeetingByDateDescendingComparator;
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
@@ -57,10 +58,10 @@ public class PatientController {
 
 	@Autowired
 	DiagnosticTestService diagnosticTestService;
-	
+
 	@Autowired
 	MedicineService medicineService;
-	
+
 	@Autowired
 	UserService userService;
 
@@ -71,12 +72,15 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/patient/patient-list");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/patient-list");
 			return "/error/403";
 		}
 
@@ -85,10 +89,13 @@ public class PatientController {
 		try {
 			patients = patientService.findAllPatients(userId);
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/patient-list");
 			return "/error/403";
 		}
 
 		prepareModel(model, patients, userId);
+
+		LoggingUtility.logGetResource(username, "GET", "/patient/patient-list");
 
 		return "patient/patient-list";
 	}
@@ -100,12 +107,15 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/patient/search-patients");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/patient/search-patients");
 			return "/error/403";
 		}
 
@@ -116,10 +126,13 @@ public class PatientController {
 					searchPatientsForm.getDNI_NIF(), searchPatientsForm.getHist_numsergas(),
 					searchPatientsForm.isEnabled());
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/patient/search-patients");
 			return "/error/403";
 		}
 
 		prepareModel(model, patients, userId);
+
+		LoggingUtility.logSearchPatients(username, searchPatientsForm, patients);
 
 		return "patient/patient-list";
 	}
@@ -131,12 +144,15 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/patient/patient-details/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/patient-details/" + id);
 			return "/error/403";
 		}
 
@@ -145,14 +161,19 @@ public class PatientController {
 		try {
 			patient = new PatientDetails(patientService.findPatient(userId, id));
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Patient.class.getSimpleName(), id, "GET",
+					"/patient/patient-details/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/patient-details/" + id);
 			return "/error/403";
 		}
 
 		model.addAttribute("patient", patient);
 		model.addAttribute("messageForm", new MessageForm());
 		model.addAttribute("facultatives", userService.findAllFacultatives());
+
+		LoggingUtility.logGetResource(username, "GET", "/patient/patient-details/" + id);
 
 		return "patient/patient-details";
 	}
@@ -164,17 +185,22 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/patient/add-patient");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/add-patient");
 			return "/error/403";
 		}
 
 		model.addAttribute("addPatientForm", new PatientForm());
 		model.addAttribute("contraceptives", contraceptiveService.findAllActiveContraceptives());
+
+		LoggingUtility.logGetResource(username, "GET", "/patient/add-patient");
 
 		return "patient/add-patient";
 	}
@@ -186,18 +212,23 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/patient/add-patient-error");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/add-patient-error");
 			return "/error/403";
 		}
 
 		model.addAttribute("addPatientForm", new PatientForm());
 		model.addAttribute("contraceptives", contraceptiveService.findAllActiveContraceptives());
 		model.addAttribute("duplicatePatient", true);
+
+		LoggingUtility.logGetResource(username, "GET", "/patient/add-patient-error");
 
 		return "patient/add-patient";
 	}
@@ -209,12 +240,15 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/patient/add-patient");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/patient/add-patient");
 			return "/error/403";
 		}
 
@@ -222,13 +256,15 @@ public class PatientController {
 
 		try {
 			patientService.addPatient(userId, patient, addPatientForm.getContraceptives());
-		} catch (InstanceNotFoundException e) {
+		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/patient/add-patient");
 			return "/error/403";
 		} catch (DuplicateInstanceException e) {
+			LoggingUtility.logDuplicatePatient(username, addPatientForm);
 			return "redirect:/patient/add-patient-error";
-		} catch (PermissionException e) {
-			return "/error/403";
 		}
+
+		LoggingUtility.logAddedPatient(username, addPatientForm);
 
 		return "redirect:/patient/patient-list";
 	}
@@ -240,12 +276,15 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/patient/update-patient/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/update-patient/" + id);
 			return "/error/403";
 		}
 
@@ -258,8 +297,11 @@ public class PatientController {
 			patientForm = PatientConversor.convertToPatientForm(patient);
 			questions = questionService.findAllQuestions(userId);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Patient.class.getSimpleName(), id, "GET",
+					"/patient/update-patient/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/update-patient/" + id);
 			return "/error/403";
 		}
 
@@ -269,10 +311,9 @@ public class PatientController {
 
 		List<Meeting> meetings = new ArrayList<>(patient.getMeetings());
 		Collections.sort(meetings, new MeetingByDateDescendingComparator());
-		
+
 		Iterable<Medicine> medicines = () -> StreamSupport
-				.stream(medicineService.findAllMedicines().spliterator(), false)
-				.filter(m -> m.isEnabled()).iterator();
+				.stream(medicineService.findAllMedicines().spliterator(), false).filter(m -> m.isEnabled()).iterator();
 
 		model.addAttribute("updatePatientForm", patientForm);
 		model.addAttribute("patientId", id);
@@ -283,8 +324,10 @@ public class PatientController {
 		model.addAttribute("addMeetingForm", new MeetingForm());
 		model.addAttribute("messageForm", new MessageForm());
 		model.addAttribute("facultatives", userService.findAllFacultatives());
-		
+
 		model.addAttribute("contraceptives", contraceptiveService.findAllActiveContraceptives());
+
+		LoggingUtility.logGetResource(username, "GET", "/patient/update-patient/" + id);
 
 		return "patient/update-patient";
 	}
@@ -296,12 +339,15 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/patient/update-patient-error/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/update-patient-error/" + id);
 			return "/error/403";
 		}
 
@@ -314,8 +360,11 @@ public class PatientController {
 			patientForm = PatientConversor.convertToPatientForm(patient);
 			questions = questionService.findAllQuestions(userId);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Patient.class.getSimpleName(), id, "GET",
+					"/patient/update-patient-error/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/update-patient-error/" + id);
 			return "/error/403";
 		}
 
@@ -335,6 +384,8 @@ public class PatientController {
 		model.addAttribute("contraceptives", contraceptiveService.findAllActiveContraceptives());
 		model.addAttribute("duplicatePatient", true);
 
+		LoggingUtility.logGetResource(username, "GET", "/patient/update-patient-error/" + id);
+
 		return "patient/update-patient";
 	}
 
@@ -345,12 +396,15 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/patient/update-patient/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/patient/update-patient/" + id);
 			return "/error/403";
 		}
 
@@ -358,13 +412,15 @@ public class PatientController {
 
 		try {
 			patientService.updatePatient(userId, id, patient, updatePatientForm.getContraceptives());
-		} catch (InstanceNotFoundException e) {
+		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/patient/update-patient/" + id);
 			return "/error/403";
 		} catch (DuplicateInstanceException e) {
+			LoggingUtility.logDuplicatePatient(username, updatePatientForm);
 			return "redirect:/patient/update-patient-error/" + id;
-		} catch (PermissionException e) {
-			return "/error/403";
 		}
+
+		LoggingUtility.logUpdatePatient(username, id, updatePatientForm);
 
 		return "redirect:/patient/patient-list";
 	}
@@ -377,22 +433,30 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/patient/change-patient-state/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/patient/change-patient-state/" + id);
 			return "/error/403";
 		}
 
 		try {
 			patientService.changePatientEnablingState(userId, id);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Patient.class.getSimpleName(), id, "POST",
+					"/patient/change-patient-state/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/patient/change-patient-state/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logChangeEnablingPatientState(username, Patient.class.getSimpleName(), id);
 
 		return "redirect:/patient/patient-list";
 	}
@@ -405,22 +469,30 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/patient/change-patient-of-interest/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/patient/change-patient-of-interest/" + id);
 			return "/error/403";
 		}
 
 		try {
 			patientService.changeAsPatientOfInterest(userId, id);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Patient.class.getSimpleName(), id, "POST",
+					"/patient/change-patient-of-interest/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/patient/change-patient-of-interest/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logChangePatientOfInterest(username, id);
 
 		return "redirect:/patient/patient-list";
 	}
@@ -432,24 +504,30 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		User user;
 
 		try {
 			if (!permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/patient/patients-of-interest");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/patients-of-interest");
 			return "/error/403";
 		}
 
 		try {
 			user = permissionChecker.checkUser(userId);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/patients-of-interest");
 			return "/error/403";
 		}
 
 		prepareModel(model, user.getPatientsOfInterest(), userId);
+		
+		LoggingUtility.logGetResource(username, "GET", "/patient/patients-of-interest");
 
 		return "patient/patients-of-interest";
 	}
@@ -461,24 +539,30 @@ public class PatientController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/patient/last-seen-patients");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/last-seen-patients");
 			return "/error/403";
 		}
 
 		Iterable<Patient> patients;
-		
+
 		try {
 			patients = patientService.findLastSeenPatients(userId);
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/patient/last-seen-patients");
 			return "/error/403";
 		}
-		
+
 		prepareModel(model, patients, userId);
+		
+		LoggingUtility.logGetResource(username, "GET", "/patient/last-seen-patients");
 
 		return "patient/last-seen-patients";
 	}

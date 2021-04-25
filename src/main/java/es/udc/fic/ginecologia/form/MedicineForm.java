@@ -20,5 +20,10 @@ public class MedicineForm {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	@Override
+	public String toString() {
+		return "MedicineForm [name=" + name + ", enabled=" + enabled + "]";
+	}
 	
 }

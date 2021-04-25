@@ -33,6 +33,10 @@ public class Question {
 	public void setQuestion(String question) {
 		this.question = question;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "Question [id=" + id + ", question=" + question + "]";
+	}
 	
 }

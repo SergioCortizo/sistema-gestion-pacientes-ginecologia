@@ -225,4 +225,16 @@ public class PatientForm {
 		this.contraceptives = contraceptives;
 	}
 
+	@Override
+	public String toString() {
+		return "PatientForm [name=" + name + ", DNI_NIF=" + DNI_NIF + ", mobile_phone=" + mobile_phone + ", landline="
+				+ landline + ", birthday=" + birthday.toString() + ", hist_numsergas=" + hist_numsergas + ", postal_address="
+				+ postal_address + ", location=" + location + ", email=" + email + ", allergies=" + allergies
+				+ ", diseases=" + diseases + ", interventions=" + interventions + ", family_background="
+				+ family_background + ", smoker=" + smoker + ", menarche=" + menarche + ", menopause=" + menopause
+				+ ", last_menstruation_date=" + last_menstruation_date.toString() + ", pregnancies=" + pregnancies
+				+ ", childbirths=" + childbirths + ", cesarean_sections=" + cesarean_sections + ", misbirths="
+				+ misbirths + ", menstrual_type=" + menstrual_type + ", contraceptives=" + contraceptives + "]";
+	}
+
 }

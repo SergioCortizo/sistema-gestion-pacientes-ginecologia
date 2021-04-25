@@ -19,21 +19,21 @@ public class GrupalMessage {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
+
 	private String message_body;
-	
+
 	private LocalDateTime datetime;
-	
+
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", insertable = true, updatable = false)
 	private User user;
-	
+
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "common_task_id", insertable = true, updatable = false)
 	private CommonTask commonTask;
-	
+
 	public GrupalMessage() {
-		
+
 	}
 
 	public GrupalMessage(String message_body) {
@@ -80,5 +80,10 @@ public class GrupalMessage {
 	public void setCommonTask(CommonTask commonTask) {
 		this.commonTask = commonTask;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "GrupalMessage [id=" + id + ", message_body=" + message_body + ", datetime=" + datetime.toString() + "]";
+	}
+
 }

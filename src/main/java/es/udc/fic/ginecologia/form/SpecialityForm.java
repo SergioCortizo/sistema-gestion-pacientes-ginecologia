@@ -20,4 +20,10 @@ public class SpecialityForm {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	@Override
+	public String toString() {
+		return "SpecialityForm [name=" + name + ", enabled=" + enabled + "]";
+	}
+	
 }

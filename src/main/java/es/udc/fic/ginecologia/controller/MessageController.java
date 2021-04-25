@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import es.udc.fic.ginecologia.common.GrupalMessageByDateDescendingComparator;
+import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
@@ -53,12 +54,15 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/messages/messages-list");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/messages-list");
 			return "/error/403";
 		}
 
@@ -67,10 +71,13 @@ public class MessageController {
 		try {
 			messages = messageService.findMessages(userId);
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/messages-list");
 			return "/error/403";
 		}
 
 		model.addAttribute("messages", messages);
+
+		LoggingUtility.logGetResource(username, "GET", "/messages/messages-list");
 
 		return "messages/messages-list";
 	}
@@ -82,12 +89,15 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/messages/read-message/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/read-message/" + id);
 			return "/error/403";
 		}
 
@@ -96,8 +106,11 @@ public class MessageController {
 		try {
 			message = messageService.findMessage(userId, id);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Message.class.getSimpleName(), id, "GET",
+					"/messages/read-message/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/read-message/" + id);
 			return "/error/403";
 		}
 
@@ -108,6 +121,8 @@ public class MessageController {
 		model.addAttribute("facultatives", facultatives);
 		model.addAttribute("messageForm", new MessageForm());
 		model.addAttribute("message", message);
+
+		LoggingUtility.logGetResource(username, "GET", "/messages/read-message/" + id);
 
 		return "messages/read-message";
 	}
@@ -120,12 +135,15 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/messages/add-message");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/add-message");
 			return "/error/403";
 		}
 
@@ -133,6 +151,8 @@ public class MessageController {
 		model.addAttribute("users", users);
 
 		model.addAttribute("messageForm", new MessageForm());
+
+		LoggingUtility.logGetResource(username, "GET", "/messages/add-message");
 
 		return "messages/add-message";
 	}
@@ -145,12 +165,15 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-message");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-message");
 			return "/error/403";
 		}
 
@@ -158,10 +181,15 @@ public class MessageController {
 			messageService.addMessage(userId, messageForm.getReceiverId(), messageForm.getSubject(),
 					messageForm.getMessage_body());
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, User.class.getSimpleName(), messageForm.getReceiverId(),
+					"POST", "/messages/add-message");
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-message");
 			return "/error/403";
 		}
+		
+		LoggingUtility.logAddMessage(username, messageForm);
 
 		return "redirect:/messages/messages-list";
 	}
@@ -174,22 +202,30 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/messages/reply-message/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/reply-message/" + id);
 			return "/error/403";
 		}
 
 		try {
 			messageService.replyMessage(userId, id, messageForm.getSubject(), messageForm.getMessage_body());
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Message.class.getSimpleName(), messageForm.getReceiverId(),
+					"POST", "/messages/reply-message/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/reply-message/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logReplyMessage(username, id, messageForm);
 
 		return "redirect:/messages/messages-list";
 	}
@@ -203,12 +239,15 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/messages/open-interconsultation/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/open-interconsultation/" + id);
 			return "/error/403";
 		}
 
@@ -216,10 +255,14 @@ public class MessageController {
 			messageService.addInterconsultation(userId, messageForm.getReceiverId(), id, messageForm.getSubject(),
 					messageForm.getMessage_body());
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, "POST", "/messages/open-interconsultation/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/open-interconsultation/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logOpenInterconsultation(username, id, messageForm);
 
 		return "redirect:/messages/messages-list/";
 	}
@@ -231,12 +274,15 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/messages/common-tasks-list");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/common-tasks-list");
 			return "/error/403";
 		}
 
@@ -246,6 +292,7 @@ public class MessageController {
 			commonTasks = CommonTaskConversor.convertoToCommonTaskElemList(messageService.findCommonTasks(userId),
 					userId);
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/common-tasks-list");
 			return "/error/403";
 		}
 
@@ -253,6 +300,8 @@ public class MessageController {
 		model.addAttribute("users", userService.findAllUsers());
 		model.addAttribute("userId", userId);
 		model.addAttribute("commonTaskForm", new CommonTaskForm());
+		
+		LoggingUtility.logGetResource(username, "GET", "/messages/common-tasks-list");
 
 		return "messages/common-tasks-list";
 	}
@@ -264,12 +313,15 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/messages/common-task/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/common-task/" + id);
 			return "/error/403";
 		}
 
@@ -280,6 +332,7 @@ public class MessageController {
 		} catch (InstanceNotFoundException e) {
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/common-task/" + id);
 			return "/error/403";
 		}
 
@@ -289,6 +342,8 @@ public class MessageController {
 		model.addAttribute("commonTask", commonTask);
 		model.addAttribute("addMessageForm", new MessageForm());
 		model.addAttribute("messages", messages);
+		
+		LoggingUtility.logGetResource(username, "GET", "/messages/common-task/" + id);
 
 		return "messages/common-task-details";
 	}
@@ -300,12 +355,15 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/messages/open-common-task/");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/open-common-task/");
 			return "/error/403";
 		}
 
@@ -313,8 +371,11 @@ public class MessageController {
 			messageService.addCommonTask(userId, commonTaskForm.getTitle(), commonTaskForm.getDescription(),
 					commonTaskForm.getUserIds());
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/open-common-task/");
 			return "/error/403";
 		}
+		
+		LoggingUtility.logAddCommonTask(username, commonTaskForm);
 
 		return "redirect:/messages/common-tasks-list";
 	}
@@ -326,12 +387,15 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-grupal-message/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-grupal-message/" + id);
 			return "/error/403";
 		}
 
@@ -339,9 +403,12 @@ public class MessageController {
 			try {
 				messageService.addGrupalMessage(userId, id, addMessageForm.getMessage_body());
 			} catch (InstanceNotFoundException | PermissionException e) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-grupal-message/" + id);
 				return "/error/403";
 			}
 		}
+		
+		LoggingUtility.logAddGrupalMessage(username, id, addMessageForm);
 
 		return "redirect:/messages/common-task/" + id;
 	}
@@ -353,12 +420,15 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/messages/notices-list/");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/notices-list/");
 			return "/error/403";
 		}
 
@@ -367,10 +437,13 @@ public class MessageController {
 			Collections.reverse((List<?>) notices);
 			model.addAttribute("notices", notices);
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/messages/notices-list/");
 			return "/error/403";
 		}
-		
+
 		model.addAttribute("noticeForm", new NoticeForm());
+		
+		LoggingUtility.logGetResource(username, "GET", "/messages/notices-list/");
 
 		return "messages/notices-list";
 	}
@@ -382,21 +455,27 @@ public class MessageController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-notice/");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-notice/");
 			return "/error/403";
 		}
-		
+
 		try {
 			messageService.addNotice(userId, noticeForm.getNotice());
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-notice/");
 			return "/error/403";
 		}
 		
+		LoggingUtility.logAddNotice(username, noticeForm);
+
 		return "redirect:/messages/notices-list/";
 	}
 

@@ -113,4 +113,11 @@ public class RecipeMedicine implements Serializable {
 		this.pk = pk;
 	}
 
+	@Override
+	public String toString() {
+		return "RecipeMedicine [pk=" + pk + ", denomination=" + denomination + ", dosification=" + dosification
+				+ ", formOfAdministration=" + formOfAdministration + ", format=" + format + ", units=" + units
+				+ ", posology=" + posology + "]";
+	}
+
 }

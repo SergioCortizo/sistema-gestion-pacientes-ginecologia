@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
@@ -21,6 +22,7 @@ import es.udc.fic.ginecologia.form.MeetingForm;
 import es.udc.fic.ginecologia.form.RecipeConversor;
 import es.udc.fic.ginecologia.model.Answer;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
+import es.udc.fic.ginecologia.model.Patient;
 import es.udc.fic.ginecologia.model.Question;
 import es.udc.fic.ginecologia.model.Recipe;
 import es.udc.fic.ginecologia.service.MedicineService;
@@ -45,12 +47,15 @@ public class MeetingController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/medicine/update/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/medicine/update/" + id);
 			return "/error/403";
 		}
 
@@ -78,10 +83,14 @@ public class MeetingController {
 			meetingService.addMeeting(userId, id, addMeetingForm.getActivity(), addMeetingForm.getComments(), answers,
 					addMeetingForm.getDiagnosticTestIds(), addMeetingForm.getFiles(), recipes);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Patient.class.getSimpleName(), id, "POST", "/medicine/update/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/medicine/update/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logAddMeeting(username, id, addMeetingForm, answers);
 
 		return "redirect:/patient/update-patient/" + id;
 	}

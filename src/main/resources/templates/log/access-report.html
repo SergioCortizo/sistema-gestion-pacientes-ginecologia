@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header-landscape-pdf :: header">
+</head>
+
+<body>
+	<main>
+
+		<div th:include="fragments/name-and-logo-pdf :: name-and-logo-pdf"></div>
+
+		<div class="content">
+			<h3 th:text="#{label.accessreport}">Access report</h3>
+
+			<div class="table-responsive">
+				<table class="table table-wrap w-auto medicine-details">
+					<thead>
+						<tr>
+							<th th:text="#{label.level}">Level</th>
+							<th th:text="#{label.timestamp}">Timestamp</th>
+							<th th:text="#{label.thread}">Thread</th>
+							<th th:text="#{label.logger}">Logger</th>
+							<th th:text="#{label.message}">Message</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="log : ${logLines}">
+							<td>
+								<th:block th:switch="${log.level.name}">
+									<small th:case="'OFF'" class="text-muted">OFF</small>
+									<small th:case="'FATAL'" class="text-danger">FATAL</small>
+									<small th:case="'ERROR'" class="text-danger">ERROR</small>
+									<small th:case="'WARN'" class="text-warning">WARN</small>
+									<small th:case="'INFO'" class="text-info">INFO</small>
+									<small th:case="'DEBUG'" class="text-primary">DEBUG</small>
+									<small th:case="'TRACE'" class="text-dark">TRACE</small>
+									<small th:case="'ALL'" class="text-dark">ALL</small>
+								</th:block>
+							</td>
+							<td><small th:text="${log.timestamp.toLocalDate()} + ' ' + ${log.timestamp.toLocalTime()}">
+									Timestamp</small></td>
+							<td>
+								<small th:text="${log.thread}">Thread</small>
+							</td>
+							<td>
+								<small th:text="${log.logger}">Logger</small>
+							</td>
+							<td>
+								<small th:text="${log.message}">Message</small>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</main>
+</body>
+
+</html>

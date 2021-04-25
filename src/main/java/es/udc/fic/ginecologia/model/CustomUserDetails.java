@@ -65,4 +65,9 @@ public class CustomUserDetails implements UserDetails {
 		return user.isEnabled();
 	}
 
+	@Override
+	public String toString() {
+		return "CustomUserDetails [user=" + user + "]";
+	}
+
 }

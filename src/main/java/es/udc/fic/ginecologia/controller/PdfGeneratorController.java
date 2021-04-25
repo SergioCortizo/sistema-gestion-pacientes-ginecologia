@@ -17,10 +17,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
+import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.PdfGeneratorUtil;
 import es.udc.fic.ginecologia.form.PatientDetails;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
+import es.udc.fic.ginecologia.model.LogLine;
 import es.udc.fic.ginecologia.model.Patient;
+import es.udc.fic.ginecologia.service.LogService;
 import es.udc.fic.ginecologia.service.PatientService;
 import es.udc.fic.ginecologia.service.RecipeService;
 import es.udc.fic.ginecologia.service.SettingsService;
@@ -39,6 +42,9 @@ public class PdfGeneratorController {
 
 	@Autowired
 	PatientService patientService;
+	
+	@Autowired
+	LogService logService;
 
 	// Recipe PDF
 	@GetMapping("/recipe/get-recipe/{id}")
@@ -48,11 +54,14 @@ public class PdfGeneratorController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		Map<String, Object> data = setBasicData();
 		data.put("recipe", recipeService.findById(userId, id));
 
 		ResponseEntity<byte[]> response = prepareResponse("patient/recipe-pdf", "recipe", data);
+		
+		LoggingUtility.downloadedRecipe(username, id);
 
 		return response;
 
@@ -65,6 +74,7 @@ public class PdfGeneratorController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		Patient patientFound = patientService.findPatient(userId, id);
 
@@ -74,9 +84,32 @@ public class PdfGeneratorController {
 		data.put("patient", patient);
 
 		ResponseEntity<byte[]> response = prepareResponse("patient/monitoring-report", "monitoring-report", data);
+		
+		LoggingUtility.logDownloadMonitoringReport(username, id);
 
 		return response;
 
+	}
+	
+	// Log report PDF
+	@GetMapping("/log/get-logs/")
+	public ResponseEntity<byte[]> generateLogReport(Model model) throws Exception {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
+		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
+		
+		Iterable<LogLine> logLines = logService.findLogs(userId);
+		
+		Map<String, Object> data = setBasicData();
+		data.put("logLines", logLines);
+		
+		ResponseEntity<byte[]> response = prepareResponse("log/access-report", "access-report", data);
+		
+		LoggingUtility.logDownloadAccessReport(username);
+		
+		return response;
 	}
 
 	private Map<String, Object> setBasicData() {

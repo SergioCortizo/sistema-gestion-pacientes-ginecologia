@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+
+			<main>
+
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item active">
+							<span th:text="#{label.checklogs}">Check logs</span>
+						</li>
+					</ol>
+
+					<div class="card mb-4">
+						<div class="card-header">
+							<i class="fas fa-clipboard-list mr-1"></i>
+							<span th:text="#{label.checklogs}">Check logs</span>
+						</div>
+						<div class="card-body">
+							<div class="row">
+								<form method="GET" th:action="@{/log/get-logs/}">
+									<button class="btn btn-link" type="submit">
+										<span th:text="#{label.generatelogs}">Generate logs</span>
+									</button>
+								</form>
+							</div>
+
+							<div class="table-responsive">
+								<table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
+									<thead>
+										<tr>
+											<th th:text="#{label.level}">Level</th>
+											<th th:text="#{label.timestamp}">Timestamp</th>
+											<th th:text="#{label.thread}">Thread</th>
+											<th th:text="#{label.logger}">Logger</th>
+											<th th:text="#{label.message}">Message</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr th:each="log : ${logs}">
+											<td>
+												<th:block th:switch="${log.level.name}">
+													<span th:case="'OFF'" class="text-muted">OFF</span>
+													<span th:case="'FATAL'" class="text-danger">FATAL</span>
+													<span th:case="'ERROR'" class="text-danger">ERROR</span>
+													<span th:case="'WARN'" class="text-warning">WARN</span>
+													<span th:case="'INFO'" class="text-info">INFO</span>
+													<span th:case="'DEBUG'" class="text-primary">DEBUG</span>
+													<span th:case="'TRACE'" class="text-dark">TRACE</span>
+													<span th:case="'ALL'" class="text-dark">ALL</span>
+												</th:block>
+											</td>
+											<td
+												th:text="${log.timestamp.toLocalDate()} + ' ' + ${log.timestamp.toLocalTime()}">
+												Timestamp</td>
+											<td>
+												<span th:text="${log.thread}">Thread</span>
+											</td>
+											<td>
+												<span th:text="${log.logger}">Logger</span>
+											</td>
+											<td>
+												<span th:text="${log.message}">Message</span>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+		</div>
+	</div>
+</body>
+
+</html>

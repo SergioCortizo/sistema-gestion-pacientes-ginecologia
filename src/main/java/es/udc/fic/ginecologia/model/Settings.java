@@ -10,7 +10,7 @@ public class Settings {
 
 	@Id
 	private String name;
-	
+
 	private String value;
 
 	public String getName() {
@@ -28,6 +28,15 @@ public class Settings {
 	public void setValue(String value) {
 		this.value = value;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		switch (name) {
+			case "logo":
+				return "Settings [name=" + name + "]";
+			default:
+				return "Settings [name=" + name + ", value=" + value + "]";
+		}
+	}
+
 }

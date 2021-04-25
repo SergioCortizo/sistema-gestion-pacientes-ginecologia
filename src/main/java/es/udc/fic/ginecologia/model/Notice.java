@@ -68,5 +68,10 @@ public class Notice {
 	public void setUser(User user) {
 		this.user = user;
 	}
+
+	@Override
+	public String toString() {
+		return "Notice [id=" + id + ", notice=" + notice + ", datetime=" + datetime.toString() + "]";
+	}
 	
 }

@@ -22,14 +22,14 @@ public class CommonTask {
 	private String title;
 
 	private String description;
-	
+
 	@OneToMany
 	@JoinColumn(name = "common_task_id", referencedColumnName = "id")
 	private Set<CommonTaskUser> commonTaskUsers = new HashSet<>();
-	
+
 	@OneToMany
 	@JoinColumn(name = "common_task_id", referencedColumnName = "id")
-	private Set<GrupalMessage> messages = new HashSet<>();	
+	private Set<GrupalMessage> messages = new HashSet<>();
 
 	public CommonTask() {
 
@@ -79,5 +79,10 @@ public class CommonTask {
 	public void setMessages(Set<GrupalMessage> messages) {
 		this.messages = messages;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "CommonTask [id=" + id + ", title=" + title + ", description=" + description + "]";
+	}
+
 }

@@ -339,4 +339,10 @@ public class Patient {
 		this.usersInterestedByPatient = usersInterestedByPatient;
 	}
 
+	@Override
+	public String toString() {
+		return "Patient [name=" + name + ", DNI_NIF=" + DNI_NIF + ", hist_numsergas=" + hist_numsergas + ", enabled="
+				+ enabled + "]";
+	}
+
 }

@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
@@ -51,12 +52,15 @@ public class CalendarController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/calendar/check-agenda");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/calendar/check-agenda");
 			return "/error/403";
 		}
 
@@ -66,8 +70,11 @@ public class CalendarController {
 			calendarEntries = calendarService.findCalendarEntries(userId);
 			prepareModel(model, calendarEntries, userId);
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/calendar/check-agenda");
 			return "/error/403";
 		}
+
+		LoggingUtility.logGetResource(username, "GET", "/calendar/check-agenda");
 
 		return "calendar/check-agenda";
 	}
@@ -80,12 +87,15 @@ public class CalendarController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/calendar/meetings-management");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/calendar/meetings-management");
 			return "/error/403";
 		}
 
@@ -95,8 +105,11 @@ public class CalendarController {
 			calendarEntries = calendarService.findAllCalendarEntries(userId);
 			prepareModel(model, calendarEntries, userId);
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/calendar/meetings-management");
 			return "/error/403";
 		}
+
+		LoggingUtility.logGetResource(username, "GET", "/calendar/meetings-management");
 
 		return "calendar/meetings-management";
 	}
@@ -109,12 +122,15 @@ public class CalendarController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/calendar/update-meeting/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/calendar/update-meeting/" + id);
 			return "/error/403";
 		}
 
@@ -132,14 +148,19 @@ public class CalendarController {
 			model.addAttribute("patients", patientService.findAllPatients(userId));
 
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, CalendarEntry.class.getName(), id, "GET",
+					"/calendar/update-meeting/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/calendar/update-meeting/" + id);
 			return "/error/403";
 		}
 
 		model.addAttribute("updateCalendarEntryForm", updateCalendarEntryForm);
 		model.addAttribute("lineId", id);
 		model.addAttribute("facultatives", userService.findAllFacultatives());
+
+		LoggingUtility.updatedCalendarEntry(username, id, updateCalendarEntryForm);
 
 		return "calendar/update-meeting";
 	}
@@ -152,12 +173,15 @@ public class CalendarController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/calendar/add-calendar-entry");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/calendar/add-calendar-entry");
 			return "/error/403";
 		}
 
@@ -167,10 +191,14 @@ public class CalendarController {
 			calendarService.addCalendarEntry(userId, addCalendarEntryForm.getFacultative(),
 					addCalendarEntryForm.getPatient(), date, addCalendarEntryForm.getReason());
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, "POST", "/calendar/add-calendar-entry");
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/calendar/add-calendar-entry");
 			return "/error/403";
 		}
+
+		LoggingUtility.logAddedCalendarEntry(username, addCalendarEntryForm);
 
 		return "redirect:/calendar/meetings-management";
 	}
@@ -184,12 +212,15 @@ public class CalendarController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/calendar/update-calendar-entry/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/calendar/update-calendar-entry/" + id);
 			return "/error/403";
 		}
 
@@ -200,10 +231,14 @@ public class CalendarController {
 			calendarService.updateCalendarEntry(userId, id, updateCalendarEntryForm.getFacultative(),
 					updateCalendarEntryForm.getPatient(), date, updateCalendarEntryForm.getReason());
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, "POST", "/calendar/update-calendar-entry/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/calendar/update-calendar-entry/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logUpdatedCalendarEntry(username, id, updateCalendarEntryForm);
 
 		return "redirect:/calendar/meetings-management";
 	}
@@ -216,22 +251,30 @@ public class CalendarController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/calendar/cancel-meeting/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/calendar/cancel-meeting/" + id);
 			return "/error/403";
 		}
 
 		try {
 			calendarService.cancelEntry(userId, id);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, CalendarEntry.class.getName(), id, "POST",
+					"/calendar/cancel-meeting/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/calendar/cancel-meeting/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logCancelledMeeting(username, id);
 
 		return "redirect:/calendar/meetings-management";
 	}
@@ -243,22 +286,29 @@ public class CalendarController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsFacultative(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/calendar/set-entry-as-closed/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/calendar/set-entry-as-closed/" + id);
 			return "/error/403";
 		}
 
 		try {
 			calendarService.setEntryAsClosed(userId, id);
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, CalendarEntry.class.getName(), id, "POST", "/calendar/set-entry-as-closed/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/calendar/set-entry-as-closed/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logSetEntryAsClosed(username, id);
 
 		return "redirect:/calendar/check-agenda";
 	}

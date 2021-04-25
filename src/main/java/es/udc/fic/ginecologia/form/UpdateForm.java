@@ -82,5 +82,12 @@ public class UpdateForm {
 	public void setRoles(List<Integer> roles) {
 		this.roles = roles;
 	}
+
+	@Override
+	public String toString() {
+		return "UpdateForm [name=" + name + ", email=" + email + ", postalAddress=" + postalAddress + ", location="
+				+ location + ", DNI=" + DNI + ", phoneNumber=" + phoneNumber + ", collegiateNumber=" + collegiateNumber
+				+ ", roles=" + roles + "]";
+	}
     
 }

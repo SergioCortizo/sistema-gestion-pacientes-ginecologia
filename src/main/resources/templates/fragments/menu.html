@@ -16,6 +16,14 @@
 					<span th:text="#{label.nameandlogosettings}">Name and logo settings</span>
 				</a>
 			</div>
+			
+			<div class="nav"  sec:authorize="hasRole('ADMIN')">
+				<div class="sb-sidenav-menu-heading" th:text="#{label.logs}">Logs</div>
+				<a class="nav-link" th:href="@{/log/log-list}">
+					<div class="sb-nav-link-icon"><i class="fas fa-clipboard-list"></i></div>
+					<span th:text="#{label.checklogs}">Check logs</span>
+				</a>
+			</div>
 
 			<div class="nav">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.patients}">Patients</div>

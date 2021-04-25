@@ -80,4 +80,11 @@ public class MeetingForm {
 		this.recipes = recipes;
 	}
 
+	@Override
+	public String toString() {
+		return "MeetingForm [activity=" + activity + ", comments=" + comments + ", questions=" + questions
+				+ ", answers=" + answers + ", diagnosticTestIds=" + diagnosticTestIds + ", files=" + files
+				+ ", recipes=" + recipes + "]";
+	}
+
 }

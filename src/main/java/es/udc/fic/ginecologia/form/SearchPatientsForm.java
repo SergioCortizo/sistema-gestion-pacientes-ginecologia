@@ -53,4 +53,11 @@ public class SearchPatientsForm {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	@Override
+	public String toString() {
+		return "SearchPatientsForm [name=" + name + ", DNI_NIF=" + DNI_NIF + ", hist_numsergas=" + hist_numsergas
+				+ ", enabled=" + enabled + "]";
+	}
+	
 }

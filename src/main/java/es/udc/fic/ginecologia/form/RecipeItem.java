@@ -36,5 +36,11 @@ public class RecipeItem {
 	public void setMedicines(List<RecipeMedicineItem> medicines) {
 		this.medicines = medicines;
 	}
+
+	@Override
+	public String toString() {
+		return "RecipeItem [dispensingDate=" + dispensingDate.toString() + ", clarifications=" + clarifications + ", medicines="
+				+ medicines + "]";
+	}
 	
 }

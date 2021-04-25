@@ -20,4 +20,10 @@ public class ContraceptiveForm {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	@Override
+	public String toString() {
+		return "ContraceptiveForm [name=" + name + ", enabled=" + enabled + "]";
+	}
+	
 }

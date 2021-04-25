@@ -3,9 +3,9 @@ package es.udc.fic.ginecologia.form;
 import org.springframework.web.multipart.MultipartFile;
 
 public class SettingsForm {
-	
+
 	private String enterpriseName;
-	
+
 	private MultipartFile logo;
 
 	public String getEnterpriseName() {
@@ -23,5 +23,11 @@ public class SettingsForm {
 	public void setLogo(MultipartFile logo) {
 		this.logo = logo;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "SettingsForm [enterpriseName=" + enterpriseName + ", logo=" + logo.getOriginalFilename()
+				+ ", logo size=" + logo.getSize() + "bytes" + "]";
+	}
+
 }

@@ -34,4 +34,9 @@ public class CommonTaskForm {
 		this.description = description;
 	}
 
+	@Override
+	public String toString() {
+		return "CommonTaskForm [userIds=" + userIds + ", title=" + title + ", description=" + description + "]";
+	}
+
 }

@@ -84,4 +84,9 @@ public class Recipe {
 		this.meeting = meeting;
 	}
 
+	@Override
+	public String toString() {
+		return "Recipe [id=" + id + ", dispensingDate=" + dispensingDate + "]";
+	}
+
 }

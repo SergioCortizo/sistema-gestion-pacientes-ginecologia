@@ -84,5 +84,10 @@ public class Contraceptive {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Contraceptive [id=" + id + ", name=" + name + ", enabled=" + enabled + "]";
+	}
 	
 }

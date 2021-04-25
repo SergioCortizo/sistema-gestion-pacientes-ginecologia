@@ -231,4 +231,8 @@ public class User {
 		this.last_time_seen_notices = last_time_seen_notices;
 	}
 
+	@Override
+	public String toString() {
+		return "User [name=" + name + ", username=" + username + ", enabled=" + enabled + ", roles=" + roles + "]";
+	}
 }

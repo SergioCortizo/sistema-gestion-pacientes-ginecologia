@@ -1,26 +1,28 @@
 package es.udc.fic.ginecologia.form;
 
+import java.util.Arrays;
+
 public class SignUpForm {
 
-    private String name;
+	private String name;
 
-    private String username;
+	private String username;
 
-    private String email;
-    
-    private String password;
-    
-    private String postalAddress;
-    
-    private String location;
-    
-    private String DNI;
-    
-    private String phoneNumber;
-    
-    private String collegiateNumber;
-    
-    private Integer[] roles;
+	private String email;
+
+	private String password;
+
+	private String postalAddress;
+
+	private String location;
+
+	private String DNI;
+
+	private String phoneNumber;
+
+	private String collegiateNumber;
+
+	private Integer[] roles;
 
 	public String getName() {
 		return name;
@@ -101,4 +103,12 @@ public class SignUpForm {
 	public void setRoles(Integer[] roles) {
 		this.roles = roles;
 	}
+
+	@Override
+	public String toString() {
+		return "SignUpForm [name=" + name + ", username=" + username + ", email=" + email + ", postalAddress="
+				+ postalAddress + ", location=" + location + ", DNI=" + DNI + ", phoneNumber=" + phoneNumber
+				+ ", collegiateNumber=" + collegiateNumber + ", roles=" + Arrays.toString(roles) + "]";
+	}
+
 }

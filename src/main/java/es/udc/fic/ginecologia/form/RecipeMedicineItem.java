@@ -72,4 +72,11 @@ public class RecipeMedicineItem {
 		this.posology = posology;
 	}
 
+	@Override
+	public String toString() {
+		return "RecipeMedicineItem [medicineId=" + medicineId + ", denomination=" + denomination + ", dosification="
+				+ dosification + ", formOfAdministration=" + formOfAdministration + ", format=" + format + ", units="
+				+ units + ", posology=" + posology + "]";
+	}
+
 }

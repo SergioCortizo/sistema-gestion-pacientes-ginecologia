@@ -14,5 +14,10 @@ public class SpecialitiesToAddForm {
 	public void setSpecialitiesToAdd(List<Speciality> specialitiesToAdd) {
 		this.specialitiesToAdd = specialitiesToAdd;
 	}
+
+	@Override
+	public String toString() {
+		return "SpecialitiesToAddForm [specialitiesToAdd=" + specialitiesToAdd.toString() + "]";
+	}
 	
 }

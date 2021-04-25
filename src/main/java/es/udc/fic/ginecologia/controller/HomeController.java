@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
 import es.udc.fic.ginecologia.service.MessageService;
@@ -35,13 +36,17 @@ public class HomeController {
 		if (!(authentication instanceof AnonymousAuthenticationToken)) {
 			CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 			Integer userId = userDetails.getId();
+			String username = userDetails.getUsername();
 			
 			try {
 				LocalDateTime datetime = userService.findUserById(userId).getLast_time_seen_notices();
 				model.addAttribute("newNotices", messageService.countNewNotices(datetime));
 			} catch (InstanceNotFoundException e) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/");
 				return "/error/403";
 			}
+			
+			LoggingUtility.logGetResource(username, "GET", "/");
 			
 			return "index";
 		}

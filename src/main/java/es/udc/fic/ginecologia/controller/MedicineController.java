@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
@@ -36,18 +37,23 @@ public class MedicineController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/medicine/medicine-list");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/medicine/medicine-list");
 			return "/error/403";
 		}
 
 		Iterable<Medicine> medicines = medicineService.findAllMedicines();
 
 		prepareModel(model, medicines);
+
+		LoggingUtility.logGetResource(username, "GET", "/medicine/medicine-list");
 
 		return "medicine/medicine-list";
 	}
@@ -60,12 +66,15 @@ public class MedicineController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "GET", "/medicine/medicine-list-error");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "GET", "/medicine/medicine-list-error");
 			return "/error/403";
 		}
 
@@ -73,6 +82,8 @@ public class MedicineController {
 
 		prepareModel(model, medicines);
 		model.addAttribute("duplicateMedicine", true);
+
+		LoggingUtility.logGetResource(username, "GET", "/medicine/medicine-list-error");
 
 		return "medicine/medicine-list";
 	}
@@ -84,24 +95,29 @@ public class MedicineController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/medicine/add-medicine");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/medicine/add-medicine");
 			return "/error/403";
 		}
 
 		try {
 			medicineService.addMedicine(userId, addMedicineForm.getName().trim());
-		} catch (InstanceNotFoundException e) {
+		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/medicine/add-medicine");
 			return "/error/403";
 		} catch (DuplicateInstanceException e) {
+			LoggingUtility.logDuplicateMedicine(username, addMedicineForm);
 			return "redirect:/medicine/medicine-list-error";
-		} catch (PermissionException e) {
-			return "/error/403";
 		}
+
+		LoggingUtility.logAddMedicine(username, addMedicineForm);
 
 		return "redirect:/medicine/medicine-list";
 	}
@@ -113,12 +129,15 @@ public class MedicineController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/medicine/search-medicine");
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/medicine/search-medicine");
 			return "/error/403";
 		}
 
@@ -128,10 +147,13 @@ public class MedicineController {
 			medicines = medicineService.findMedicines(userId, searchMedicinesForm.getName(),
 					searchMedicinesForm.isEnabled());
 		} catch (InstanceNotFoundException | PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/medicine/search-medicine");
 			return "/error/403";
 		}
 
 		prepareModel(model, medicines);
+
+		LoggingUtility.logSearchMedicines(username, searchMedicinesForm, medicines);
 
 		return "medicine/medicine-list";
 	}
@@ -143,12 +165,15 @@ public class MedicineController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/medicine/change-medicine-state/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/medicine/change-medicine-state/" + id);
 			return "/error/403";
 		}
 
@@ -157,16 +182,22 @@ public class MedicineController {
 		} catch (InstanceNotFoundException e) {
 			try {
 				if (!permissionChecker.checkIsAdmin(userId)) {
+					LoggingUtility.logDeniedAccess(username, "POST", "/medicine/change-medicine-state/" + id);
 					return "/error/403";
 				} else {
+					LoggingUtility.logInstanceNotFound(username, Medicine.class.getSimpleName(), id, "POST", "/medicine/change-medicine-state/" + id);
 					return "/error/404";
 				}
 			} catch (InstanceNotFoundException e1) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/medicine/change-medicine-state/" + id);
 				return "/error/403";
 			}
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/medicine/change-medicine-state/" + id);
 			return "/error/403";
 		}
+		
+		LoggingUtility.logChangeEnablingState(username, Medicine.class.getName(), id);
 
 		return "redirect:/medicine/medicine-list";
 	}
@@ -179,25 +210,33 @@ public class MedicineController {
 
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
+		String username = userDetails.getUsername();
 
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
+				LoggingUtility.logDeniedAccess(username, "POST", "/medicine/update/" + id);
 				return "/error/403";
 			}
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/medicine/update/" + id);
 			return "/error/403";
 		}
-		
+
 		try {
 			medicineService.updateMedicine(userId, id, updateMedicineForm.getName());
 		} catch (InstanceNotFoundException e) {
+			LoggingUtility.logInstanceNotFound(username, Medicine.class.getSimpleName(), id, "POST", "/medicine/update/" + id);
 			return "/error/404";
 		} catch (DuplicateInstanceException e) {
+			LoggingUtility.logDuplicateMedicine(username, updateMedicineForm);
 			return "redirect:/medicine/medicine-list-error";
 		} catch (PermissionException e) {
+			LoggingUtility.logDeniedAccess(username, "POST", "/medicine/update/" + id);
 			return "/error/403";
 		}
 		
+		LoggingUtility.logUpdatedMedicine(username, id, updateMedicineForm);
+
 		return "redirect:/medicine/medicine-list";
 	}
 

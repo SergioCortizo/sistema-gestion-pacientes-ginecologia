@@ -40,5 +40,10 @@ public class CommonTaskUserPK implements Serializable {
 	public void setCommon_task_id(Integer common_task_id) {
 		this.common_task_id = common_task_id;
 	}
+
+	@Override
+	public String toString() {
+		return "CommonTaskUserPK [user_id=" + user_id + ", common_task_id=" + common_task_id + "]";
+	}
 	
 }

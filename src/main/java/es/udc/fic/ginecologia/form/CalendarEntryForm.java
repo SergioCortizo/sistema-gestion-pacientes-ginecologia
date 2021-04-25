@@ -58,4 +58,10 @@ public class CalendarEntryForm {
 		this.patient = patient;
 	}
 
+	@Override
+	public String toString() {
+		return "CalendarEntryForm [reason=" + reason + ", dateEntry=" + dateEntry.toString() + ", hourEntry=" + hourEntry.toString()
+				+ ", facultative=" + facultative + ", patient=" + patient + "]";
+	}
+
 }

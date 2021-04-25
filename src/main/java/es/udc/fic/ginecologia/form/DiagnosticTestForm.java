@@ -20,4 +20,10 @@ public class DiagnosticTestForm {
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
 	}
+
+	@Override
+	public String toString() {
+		return "DiagnosticTestForm [name=" + name + ", enabled=" + enabled + "]";
+	}
+	
 }
