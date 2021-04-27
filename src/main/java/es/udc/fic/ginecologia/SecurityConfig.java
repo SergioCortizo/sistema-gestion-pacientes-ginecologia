@@ -153,7 +153,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        	.permitAll()
 	        .and()
 	        	.exceptionHandling()
-	        	.accessDeniedHandler(customAccessDeniedHandler);
+	        	.accessDeniedHandler(customAccessDeniedHandler)
+	        .and()
+	        	.requiresChannel().antMatchers("/**").requiresSecure();
 		
 	}
 	
