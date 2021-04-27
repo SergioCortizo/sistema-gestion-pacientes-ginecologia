@@ -152,7 +152,7 @@ $(document).ready(() => {
 
 		var length_table = $("#table-medicines tbody").find("tr").length;
 
-		var length_recipe_list = $("#recipes-list li").length;
+		var length_recipe_list = $(".new-recipe").length;
 
 		var new_row = $("<tr>");
 
@@ -229,11 +229,12 @@ $(document).ready(() => {
 	$("#add-recipe").click(() => {
 		tinyMCE.triggerSave();
 
-		var length_recipe_list = $("#recipes-list li").length;
+		var length_recipe_list = $(".new-recipe").length;
 
 		$("#no-recipes-added").hide();
 
 		var new_recipe = $("<li>");
+		new_recipe.addClass("new-recipe");
 
 		var date_dispensing_string = $("#dateDispensing").val();
 
@@ -283,6 +284,7 @@ $(document).ready(() => {
 		var table_medicines = $("#table-medicines").clone();
 		table_medicines.removeClass();
 		table_medicines.addClass("table table-sm table-responsive");
+		table_medicines.attr('id', 'table-medicines-' + length_recipe_list);
 		recipe_medicines.append(table_medicines);
 
 		recipe_content.append(recipe_medicines);

@@ -24,7 +24,10 @@ public class LoggingServiceAspect {
     public void logAfterReturning(JoinPoint joinPoint, Object result) {
         logger.info("logAfterReturning");
         logger.info("Log after in: " + joinPoint.getSignature().getName());
-        logger.info("- And value returned is: " + result.toString());
+        
+        String resultToString = result == null ? "null" : result.toString();
+        
+        logger.info("- And value returned is: " + resultToString);
     }
 	
 	@AfterThrowing(pointcut = "execution(* es.udc.fic.ginecologia..service..*(..))", throwing = "e")

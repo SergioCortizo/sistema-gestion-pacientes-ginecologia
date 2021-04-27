@@ -29,7 +29,7 @@ public class LogoutHandler implements LogoutSuccessHandler {
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		String username = userDetails.getUsername();
 		
-		logger.info("User with username=" + username + " logged out successfully");
+		logger.warn("User with username=" + username + " logged out successfully");
 		
 	    redirectStrategy.sendRedirect(request, response,"/");
 	}

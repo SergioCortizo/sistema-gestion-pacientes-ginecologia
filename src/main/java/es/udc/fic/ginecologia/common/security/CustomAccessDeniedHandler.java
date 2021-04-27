@@ -25,7 +25,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		String message = "";
+		String message = "ERROR 403: ";
 
 		if (authentication == null) {
 			message = message + "Anonymous user";
@@ -38,7 +38,7 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 		message = message + " tried to access endpoint=" + request.getRequestURI() + " with method="
 				+ request.getMethod();
 		
-		logger.warn(message);
+		logger.error(message);
 		
 		response.sendRedirect(request.getContextPath() + "/error/403");
 

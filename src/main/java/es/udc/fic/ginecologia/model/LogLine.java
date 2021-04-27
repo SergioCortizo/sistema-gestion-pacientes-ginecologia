@@ -31,6 +31,18 @@ public class LogLine {
 	
 	private String message;
 
+	public LogLine() {
+
+	}
+
+	public LogLine(LogLevel level, LocalDateTime timestamp, String thread, String logger, String message) {
+		this.level = level;
+		this.timestamp = timestamp;
+		this.thread = thread;
+		this.logger = logger;
+		this.message = message;
+	}
+
 	public Integer getId() {
 		return id;
 	}

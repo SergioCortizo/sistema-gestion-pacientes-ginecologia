@@ -28,8 +28,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 			Authentication authentication) throws IOException, ServletException {
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		String username = userDetails.getUsername();
-		
-		logger.info("User with username=" + username + " logged in successfully");
+				
+		logger.warn("User with username=" + username + " logged in successfully");
 		
 	    redirectStrategy.sendRedirect(request, response,"/");
 		

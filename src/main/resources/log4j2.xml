@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration status="INFO">
+<Configuration status="WARN">
 	<Properties>
 		<property name="connectionString">${bundle:application:spring.datasource.url}
 		</property>
@@ -22,7 +22,7 @@
 			<Column name="logger" pattern="%c{1}" />
 			<Column name="message" pattern="%msg" />
 		</JDBC>
-		<File name="LogToFile" fileName="logs/app.log">
+		<File name="LogToFile" fileName="target/logs/app.log">
 			<PatternLayout>
 				<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
 			</PatternLayout>
@@ -34,7 +34,7 @@
 	</Appenders>
 
 	<Loggers>
-		<Logger name="es.udc.fic.ginecologia" level="info"
+		<Logger name="es.udc.fic.ginecologia" level="warn"
 			additivity="false">
 			<AppenderRef ref="MySQLDatabase" />
 			<AppenderRef ref="LogToFile" />

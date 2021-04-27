@@ -29,6 +29,10 @@
 						</li>
 					</ol>
 
+					<div th:if="${logSearchError}" class="alert alert-danger" role="alert">
+						<span th:text="#{label.timestampnotvalid}">Timestamp not valid.</span>
+					</div>
+
 					<div class="card mb-4">
 						<div class="card-header">
 							<i class="fas fa-clipboard-list mr-1"></i>
@@ -43,8 +47,74 @@
 								</form>
 							</div>
 
+							<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default">
+									<div class="panel-heading" role="tab" id="headingSearchLogs">
+										<h6 class="panel-title">
+											<a role="button" data-toggle="collapse" data-parent="#accordion"
+												href="#collapseSearchLogs" aria-expanded="true"
+												aria-controls="collapseSearchLogs" th:text="#{label.searchlogs}">
+												Search logs
+											</a>
+										</h6>
+									</div>
+									<div id="collapseSearchLogs" class="panel-collapse collapse in" role="tabpanel"
+										aria-labelledby="headingSearchLogs">
+										<div class="panel-body">
+											<form id="search-logs-form" method="POST" th:object="${logForm}"
+												th:action="@{/log/search-logs/}">
+												<div class="form-group">
+													<label class="small mb-1" for="levels"
+														th:text="#{label.level}">Level</label>
+													<div>
+														<select id="levels" th:field="*{level}"
+															class="form-control py-4">
+															<option th:value="''"><span
+																	th:text="#{label.none}">None</span></option>
+															<option th:each="level : ${logLevels}"
+																th:value="${level.name}">
+																<span th:text="${level.name}">Level</span>
+															</option>
+														</select>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-2">
+														<div class="form-group">
+															<label class="small mb-1" for="dateInitial"
+																th:text="#{label.initialdate}">Initial date</label>
+															<input class="form-control" id="dateInitial" type="text"
+																th:placeholder="#{label.initialdate}"
+																th:field="*{date1}" />
+															<input type="time" class="form-control" th:id="time1"
+																th:field="*{time1}" min="00:00" max="23:59" />
+														</div>
+													</div>
+													<div class="col-md-2">
+														<div class="form-group">
+															<label class="small mb-1" for="dateFinal"
+																th:text="#{label.finaldate}">Final date</label>
+															<input class="form-control" id="dateFinal" type="text"
+																th:placeholder="#{label.finaldate}"
+																th:field="*{date2}" />
+															<input type="time" class="form-control" th:id="time2"
+																th:field="*{time2}" min="00:00" max="23:59" />
+														</div>
+													</div>
+												</div>
+
+												<div class="row ml-1 mb-2">
+													<button type="submit" th:text="#{label.search}"
+														class="btn btn-primary">Search</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+
 							<div class="table-responsive">
-								<table class="table table-sm" id="dataTable" width="100%" cellspacing="0">
+								<table class="table table-sm" id="dataTable-logs" width="100%" cellspacing="0">
 									<thead>
 										<tr>
 											<th th:text="#{label.level}">Level</th>
@@ -94,6 +164,8 @@
 				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
 				<div th:include="fragments/scripts :: general" />
 			</footer>
+
+			<script th:src="@{/js/log-list.js}"></script>
 
 		</div>
 	</div>

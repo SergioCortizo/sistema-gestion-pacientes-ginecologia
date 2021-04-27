@@ -11,6 +11,11 @@ public class ErrorController {
 		return "error/403";
 	}
 	
+	@GetMapping("/error/404")
+	public String goTo404Page() {
+		return "error/404";
+	}
+	
 	@GetMapping("/error/405")
 	public String goTo405Page() {
 		return "error/405";
