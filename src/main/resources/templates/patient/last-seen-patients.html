@@ -67,6 +67,7 @@
 											<th th:text="#{label.hist_numsergas}">History Number in SERGAS</th>
 											<th th:text="#{label.name}">Name</th>
 											<th th:text="#{label.enabled}">Enabled</th>
+											<th th:text="#{label.date}">Date</th>
 											<th th:text="#{label.actions}">Actions</th>
 										</tr>
 									</thead>
@@ -79,6 +80,7 @@
 											<td th:text="${patient.name}">Name</td>
 											<td th:text="${patient.enabled} ? #{label.yes} : #{label.no}">Enabled
 											</td>
+											<td th:Text="${patient.lastDate.toLocalDate() + ' ' + patient.lastDate.toLocalTime()}">Date</td>
 											<td>
 												<div class="row">
 													<form th:action="@{/patient/update-patient/{id}(id=${patient.id})}"

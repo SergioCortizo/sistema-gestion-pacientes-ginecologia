@@ -551,16 +551,16 @@ public class PatientController {
 			return "/error/403";
 		}
 
-		Iterable<Patient> patients;
+		Iterable<Meeting> meetings;
 
 		try {
-			patients = patientService.findLastSeenPatients(userId);
+			meetings = patientService.findLastSeenPatients(userId);
 		} catch (InstanceNotFoundException | PermissionException e) {
 			LoggingUtility.logDeniedAccess(username, "GET", "/patient/last-seen-patients");
 			return "/error/403";
 		}
 
-		prepareModel(model, patients, userId);
+		prepareModelForLastSeenPatients(model, meetings);
 		
 		LoggingUtility.logGetResource(username, "GET", "/patient/last-seen-patients");
 
@@ -569,6 +569,11 @@ public class PatientController {
 
 	private void prepareModel(Model model, Iterable<Patient> patients, Integer userId) {
 		model.addAttribute("patients", PatientConversor.createPatientElemList(patients, userId));
+		model.addAttribute("searchPatientsForm", new SearchPatientsForm());
+	}
+	
+	private void prepareModelForLastSeenPatients(Model model, Iterable<Meeting> meetings) {
+		model.addAttribute("patients", PatientConversor.createPatientElemListForLastSeenPatients(meetings));
 		model.addAttribute("searchPatientsForm", new SearchPatientsForm());
 	}
 }

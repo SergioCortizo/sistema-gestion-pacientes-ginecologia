@@ -5,6 +5,7 @@ import java.util.List;
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
+import es.udc.fic.ginecologia.model.Meeting;
 import es.udc.fic.ginecologia.model.Patient;
 
 public interface PatientService {
@@ -28,6 +29,6 @@ public interface PatientService {
 	void changeAsPatientOfInterest(Integer userId, Long patientId)
 			throws InstanceNotFoundException, PermissionException;
 
-	Iterable<Patient> findLastSeenPatients(Integer userId) throws InstanceNotFoundException, PermissionException;
+	Iterable<Meeting> findLastSeenPatients(Integer userId) throws InstanceNotFoundException, PermissionException;
 
 }

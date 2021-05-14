@@ -5,6 +5,7 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import es.udc.fic.ginecologia.model.Meeting;
 import es.udc.fic.ginecologia.model.Patient;
 import es.udc.fic.ginecologia.model.User;
 
@@ -22,6 +23,22 @@ public class PatientConversor {
 				}
 				else patient.setPatientOfInterest(false);
 			}
+			
+			result.add(patient);
+		});
+
+		return result;
+
+	}
+	
+	public final static List<PatientElemList> createPatientElemListForLastSeenPatients(Iterable<Meeting> meetings) {
+		List<PatientElemList> result = new ArrayList<>();
+
+		meetings.forEach(m -> {
+			Patient patientToConvert = m.getPatient();
+			LocalDateTime lastDate = m.getMeeting_date();
+			
+			PatientElemList patient = new PatientElemList(patientToConvert, lastDate);
 			
 			result.add(patient);
 		});

@@ -1,5 +1,7 @@
 package es.udc.fic.ginecologia.form;
 
+import java.time.LocalDateTime;
+
 import es.udc.fic.ginecologia.model.Patient;
 
 public class PatientElemList {
@@ -15,6 +17,8 @@ public class PatientElemList {
 	
 	private boolean patientOfInterest;
 	
+	private LocalDateTime lastDate = null;
+	
 	public PatientElemList() {
 		
 	}
@@ -25,6 +29,11 @@ public class PatientElemList {
 		this.DNI_NIF = patient.getDNI_NIF();
 		this.hist_numsergas = patient.getHist_numsergas();
 		this.enabled = patient.isEnabled();
+	}
+	
+	public PatientElemList(Patient patient, LocalDateTime lastDate) {
+		this(patient);
+		this.lastDate = lastDate;
 	}
 
 	public Long getId() {
@@ -73,6 +82,14 @@ public class PatientElemList {
 
 	public void setPatientOfInterest(boolean patientOfInterest) {
 		this.patientOfInterest = patientOfInterest;
+	}
+
+	public LocalDateTime getLastDate() {
+		return lastDate;
+	}
+
+	public void setLastDate(LocalDateTime lastDate) {
+		this.lastDate = lastDate;
 	}
 	
 }

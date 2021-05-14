@@ -9,4 +9,7 @@ public interface MessageDao extends CrudRepository<Message, Integer> {
 
 	@Query("SELECT m FROM Message m WHERE m.sender.id=?1 OR m.receiver.id=?1 ORDER BY m.message_date DESC")
 	public Iterable<Message> findByUserId(Integer id);
+	
+	@Query("SELECT count(m) FROM Message m WHERE m.receiver.id=?1 AND m.message_read=false")
+	public long countNewMessages(Integer id);
 }

@@ -8,6 +8,14 @@
 					<span th:text="#{label.home}">Home</span>
 				</a>
 			</div>
+			
+			<div class="nav"  sec:authorize="hasRole('ADMIN')">
+				<div class="sb-sidenav-menu-heading" th:text="#{label.backups}">Backups</div>
+				<a class="nav-link" th:href="@{/backup/backup-management}">
+					<div class="sb-nav-link-icon"><i class="fas fa-archive"></i></div>
+					<span th:text="#{label.backupmanagement}">Backup management</span>
+				</a>
+			</div>
 
 			<div class="nav"  sec:authorize="hasRole('ADMIN')">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.settings}">Settings</div>

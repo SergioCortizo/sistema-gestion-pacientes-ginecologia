@@ -14,8 +14,8 @@
 
 	<groupId>es.udc.fic</groupId>
 	<artifactId>sistema-gestion-pacientes-ginecologia</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<version>1</version>
+	<packaging>jar</packaging>
 	<name>sistema-gestion-pacientes-ginecologia</name>
 	<description>Sistema de gestión de pacientes de una ginecología</description>
 
@@ -54,6 +54,7 @@
 				<dataSource.createDataScript>2-MySQLCreateData.sql</dataSource.createDataScript>
 			</properties>
 		</profile>
+
 	</profiles>
 
 	<dependencies>
@@ -178,9 +179,16 @@
 			<artifactId>lombok</artifactId>
 		</dependency>
 
+		<dependency>
+			<groupId>com.smattme</groupId>
+			<artifactId>mysql-backup4j</artifactId>
+			<version>1.2.1</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>
+
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -188,6 +196,49 @@
 		</resources>
 
 		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>unpack</id>
+						<phase>package</phase>
+						<goals>
+							<goal>unpack</goal>
+						</goals>
+						<configuration>
+							<artifactItems>
+								<artifactItem>
+									<groupId>${project.groupId}</groupId>
+									<artifactId>${project.artifactId}</artifactId>
+									<version>${project.version}</version>
+								</artifactItem>
+							</artifactItems>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>dockerfile-maven-plugin</artifactId>
+				<version>1.4.13</version>
+				<executions>
+					<execution>
+						<id>build</id>
+						<phase>package</phase>
+						<goals>
+							<goal>build</goal>
+						</goals>
+						<configuration>
+							<repository>ginecology/${project.artifactId}</repository>
+							<tag>${project.version}</tag>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
@@ -224,6 +275,7 @@
 							</include>
 						</includes>
 					</fileset>
+					<skip>${skipSqlMavenPlugin}</skip>
 				</configuration>
 
 				<executions>
@@ -253,12 +305,12 @@
 				</executions>
 
 			</plugin>
-			
-			
+
 		</plugins>
 
 		<pluginManagement>
 			<plugins>
+
 				<!-- This plugin's configuration is used to store Eclipse m2e settings 
 					only. It has no influence on the Maven build itself. -->
 				<plugin>

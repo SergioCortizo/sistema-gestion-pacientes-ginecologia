@@ -6,4 +6,5 @@ import es.udc.fic.ginecologia.model.GrupalMessage;
 
 public interface GrupalMessageDao extends CrudRepository<GrupalMessage, Integer> {
 
+	
 }

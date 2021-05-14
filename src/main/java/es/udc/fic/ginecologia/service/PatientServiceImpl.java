@@ -15,6 +15,7 @@ import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
 import es.udc.fic.ginecologia.model.Contraceptive;
+import es.udc.fic.ginecologia.model.Meeting;
 import es.udc.fic.ginecologia.model.Patient;
 import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.repository.ContraceptiveDao;
@@ -51,14 +52,10 @@ public class PatientServiceImpl implements PatientService {
 	}
 
 	@Override
-	public Iterable<Patient> findLastSeenPatients(Integer userId)
+	public Iterable<Meeting> findLastSeenPatients(Integer userId)
 			throws InstanceNotFoundException, PermissionException {
 		if (!permissionChecker.checkIsFacultative(userId)) {
 			throw new PermissionException();
-		}
-
-		if (permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
-			return patientDao.findByEnabledOrderByIdDesc(true);
 		}
 		
 		return meetingDao.findLastSeenPatients(userId);

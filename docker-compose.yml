@@ -1,0 +1,87 @@
+version: '3.8'
+
+volumes:
+   ginecology-data:
+      driver: local
+      driver_opts:
+         type: none
+         o: bind
+         device: /data-mysql/
+   ginecology-backup:
+      driver: local
+      driver_opts:
+         type: none
+         o: bind
+         device: /data-mysql-backup/
+   cache: null
+   
+services:
+   ginecology-database:
+      env_file:
+      - ./.env.database
+      image: mysql:8.0.23
+      networks:
+         ginecology-network:
+            aliases:
+            - ginecology-database
+      container_name: ginecology-database
+      environment:
+      - MYSQL_ONETIME_PASSWORD=true
+      ports:
+      - 3306:3306
+      volumes:
+      - ./src/main/resources/sql/1-MySQLCreateTables.sql:/docker-entrypoint-initdb.d/1.sql
+      - ./src/main/resources/sql/2-MySQLCreateData.sql:/docker-entrypoint-initdb.d/2.sql
+      - ginecology-data:/var/lib/mysql
+      command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
+
+   ginecology-backup:
+      image: fradelg/mysql-cron-backup
+      networks:
+         ginecology-network:
+            aliases:
+            - ginecology-backup
+      container_name: ginecology-backup
+      env_file:
+      - ./.env.backup
+      depends_on:
+      - ginecology-database
+      links:
+      - ginecology-database
+      environment:
+      - CRON_TIME=0 0 * * *
+      - MYSQL_HOST=ginecology-database
+      - MYSQL_PORT=3306
+      - TIMEOUT=10s
+      - INIT_BACKUP=1
+      - TZ=Europe/Madrid
+      volumes:
+      - ginecology-backup:/backup
+      restart: on-failure
+
+   ginecology-service:
+      image: ginecology/sistema-gestion-pacientes-ginecologia:latest
+      build: 
+         context: .
+         dockerfile: Dockerfile
+      networks:
+         ginecology-network:
+            aliases:
+            - ginecology-service
+      volumes:
+      - .:/app
+      - ~/.m2:/root/.m2
+      container_name: ginecology-service
+      env_file:
+      - ./.env.service
+      depends_on:
+      - ginecology-database
+      links:
+      - ginecology-database
+      restart: unless-stopped
+      ports:
+      - 192.168.56.101:443:8443
+      command: mvn -DskipSqlMavenPlugin=true -f /app/pom.xml clean spring-boot:run
+
+networks:
+   ginecology-network:

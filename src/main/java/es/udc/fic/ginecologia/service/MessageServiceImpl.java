@@ -314,4 +314,31 @@ public class MessageServiceImpl implements MessageService {
 		noticeDao.save(noticeToAdd);
 	}
 
+	@Override
+	public long countNewMessages(Integer userId) throws PermissionException, InstanceNotFoundException {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			throw new PermissionException();
+		}
+		
+		return messageDao.countNewMessages(userId);
+	}
+
+	@Override
+	public long countNewGrupalMessages(Integer userId) throws InstanceNotFoundException, PermissionException {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			throw new PermissionException();
+		}
+		
+		return commonTaskDao.countNewGrupalMessages(userId);
+	}
+
+	@Override
+	public long countNewCommonTasks(Integer userId) throws InstanceNotFoundException, PermissionException {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			throw new PermissionException();
+		}
+		
+		return commonTaskDao.countNewCommonTasks(userId);
+	}
+
 }

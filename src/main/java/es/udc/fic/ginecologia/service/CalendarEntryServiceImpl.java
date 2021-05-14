@@ -164,4 +164,13 @@ public class CalendarEntryServiceImpl implements CalendarEntryService {
 		calendarEntry.setState(MeetingState.closed);
 	}
 
+	@Override
+	public long countMeetingsForToday(Integer userId) throws InstanceNotFoundException, PermissionException {
+		if (!permissionChecker.checkIsFacultative(userId)) {
+			throw new PermissionException();
+		}
+		
+		return calendarEntryDao.countMeetingsForToday(userId);
+	}
+
 }

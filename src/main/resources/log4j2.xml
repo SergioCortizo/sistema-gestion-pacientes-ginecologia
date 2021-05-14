@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
 	<Properties>
-		<property name="connectionString">${bundle:application:spring.datasource.url}
+		<property name="connectionString">${env:SPRING_DATASOURCE_URL:-${bundle:application:spring.datasource.url}}
 		</property>
 		<property name="driverClassName">${bundle:application:spring.datasource.driver-class-name}
 		</property>
-		<property name="userName">${bundle:application:spring.datasource.username}
+		<property name="userName">${env:SPRING_DATASOURCE_USERNAME:-${bundle:application:spring.datasource.username}}
 		</property>
-		<property name="password">${bundle:application:spring.datasource.password}
+		<property name="password">${env:SPRING_DATASOURCE_PASSWORD:-${bundle:application:spring.datasource.password}}
 		</property>
 	</Properties>
 

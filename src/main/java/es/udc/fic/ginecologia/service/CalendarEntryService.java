@@ -27,4 +27,5 @@ public interface CalendarEntryService {
 	CalendarEntry findById(Integer userId, Integer calendarEntryId)
 			throws InstanceNotFoundException, PermissionException;
 
+	public long countMeetingsForToday(Integer userId) throws InstanceNotFoundException, PermissionException;
 }

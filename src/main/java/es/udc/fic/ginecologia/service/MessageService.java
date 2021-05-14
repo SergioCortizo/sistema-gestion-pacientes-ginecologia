@@ -41,4 +41,9 @@ public interface MessageService {
 	
 	public void addNotice(Integer userId, String notice) throws PermissionException, InstanceNotFoundException;
 
+	public long countNewMessages(Integer userId) throws PermissionException, InstanceNotFoundException;
+	
+	public long countNewGrupalMessages(Integer userId) throws InstanceNotFoundException, PermissionException;
+	
+	public long countNewCommonTasks(Integer userId) throws InstanceNotFoundException, PermissionException;
 }

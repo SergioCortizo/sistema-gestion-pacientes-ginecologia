@@ -1,5 +1,6 @@
 package es.udc.fic.ginecologia.common;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
@@ -384,6 +385,29 @@ public class LoggingUtility {
 	public static void logSearchLogs(String username, LogForm logForm) {
 		logger.warn("User with username=" + username + " has searched for logs with the following search criteria: "
 				+ logForm.toString());
+	}
+
+	public static void logGeneratedBackup(String username) {
+		LocalDateTime date = LocalDateTime.now();
+
+		logger.warn("User with username=" + username + " has generated a backup from database at "
+				+ date.toLocalDate().toString() + " " + date.toLocalTime().toString());
+	}
+
+	public static void logRestoreDatabaseSucess(String username, String backupName) {
+		LocalDateTime date = LocalDateTime.now();
+
+		logger.warn("User with username=" + username + " has restored database succesfully at "
+				+ date.toLocalDate().toString() + " " + date.toLocalTime().toString() + 
+				" with " + backupName);
+	}
+
+	public static void logRestoreDatabaseFailure(String username, String backupName) {
+		LocalDateTime date = LocalDateTime.now();
+
+		logger.error ("User with username=" + username + " tried to restore database at "
+				+ date.toLocalDate().toString() + " " + date.toLocalTime().toString() + 
+				" with " + backupName);
 	}
 
 }

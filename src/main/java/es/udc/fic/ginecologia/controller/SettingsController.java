@@ -53,7 +53,7 @@ public class SettingsController {
 		settingsForm.setEnterpriseName(settingsService.getEnterpriseName().getValue());
 
 		model.addAttribute("nameAndLogoForm", settingsForm);
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/settings/name-and-logo");
 
 		return "settings/name-and-logo";
@@ -88,9 +88,10 @@ public class SettingsController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/settings/change-name-and-logo");
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logChangedNameAndLogo(username, nameAndLogoForm);
 
 		return "redirect:/settings/name-and-logo";
 	}
+	
 }

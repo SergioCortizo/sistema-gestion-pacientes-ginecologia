@@ -1,0 +1,692 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.4" icons="true" automaticImage="JPEG" always-add-relationships="false" 
+  generalizations="true" realizations="true" associations="true" dependencies="false" nesting-relationships="true" 
+  router="FAN">  
+  <class id="1" language="java" name="es.udc.fic.ginecologia.model.User" project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/User.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="543" y="290"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="false" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="2" language="java" name="es.udc.fic.ginecologia.model.Weekday" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Weekday.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1185" y="285"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="3" language="java" name="es.udc.fic.ginecologia.model.Speciality" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Speciality.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="948" y="288"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="es.udc.fic.ginecologia.model.Schedule" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Schedule.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="946" y="414"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="es.udc.fic.ginecologia.model.SchedulePK" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/SchedulePK.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1184" y="414"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="es.udc.fic.ginecologia.model.Role" project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Role.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="230" y="288"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="es.udc.fic.ginecologia.model.Recipe" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Recipe.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1443" y="815"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="es.udc.fic.ginecologia.model.RecipeMedicine" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/RecipeMedicine.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1443" y="270"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="es.udc.fic.ginecologia.model.RecipeMedicinePK" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/RecipeMedicinePK.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1439" y="80"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="es.udc.fic.ginecologia.model.Medicine" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Medicine.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1680" y="269"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="es.udc.fic.ginecologia.model.Question" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Question.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="373" y="935"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="es.udc.fic.ginecologia.model.Patient" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Patient.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="133" y="692"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="es.udc.fic.ginecologia.model.Notice" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Notice.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="243" y="95"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="es.udc.fic.ginecologia.model.Message" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Message.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1196" y="628"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="es.udc.fic.ginecologia.model.Meeting" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Meeting.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="917" y="832"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <enumeration id="16" language="java" name="es.udc.fic.ginecologia.model.MeetingState" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/MeetingState.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="327" y="-69"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </enumeration>  
+  <enumeration id="17" language="java" name="es.udc.fic.ginecologia.model.LogLevel" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/LogLevel.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1657" y="-89"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="false" package="false" protected="false" private="false" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </enumeration>  
+  <class id="18" language="java" name="es.udc.fic.ginecologia.model.LogLine" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/LogLine.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1441" y="-84"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="19" language="java" name="es.udc.fic.ginecologia.model.GrupalMessage" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/GrupalMessage.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="903" y="127"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="20" language="java" name="es.udc.fic.ginecologia.model.DiagnosticTest" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/DiagnosticTest.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1421" y="1092"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="21" language="java" name="es.udc.fic.ginecologia.model.Contraceptive" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Contraceptive.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="-29" y="1021"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="22" language="java" name="es.udc.fic.ginecologia.model.ComplementaryTest" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/ComplementaryTest.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1179" y="1089"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="23" language="java" name="es.udc.fic.ginecologia.model.CommonTask" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/CommonTask.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1198" y="-12"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="24" language="java" name="es.udc.fic.ginecologia.model.CommonTaskUser" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/CommonTaskUser.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="906" y="-126"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="25" language="java" name="es.udc.fic.ginecologia.model.CommonTaskUserPK" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/CommonTaskUserPK.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="903" y="-250"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="26" language="java" name="es.udc.fic.ginecologia.model.CalendarEntry" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/CalendarEntry.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="133" y="-64"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <class id="27" language="java" name="es.udc.fic.ginecologia.model.Answer" 
+    project="sistema-gestion-pacientes-ginecologia" 
+    file="/sistema-gestion-pacientes-ginecologia/src/main/java/es/udc/fic/ginecologia/model/Answer.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="604" y="931"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="false" package="false" protected="false" private="false" static="true"/>    
+    </display>  
+  </class>  
+  <association id="28">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="29" name="user"/>      
+      <multiplicity id="30" minimum="0" maximum="1">        
+        <position height="15" width="23" x="664" y="444"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="32" name="medicines"/>      
+      <multiplicity id="33" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
+    <bendpoint x="1094" y="929"/>    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="35" name="meeting">        
+        <position height="17" width="46" x="1019" y="868"/>      
+      </attribute>      
+      <multiplicity id="36" minimum="0" maximum="1">        
+        <position height="15" width="23" x="1010" y="893"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="37">    
+    <bendpoint x="916" y="1088"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="38" name="complementaryTests"/>      
+      <multiplicity id="39" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="22" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="40">    
+    <bendpoint x="240" y="577"/>    
+    <bendpoint x="401" y="577"/>    
+    <bendpoint x="468" y="577"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="41" name="user"/>      
+      <multiplicity id="42" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="43">    
+    <bendpoint x="538" y="-130"/>    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="44" name="user"/>      
+      <multiplicity id="45" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="46">    
+    <end type="SOURCE" refId="22" navigable="false">      
+      <attribute id="47" name="diagnosticTest"/>      
+      <multiplicity id="48" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="20" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="49">    
+    <bendpoint x="1196" y="-128"/>    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="50" name="commonTask"/>      
+      <multiplicity id="51" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="52">    
+    <bendpoint x="784" y="929"/>    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="53" name="meeting"/>      
+      <multiplicity id="54" minimum="0" maximum="1">        
+        <position height="15" width="23" x="809" y="911"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="55">    
+    <bendpoint x="410" y="24"/>    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="56" name="user">        
+        <position height="17" width="29" x="455" y="99"/>      
+      </attribute>      
+      <multiplicity id="57" minimum="0" maximum="1">        
+        <position height="15" width="23" x="424" y="117"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="58">    
+    <bendpoint x="737" y="290"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="59" name="specialities"/>      
+      <multiplicity id="60" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="61">    
+    <bendpoint x="125" y="1045"/>    
+    <bendpoint x="917" y="1046"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="62" name="meetings"/>      
+      <multiplicity id="63" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="64">    
+    <bendpoint x="244" y="208"/>    
+    <end type="SOURCE" refId="13" navigable="false">      
+      <attribute id="65" name="user"/>      
+      <multiplicity id="66" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="67">    
+    <bendpoint x="737" y="290"/>    
+    <bendpoint x="737" y="415"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="68" name="schedules"/>      
+      <multiplicity id="69" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="70">    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="71" name="answers">        
+        <position height="17" width="48" x="673" y="877"/>      
+      </attribute>      
+      <multiplicity id="72" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="27" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="73">    
+    <bendpoint x="-31" y="689"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="74" name="contraceptives"/>      
+      <multiplicity id="75" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="21" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="76">    
+    <bendpoint x="1196" y="126"/>    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="77" name="messages"/>      
+      <multiplicity id="78" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="19" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="79">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="80" name="medicine"/>      
+      <multiplicity id="81" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="82">    
+    <end type="SOURCE" refId="23" navigable="false">      
+      <attribute id="83" name="commonTaskUsers"/>      
+      <multiplicity id="84" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="85">    
+    <bendpoint x="1368" y="833"/>    
+    <end type="SOURCE" refId="7" navigable="false">      
+      <attribute id="86" name="meeting"/>      
+      <multiplicity id="87" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="88">    
+    <bendpoint x="905" y="-12"/>    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="89" name="commonTask"/>      
+      <multiplicity id="90" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="23" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="91">    
+    <bendpoint x="904" y="624"/>    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="92" name="receiver">        
+        <position height="17" width="46" x="669" y="383"/>      
+      </attribute>      
+      <multiplicity id="93" minimum="0" maximum="1">        
+        <position height="15" width="23" x="655" y="407"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="94">    
+    <bendpoint x="654" y="830"/>    
+    <bendpoint x="378" y="828"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="95" name="patient"/>      
+      <multiplicity id="96" minimum="0" maximum="1">        
+        <position height="15" width="23" x="251" y="769"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="97">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="98" name="weekday"/>      
+      <multiplicity id="99" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="100">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="101" name="pk"/>      
+      <multiplicity id="102" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="103">    
+    <end type="SOURCE" refId="24" navigable="false">      
+      <attribute id="104" name="pk"/>      
+      <multiplicity id="105" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="25" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="106">    
+    <bendpoint x="305" y="518"/>    
+    <bendpoint x="308" y="381"/>    
+    <bendpoint x="350" y="381"/>    
+    <end type="SOURCE" refId="12" navigable="false">      
+      <attribute id="107" name="usersInterestedByPatient">        
+        <position height="17" width="127" x="306" y="324"/>      
+      </attribute>      
+      <multiplicity id="108" minimum="0" maximum="2147483647">        
+        <position height="15" width="21" x="404" y="355"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="109">    
+    <end type="SOURCE" refId="18" navigable="false">      
+      <attribute id="110" name="level"/>      
+      <multiplicity id="111" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="17" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="112">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="113" name="state"/>      
+      <multiplicity id="114" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="115">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="116" name="roles"/>      
+      <multiplicity id="117" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="6" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="118">    
+    <bendpoint x="534" y="528"/>    
+    <bendpoint x="532" y="693"/>    
+    <bendpoint x="390" y="693"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="119" name="patientsOfInterest"/>      
+      <multiplicity id="120" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="121">    
+    <bendpoint x="1074" y="625"/>    
+    <bendpoint x="1076" y="694"/>    
+    <bendpoint x="912" y="694"/>    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="122" name="interconsultationMeeting">        
+        <position height="17" width="123" x="931" y="703"/>      
+      </attribute>      
+      <multiplicity id="123" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="15" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="124">    
+    <bendpoint x="773" y="236"/>    
+    <end type="SOURCE" refId="19" navigable="false">      
+      <attribute id="125" name="user"/>      
+      <multiplicity id="126" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="127">    
+    <bendpoint x="733" y="186"/>    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="128" name="commonTaskUsers">        
+        <position height="17" width="99" x="766" y="-81"/>      
+      </attribute>      
+      <multiplicity id="129" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="24" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="130">    
+    <end type="SOURCE" refId="27" navigable="false">      
+      <attribute id="131" name="question"/>      
+      <multiplicity id="132" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="133">    
+    <bendpoint x="916" y="978"/>    
+    <bendpoint x="1446" y="978"/>    
+    <end type="SOURCE" refId="15" navigable="false">      
+      <attribute id="134" name="recipes"/>      
+      <multiplicity id="135" minimum="0" maximum="2147483647"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="136">    
+    <end type="SOURCE" refId="8" navigable="false">      
+      <attribute id="137" name="pk"/>      
+      <multiplicity id="138" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="139">    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="140" name="messageReplied"/>      
+      <multiplicity id="141" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="142">    
+    <bendpoint x="1196" y="509"/>    
+    <bendpoint x="990" y="508"/>    
+    <bendpoint x="609" y="509"/>    
+    <end type="SOURCE" refId="14" navigable="false">      
+      <attribute id="143" name="sender"/>      
+      <multiplicity id="144" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="1" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="145">    
+    <end type="SOURCE" refId="26" navigable="false">      
+      <attribute id="146" name="patient"/>      
+      <multiplicity id="147" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>

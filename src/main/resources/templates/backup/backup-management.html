@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head th:include="fragments/header :: header">
+	<title th:text="#{app.title}">Home</title>
+</head>
+
+<body class="sb-nav-fixed">
+
+	<div th:include="fragments/topbar :: topbar" />
+
+	<div id="layoutSidenav">
+
+		<div id="layoutSidenav_nav" th:include="fragments/menu :: menu" />
+
+		<div id="layoutSidenav_content">
+
+			<main>
+
+				<div class="container-fluid">
+
+					<div th:include="fragments/main_general :: main_general" />
+
+					<ol class="breadcrumb mb-4">
+						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item active"><span th:text="#{label.backupmanagement}">Backup
+								management</span></li>
+					</ol>
+
+					<div th:if="${restorationResult != null && !restorationResult}" class="alert alert-danger"
+						role="alert">
+						<span th:text="#{label.restorationfailed}">Restoration failed. Try it again later or use another valid backup.</span>
+					</div>
+					
+					<div th:if="${restorationResult}" class="alert alert-success"
+						role="alert">
+						<span th:text="#{label.restorationsuccess}">Restoration successful.</span>
+					</div>
+
+					<div class="mb-4">
+						<a th:href="@{/backup/generate-backup}" class="btn btn-primary btn-lg active" role="button"
+							aria-pressed="true">
+							<span th:text="#{label.generatebackup}">Generate backup</span>
+							<i class="fas fa-archive"></i>
+						</a>
+					</div>
+
+					<form id="restore-database-form" method="POST" th:object="${backupForm}"
+						th:action="@{/backup/restore-database}" enctype="multipart/form-data">
+						<div class="form-group">
+							<label class="small mb-1" for="backup" th:text="#{label.backup}">Backup</label>
+							<input type="file" class="form-control-file" id="backupFile" name="backupFile"
+								th:field="*{backupFile}" required accept="application/sql" />
+						</div>
+						<div class="form-group">
+							<button class="btn btn-primary" type="submit" th:text="#{label.restoredatabase}">Restore
+								database</button>
+						</div>
+					</form>
+
+				</div>
+
+			</main>
+
+			<footer class="py-4 bg-light mt-auto">
+				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
+				<div th:include="fragments/scripts :: general" />
+			</footer>
+
+			<script th:src="@{/js/backup-management.js}"></script>
+
+		</div>
+
+	</div>
+</body>
+
+</html>

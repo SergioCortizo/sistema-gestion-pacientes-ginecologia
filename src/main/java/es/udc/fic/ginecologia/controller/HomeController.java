@@ -12,7 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
+import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
+import es.udc.fic.ginecologia.service.CalendarEntryService;
 import es.udc.fic.ginecologia.service.MessageService;
 import es.udc.fic.ginecologia.service.SettingsService;
 import es.udc.fic.ginecologia.service.UserService;
@@ -28,6 +30,9 @@ public class HomeController {
 	@Autowired
 	MessageService messageService;
 	
+	@Autowired
+	CalendarEntryService calendarEntryService;
+	
 	@RequestMapping("/")
     public String home(Model model)
     {	
@@ -40,8 +45,13 @@ public class HomeController {
 			
 			try {
 				LocalDateTime datetime = userService.findUserById(userId).getLast_time_seen_notices();
+				
+				model.addAttribute("newMeetings", calendarEntryService.countMeetingsForToday(userId));
+				model.addAttribute("newGrupalMessages", messageService.countNewGrupalMessages(userId));
+				model.addAttribute("newCommonTasks", messageService.countNewCommonTasks(userId));
+				model.addAttribute("newMessages", messageService.countNewMessages(userId));
 				model.addAttribute("newNotices", messageService.countNewNotices(datetime));
-			} catch (InstanceNotFoundException e) {
+			} catch (InstanceNotFoundException | PermissionException e) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/");
 				return "/error/403";
 			}
