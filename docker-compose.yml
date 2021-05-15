@@ -17,9 +17,12 @@ volumes:
    
 services:
    ginecology-database:
+      build: 
+         context: ./dockerfiles/ginecology-database
+         dockerfile: Dockerfile
       env_file:
       - ./.env.database
-      image: mysql:8.0.23
+      #image: mysql:8.0.23
       networks:
          ginecology-network:
             aliases:
@@ -60,9 +63,9 @@ services:
       restart: on-failure
 
    ginecology-service:
-      image: ginecology/sistema-gestion-pacientes-ginecologia:latest
+      #image: ginecology/sistema-gestion-pacientes-ginecologia:latest
       build: 
-         context: .
+         context: ./dockerfiles/ginecology-service
          dockerfile: Dockerfile
       networks:
          ginecology-network:
