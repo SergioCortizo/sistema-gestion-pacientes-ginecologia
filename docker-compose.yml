@@ -22,7 +22,6 @@ services:
          dockerfile: Dockerfile
       env_file:
       - ./.env.database
-      #image: mysql:8.0.23
       networks:
          ginecology-network:
             aliases:
@@ -63,7 +62,6 @@ services:
       restart: on-failure
 
    ginecology-service:
-      #image: ginecology/sistema-gestion-pacientes-ginecologia:latest
       build: 
          context: ./dockerfiles/ginecology-service
          dockerfile: Dockerfile
