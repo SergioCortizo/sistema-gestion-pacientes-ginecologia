@@ -1,4 +1,4 @@
-# Sistema de gestión de pacientes de una ginecología
+# Sistema de gestión de pacientes de una clínica ginecológica
 
-Aplicación web para la gestión de pacientes de una ginecología apoyándose sobre el patrón Model-View-Controller, apoyándose sobre el uso de herramientas como Spring MVC, Hibernate, Thymeleaf, Bootstrap o JQuery.
+Aplicación web para la gestión de pacientes de una clínica ginecológica apoyándose sobre el patrón Model-View-Controller y el uso de herramientas como Spring MVC, Hibernate, Thymeleaf, Bootstrap o JQuery.
 
