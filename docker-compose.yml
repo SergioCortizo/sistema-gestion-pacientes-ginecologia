@@ -55,9 +55,6 @@ services:
       image: ginecology-service:1
       networks:
         - proxynet
-      #volumes:
-      #- .:/app
-      #- ~/.m2:/root/.m2 #esto para produccion no es buena idea
       container_name: ginecology-service
       environment:
       - SPRING_DATASOURCE_URL=jdbc:mysql://ginecology-database:3306/ginecology?useSSL=false&allowPublicKeyRetrieval=true&connectionCollation=latin1_spanish_ci
@@ -65,11 +62,8 @@ services:
       - SPRING_DATASOURCE_PASSWORD=#F?5NVHrC?44
       depends_on:
       - ginecology-database
-      #dns: #esto no es para lo que piensas ;)
-      #- vi214.udc.es
       expose:
-      - 8080 # o 8080, revisar configuracion de la maquina. Si se cambia hay que modificar en deploy/labels el puerto tambien
-      #El puerto que usa es 8080. También lo modifico en "labels".
+      - 8080
       command: mvn -DskipSqlTests=true -f /app/pom.xml clean spring-boot:run
       deploy:
          labels:
@@ -79,7 +73,7 @@ services:
            - "traefik.http.routers.app-rnasa-imedir-secured.rule=Host(`app.rnasa-imedir.udc.es`)"
            - "traefik.http.routers.app-rnasa-imedir-secured.entrypoints=websecure"
            - "traefik.http.routers.app-rnasa-imedir-secured.tls.certresolver=leresolver"
-           - "traefik.http.services.app-rnasa-imedir.loadbalancer.server.port=8080" # Siempre debemos definir un puerto.
+           - "traefik.http.services.app-rnasa-imedir.loadbalancer.server.port=8080"
            - "traefik.http.routers.app-rnasa-imedir.middlewares=app-rnasa-imedir-redirect"
            - "traefik.http.middlewares.app-rnasa-imedir-redirect.redirectscheme.scheme=https"
 
