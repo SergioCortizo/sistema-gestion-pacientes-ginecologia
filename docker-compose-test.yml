@@ -81,7 +81,7 @@ services:
       - ginecology-database
       restart: unless-stopped
       ports:
-      - 192.168.56.101:443:8443
+      - 192.168.56.101:8080:8080
       command: mvn -DskipSqlMavenPlugin=true -f /app/pom.xml clean spring-boot:run
 
 networks:
