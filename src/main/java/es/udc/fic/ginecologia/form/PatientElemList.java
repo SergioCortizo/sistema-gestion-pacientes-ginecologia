@@ -13,6 +13,10 @@ public class PatientElemList {
 	
 	private String hist_numsergas;
 	
+	private LocalDateTime birthday;
+	
+	private String phone;
+	
 	private boolean enabled;
 	
 	private boolean patientOfInterest;
@@ -28,6 +32,8 @@ public class PatientElemList {
 		this.name = patient.getName();
 		this.DNI_NIF = patient.getDNI_NIF();
 		this.hist_numsergas = patient.getHist_numsergas();
+		this.birthday = patient.getBirthday();
+		this.phone = patient.getMobile_phone();
 		this.enabled = patient.isEnabled();
 	}
 	
@@ -66,6 +72,22 @@ public class PatientElemList {
 
 	public void setHist_numsergas(String hist_numsergas) {
 		this.hist_numsergas = hist_numsergas;
+	}
+
+	public LocalDateTime getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(LocalDateTime birthday) {
+		this.birthday = birthday;
+	}
+
+	public String getPhone() {
+		return phone;
+	}
+
+	public void setPhone(String phone) {
+		this.phone = phone;
 	}
 
 	public boolean isEnabled() {

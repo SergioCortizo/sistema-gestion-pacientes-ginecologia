@@ -370,7 +370,7 @@ public class UserServiceTest {
 
 		userService.registerUser(user, roles);
 
-		userService.changePassword(user.getId(), "password1", "newpassword1");
+		userService.changePassword(user.getId(), "newpassword1");
 
 		User result = userService.findUserById(user.getId());
 
@@ -382,29 +382,7 @@ public class UserServiceTest {
 			throws DuplicateInstanceException, InstanceNotFoundException, IncorrectPasswordException {
 
 		assertThrows(InstanceNotFoundException.class,
-				() -> userService.changePassword(-1, "password1", "newpassword1"));
-	}
-
-	@Test
-	public void testChangePasswordExpectedWrongPassword()
-			throws DuplicateInstanceException, InstanceNotFoundException, IncorrectPasswordException {
-		Role role1 = createRole("role1");
-		Role role2 = createRole("role2");
-
-		roleDao.save(role1);
-		roleDao.save(role2);
-
-		Iterable<Integer> roles = Arrays.asList(role1.getId(), role2.getId());
-
-		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
-				"654789123", "122112345");
-		user.setPassword("password1");
-
-		userService.registerUser(user, roles);
-
-		assertThrows(IncorrectPasswordException.class,
-				() -> userService.changePassword(user.getId(), "wrongpassword1", "newpassword1"));
-
+				() -> userService.changePassword(-1, "newpassword1"));
 	}
 
 	@Test
@@ -429,7 +407,7 @@ public class UserServiceTest {
 		userService.registerUser(user, roles);
 		userService.registerUser(admin, roles);
 
-		userService.changePassword(admin.getId(), user.getId(), "password1", "newpassword1");
+		userService.changePassword(admin.getId(), user.getId(), "newpassword1");
 
 		User result = userService.findUserById(user.getId());
 
@@ -459,7 +437,7 @@ public class UserServiceTest {
 		userService.registerUser(admin, roles);
 
 		assertThrows(InstanceNotFoundException.class,
-				() -> userService.changePassword(-1, user.getId(), "password1", "newpassword1"));
+				() -> userService.changePassword(-1, user.getId(), "newpassword1"));
 	}
 
 	@Test
@@ -485,33 +463,7 @@ public class UserServiceTest {
 		userService.registerUser(admin, roles);
 
 		assertThrows(InstanceNotFoundException.class,
-				() -> userService.changePassword(admin.getId(), -1, "password1", "newpassword1"));
-	}
-
-	@Test
-	public void testChangePasswordAsAdminExpectedIncorrectPassword() throws DuplicateInstanceException,
-			InstanceNotFoundException, IncorrectPasswordException, PermissionException {
-		Role role1 = createRole("role1");
-		Role role2 = createRole("ROLE_ADMIN");
-
-		roleDao.save(role1);
-		roleDao.save(role2);
-
-		Iterable<Integer> roles = Arrays.asList(role1.getId(), role2.getId());
-
-		User user = createUser("User 1", "user1", "user1@example.com", "postalAddress 1", "location 1", "11111111A",
-				"654789123", "122112345");
-		user.setPassword("password1");
-
-		User admin = createUser("Admin", "admin", "admin@example.com", "postalAddress 1", "location 1", "11111111A",
-				"654789123", "122112345");
-		user.setPassword("password1");
-
-		userService.registerUser(user, roles);
-		userService.registerUser(admin, roles);
-
-		assertThrows(IncorrectPasswordException.class,
-				() -> userService.changePassword(admin.getId(), user.getId(), "wrongpassword1", "newpassword1"));
+				() -> userService.changePassword(admin.getId(), -1, "newpassword1"));
 	}
 
 	@Test
@@ -538,7 +490,7 @@ public class UserServiceTest {
 		userService.registerUser(admin, rolesWithoutAdmin);
 
 		assertThrows(PermissionException.class,
-				() -> userService.changePassword(admin.getId(), user.getId(), "password1", "newpassword1"));
+				() -> userService.changePassword(admin.getId(), user.getId(), "newpassword1"));
 	}
 
 	@Test

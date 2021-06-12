@@ -121,7 +121,7 @@
 											</td>
 											<td>
 												<div class="row">
-													<a th:href="'#updateMedicineModal-' + ${medicine.id}" role="button"
+													<a th:title="#{label.updatemedicine}" th:href="'#updateMedicineModal-' + ${medicine.id}" role="button"
 														data-toggle="modal"><i class="fas fa-pen ml-3 mt-2"></i></a>
 
 													<div th:id="'updateMedicineModal-' + ${medicine.id}"
@@ -166,8 +166,8 @@
 													<form method="POST"
 														th:action="@{/medicine/change-medicine-state/{id}(id=${medicine.id})}">
 														<button class="btn btn-link" type="submit">
-															<i class="fas fa-check" th:if="${!medicine.enabled}"></i>
-															<i class="fas fa-times" th:if="${medicine.enabled}"></i>
+															<i th:title="#{label.enable}" class="fas fa-check" th:if="${!medicine.enabled}"></i>
+															<i th:title="#{label.disable}" class="fas fa-times" th:if="${medicine.enabled}"></i>
 														</button>
 													</form>
 												</div>

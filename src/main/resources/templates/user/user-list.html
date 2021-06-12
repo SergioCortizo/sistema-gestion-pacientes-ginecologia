@@ -160,14 +160,14 @@
 											<td>
 												<div class="row">
 													<form th:action="@{/user/update/{id}(id=${user.id})}" method="GET">
-														<button class="btn btn-link" type="submit"><i
+														<button th:title="#{label.updateUser}" class="btn btn-link" type="submit"><i
 																class="fas fa-edit"></i></button>
 													</form>
 													<form th:action="@{/user/change-enabling-state/{id}(id=${user.id})}"
 														method="POST">
 														<button class="btn btn-link" type="submit">
-															<i class="fas fa-check" th:if="${!user.enabled}"></i>
-															<i class="fas fa-times" th:if="${user.enabled}"></i>
+															<i th:title="#{label.enable}" class="fas fa-check" th:if="${!user.enabled}"></i>
+															<i th:title="#{label.disable}" class="fas fa-times" th:if="${user.enabled}"></i>
 														</button>
 													</form>
 												</div>

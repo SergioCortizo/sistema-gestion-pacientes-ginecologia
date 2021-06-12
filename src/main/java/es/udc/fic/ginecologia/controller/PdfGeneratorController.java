@@ -2,6 +2,7 @@ package es.udc.fic.ginecologia.controller;
 
 import java.io.File;
 import java.nio.file.Files;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,7 +60,7 @@ public class PdfGeneratorController {
 		Map<String, Object> data = setBasicData();
 		data.put("recipe", recipeService.findById(userId, id));
 
-		ResponseEntity<byte[]> response = prepareResponse("patient/recipe-pdf", "recipe", data);
+		ResponseEntity<byte[]> response = prepareResponse("patient/recipe-pdf", "recipe-recipeId " + id, data);
 		
 		LoggingUtility.downloadedRecipe(username, id);
 
@@ -83,7 +84,7 @@ public class PdfGeneratorController {
 		Map<String, Object> data = setBasicData();
 		data.put("patient", patient);
 
-		ResponseEntity<byte[]> response = prepareResponse("patient/monitoring-report", "monitoring-report", data);
+		ResponseEntity<byte[]> response = prepareResponse("patient/monitoring-report", "monitoring-report-histnumber:" + id, data);
 		
 		LoggingUtility.logDownloadMonitoringReport(username, id);
 
@@ -105,7 +106,7 @@ public class PdfGeneratorController {
 		Map<String, Object> data = setBasicData();
 		data.put("logLines", logLines);
 		
-		ResponseEntity<byte[]> response = prepareResponse("log/access-report", "access-report", data);
+		ResponseEntity<byte[]> response = prepareResponse("log/access-report", "access-report-" + LocalDateTime.now(), data);
 		
 		LoggingUtility.logDownloadAccessReport(username);
 		

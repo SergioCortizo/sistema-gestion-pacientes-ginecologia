@@ -37,7 +37,6 @@ $(document).ready(function() {
 
 	$("#password-form").validate({
 		rules: {
-			inputOldPassword: "required",
 			inputNewPassword: "required",
 			"inputConfirmPassword": {
 				equalTo: "#inputNewPassword"

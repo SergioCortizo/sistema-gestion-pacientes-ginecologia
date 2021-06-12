@@ -122,6 +122,8 @@
 											<th th:text="#{label.historynumber}">History number</th>
 											<th th:text="#{label.dni_nif}">DNI/NIF</th>
 											<th th:text="#{label.hist_numsergas}">History Number in SERGAS</th>
+											<th th:text="#{label.birthday}">Birthday</th>
+											<th th:text="#{label.phonenumber}">Phone</th>
 											<th th:text="#{label.name}">Name</th>
 											<th th:text="#{label.enabled}">Enabled</th>
 											<th th:text="#{label.actions}">Actions</th>
@@ -133,6 +135,8 @@
 														th:text="${patient.id}">History number</span></a></td>
 											<td th:text="${patient.DNI_NIF}">DNI/NIF</td>
 											<td th:text="${patient.hist_numsergas}">History Number in SERGAS</td>
+											<td th:text="${patient.birthday.toLocalDate()}">Birthday</td>
+											<td th:text="${patient.phone}">Phone</td>
 											<td th:text="${patient.name}">Name</td>
 											<td th:text="${patient.enabled} ? #{label.yes} : #{label.no}">Enabled
 											</td>
@@ -140,24 +144,24 @@
 												<div class="row">
 													<form th:action="@{/patient/update-patient/{id}(id=${patient.id})}"
 														method="GET">
-														<button class="btn btn-link" type="submit"><i
+														<button th:title="#{label.updatepatient}" class="btn btn-link" type="submit"><i
 																class="fas fa-edit"></i></button>
 													</form>
 													<form sec:authorize="hasRole('ADMIN')"
 														th:action="@{/patient/change-patient-state/{id}(id=${patient.id})}"
 														method="POST">
 														<button class="btn btn-link" type="submit">
-															<i class="fas fa-check" th:if="${!patient.enabled}"></i>
-															<i class="fas fa-times" th:if="${patient.enabled}"></i>
+															<i th:title="#{label.enable}" class="fas fa-check" th:if="${!patient.enabled}"></i>
+															<i th:title="#{label.disable}" class="fas fa-times" th:if="${patient.enabled}"></i>
 														</button>
 													</form>
 													<form sec:authorize="hasRole('FACULTATIVE')"
 														th:action="@{/patient/change-patient-of-interest/{id}(id=${patient.id})}"
 														method="POST">
 														<button class="btn btn-link" type="submit">
-															<i class="fas fa-clipboard"
+															<i th:title="#{label.markaspatientofinterest}" class="fas fa-clipboard"
 																th:if="${!patient.patientOfInterest}"></i>
-															<i class="fas fa-clipboard-check"
+															<i th:title="#{label.unmarkaspatientofinterest}" class="fas fa-clipboard-check"
 																th:if="${patient.patientOfInterest}"></i>
 														</button>
 													</form>

@@ -123,7 +123,7 @@
 											</td>
 											<td>
 												<div class="row">
-													<a th:href="'#updateSpecialityModal-' + ${speciality.id}"
+													<a th:title="#{label.updatespeciality}" th:href="'#updateSpecialityModal-' + ${speciality.id}"
 														role="button" data-toggle="modal"><i
 															class="fas fa-pen ml-3 mt-2"></i></a>
 
@@ -167,8 +167,8 @@
 													<form method="POST"
 														th:action="@{/speciality/change-speciality-state/{id}(id=${speciality.id})}">
 														<button class="btn btn-link" type="submit">
-															<i class="fas fa-check" th:if="${!speciality.enabled}"></i>
-															<i class="fas fa-times" th:if="${speciality.enabled}"></i>
+															<i th:title="#{label.enable}" class="fas fa-check" th:if="${!speciality.enabled}"></i>
+															<i th:title="#{label.disable}" class="fas fa-times" th:if="${speciality.enabled}"></i>
 														</button>
 													</form>
 												</div>

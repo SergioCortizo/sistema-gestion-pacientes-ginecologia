@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
-import es.udc.fic.ginecologia.common.exception.IncorrectPasswordException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
@@ -34,7 +33,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 	@Autowired
 	private RoleDao roleRepo;
-	
+
 	@Autowired
 	private ScheduleDao scheduleRepo;
 
@@ -135,22 +134,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public void changePassword(Integer id, String oldPassword, String newPassword)
-			throws InstanceNotFoundException, IncorrectPasswordException {
+	public void changePassword(Integer id, String newPassword)
+			throws InstanceNotFoundException {
 
 		User user = permissionChecker.checkUser(id);
 
-		if (!encrypter.matches(oldPassword, user.getPassword())) {
-			throw new IncorrectPasswordException();
-		} else {
-			user.setPassword(encrypter.encode(newPassword));
-		}
+		user.setPassword(encrypter.encode(newPassword));
 
 	}
 
 	@Override
-	public void changePassword(Integer adminId, Integer id, String oldPassword, String newPassword)
-			throws InstanceNotFoundException, IncorrectPasswordException, PermissionException {
+	public void changePassword(Integer adminId, Integer id, String newPassword)
+			throws InstanceNotFoundException, PermissionException {
 
 		if (!permissionChecker.checkIsAdmin(adminId)) {
 			throw new PermissionException();
@@ -158,11 +153,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
 		User user = permissionChecker.checkUser(id);
 
-		if (!encrypter.matches(oldPassword, user.getPassword())) {
-			throw new IncorrectPasswordException();
-		} else {
-			user.setPassword(encrypter.encode(newPassword));
-		}
+		user.setPassword(encrypter.encode(newPassword));
 
 	}
 
@@ -208,11 +199,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		}
 
 		User user = permissionChecker.checkUser(userId);
-		
+
 		Set<Schedule> actualSchedules = user.getSchedules();
-		
+
 		scheduleRepo.deleteAll(actualSchedules);
-		
+
 		for (Schedule schedule : schedules) {
 			scheduleRepo.save(schedule);
 		}

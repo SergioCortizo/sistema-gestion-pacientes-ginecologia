@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import es.udc.fic.ginecologia.common.LoggingUtility;
 import es.udc.fic.ginecologia.common.exception.DuplicateInstanceException;
-import es.udc.fic.ginecologia.common.exception.IncorrectPasswordException;
 import es.udc.fic.ginecologia.common.exception.InstanceNotFoundException;
 import es.udc.fic.ginecologia.common.exception.PermissionException;
 import es.udc.fic.ginecologia.common.security.PermissionChecker;
@@ -54,7 +53,7 @@ public class UserController {
 
 	@Autowired
 	PermissionChecker permissionChecker;
-	
+
 	// Login form
 	@GetMapping("/login")
 	public String loginPage() {
@@ -86,11 +85,11 @@ public class UserController {
 			LoggingUtility.logDeniedAccess(username, "GET", "/user/register-error");
 			return "/error/403";
 		}
-		
+
 		model.addAttribute("roles", userService.findAllRoles());
 		model.addAttribute("signUpForm", new SignUpForm());
 		model.addAttribute("duplicateUser", true);
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/user/register");
 
 		return "user/register";
@@ -114,10 +113,10 @@ public class UserController {
 			LoggingUtility.logDeniedAccess(username, "GET", "/user/register");
 			return "/error/403";
 		}
-		
+
 		model.addAttribute("roles", userService.findAllRoles());
 		model.addAttribute("signUpForm", new SignUpForm());
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/user/register");
 
 		return "user/register";
@@ -141,7 +140,7 @@ public class UserController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/user/register");
 			return "/error/403";
 		}
-		
+
 		User newUser = new User(signUpForm.getName(), signUpForm.getUsername(), signUpForm.getEmail(),
 				signUpForm.getPostalAddress(), signUpForm.getLocation(), signUpForm.getDNI(),
 				signUpForm.getPhoneNumber(), signUpForm.getCollegiateNumber());
@@ -155,7 +154,7 @@ public class UserController {
 			LoggingUtility.logDuplicateUser(username, signUpForm);
 			return "redirect:/user/register-error";
 		}
-		
+
 		LoggingUtility.logRegisteredUser(username, signUpForm);
 
 		return "redirect:/user/user-list";
@@ -169,7 +168,7 @@ public class UserController {
 		CustomUserDetails userDetails = (CustomUserDetails) authentication.getPrincipal();
 		Integer userId = userDetails.getId();
 		String username = userDetails.getUsername();
-		
+
 		try {
 			if (!permissionChecker.checkIsAdmin(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/user/user-list");
@@ -187,7 +186,7 @@ public class UserController {
 		model.addAttribute("users", userList);
 		model.addAttribute("roles", roles);
 		model.addAttribute("userSearchForm", new UserSearchForm());
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/user/user-list");
 
 		return "user/user-list";
@@ -212,7 +211,7 @@ public class UserController {
 		}
 
 		prepareModelUpdateTemplate(model, user);
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/user/update-own-data");
 
 		return "user/update-own-data";
@@ -238,7 +237,7 @@ public class UserController {
 
 		prepareModelUpdateTemplate(model, user);
 		model.addAttribute("wrongPassword", true);
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/user/update-own-data-wrong-password");
 
 		return "user/update-own-data";
@@ -273,7 +272,7 @@ public class UserController {
 
 		prepareModelUpdateTemplate(model, user);
 		model.addAttribute("userId", id);
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/user/update/" + id);
 
 		return "user/update";
@@ -303,14 +302,15 @@ public class UserController {
 				LoggingUtility.logDeniedAccess(username, "GET", "/user/update/" + id + "/wrong-password");
 				return "/error/403";
 			}
-			LoggingUtility.logInstanceNotFound(username, User.class.getName(), id, "GET", "/user/update/" + id + "/wrong-password");
+			LoggingUtility.logInstanceNotFound(username, User.class.getName(), id, "GET",
+					"/user/update/" + id + "/wrong-password");
 			return "/error/404";
 		}
 
 		prepareModelUpdateTemplate(model, user);
 		model.addAttribute("userId", id);
 		model.addAttribute("wrongPassword", true);
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/user/update/" + id + "/wrong-password");
 
 		return "user/update";
@@ -352,7 +352,7 @@ public class UserController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/user/update/" + id);
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logUpdatedUser(username, id, updateForm);
 
 		return "redirect:/user/update/" + id;
@@ -391,7 +391,7 @@ public class UserController {
 		Authentication newAuth = new UsernamePasswordAuthenticationToken(new CustomUserDetails(newUser),
 				authentication.getCredentials(), updatedAuthorities);
 		SecurityContextHolder.getContext().setAuthentication(newAuth);
-		
+
 		LoggingUtility.logUpdatedUserOwnData(username, updateForm);
 
 		return "redirect:/user/update-own-data";
@@ -412,16 +412,12 @@ public class UserController {
 		}
 
 		try {
-			userService.changePassword(userId, changePasswordForm.getOldPassword(),
-					changePasswordForm.getNewPassword());
+			userService.changePassword(userId, changePasswordForm.getNewPassword());
 		} catch (InstanceNotFoundException e) {
 			LoggingUtility.logInstanceNotFound(username, User.class.getName(), userId, "POST", "/user/update-own-data");
 			return "/error/404";
-		} catch (IncorrectPasswordException e) {
-			LoggingUtility.logWrongPasword(username, changePasswordForm.getOldPassword(), "POST", "/user/update-own-data");
-			return "redirect:/user/update-own-data-wrong-password";
-		}
-		
+		} 
+
 		LoggingUtility.logChangePassword(username);
 
 		return "redirect:/user/update-own-data";
@@ -449,24 +445,22 @@ public class UserController {
 				LoggingUtility.logDeniedAccess(username, "POST", "/user/change-password/" + id);
 				return "/error/403";
 			}
-			LoggingUtility.logInstanceNotFound(username, User.class.getName(), userId, "POST", "/user/change-password/" + id);
+			LoggingUtility.logInstanceNotFound(username, User.class.getName(), userId, "POST",
+					"/user/change-password/" + id);
 			return "/error/404";
 		}
 
 		try {
-			userService.changePassword(userId, id, changePasswordForm.getOldPassword(),
-					changePasswordForm.getNewPassword());
+			userService.changePassword(userId, id, changePasswordForm.getNewPassword());
 		} catch (InstanceNotFoundException e) {
-			LoggingUtility.logInstanceNotFound(username, User.class.getName(), userId, "POST", "/user/change-password/" + id);
+			LoggingUtility.logInstanceNotFound(username, User.class.getName(), userId, "POST",
+					"/user/change-password/" + id);
 			return "/error/404";
-		} catch (IncorrectPasswordException e) {
-			LoggingUtility.logWrongPasword(username, id, changePasswordForm.getOldPassword(), "POST", "/user/update-own-data");
-			return "redirect:/user/update/" + id + "/wrong-password";
 		} catch (PermissionException e) {
 			LoggingUtility.logDeniedAccess(username, "POST", "/user/change-password/" + id);
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logChangePassword(username, id);
 
 		return "redirect:/user/update/" + id;
@@ -494,20 +488,22 @@ public class UserController {
 				LoggingUtility.logDeniedAccess(username, "POST", "/user/change-enabling-state/" + id);
 				return "/error/403";
 			}
-			LoggingUtility.logInstanceNotFound(username, User.class.getName(), userId, "POST", "/user/change-enabling-state/" + id);
+			LoggingUtility.logInstanceNotFound(username, User.class.getName(), userId, "POST",
+					"/user/change-enabling-state/" + id);
 			return "/error/404";
 		}
 
 		try {
 			userService.changeUserState(userId, id);
 		} catch (InstanceNotFoundException e) {
-			LoggingUtility.logInstanceNotFound(username, User.class.getName(), userId, "POST", "/user/change-enabling-state/" + id);
+			LoggingUtility.logInstanceNotFound(username, User.class.getName(), userId, "POST",
+					"/user/change-enabling-state/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
 			LoggingUtility.logDeniedAccess(username, "POST", "/user/change-enabling-state/" + id);
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logChangeEnablingState(username, User.class.getName(), id);
 
 		return "redirect:/user/user-list";
@@ -558,7 +554,7 @@ public class UserController {
 		model.addAttribute("users", userList);
 		model.addAttribute("roles", roles);
 		model.addAttribute("userSearchForm", new UserSearchForm());
-		
+
 		LoggingUtility.logSearchUsers(ownUsername, userSearchForm, userList);
 
 		return "/user/user-list";
@@ -587,7 +583,8 @@ public class UserController {
 				LoggingUtility.logDeniedAccess(username, "POST", "/user/change-schedule/" + id);
 				return "/error/403";
 			}
-			LoggingUtility.logInstanceNotFound(username, User.class.getName(), id, "POST", "/user/change-schedule/" + id);
+			LoggingUtility.logInstanceNotFound(username, User.class.getName(), id, "POST",
+					"/user/change-schedule/" + id);
 			return "/error/404";
 		}
 
@@ -605,13 +602,14 @@ public class UserController {
 				LoggingUtility.logDeniedAccess(username, "POST", "/user/change-schedule/" + id);
 				return "/error/403";
 			}
-			LoggingUtility.logInstanceNotFound(username, User.class.getName(), id, "POST", "/user/change-schedule/" + id);
+			LoggingUtility.logInstanceNotFound(username, User.class.getName(), id, "POST",
+					"/user/change-schedule/" + id);
 			return "/error/404";
 		} catch (PermissionException e) {
 			LoggingUtility.logDeniedAccess(username, "POST", "/user/change-schedule/" + id);
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logChangeSchedule(username, id, schedules);
 
 		return "redirect:/user/update/" + id;
@@ -669,6 +667,5 @@ public class UserController {
 		model.addAttribute("specialitiesToAddForm", new SpecialitiesToAddForm());
 
 	}
-	
-	
+
 }
