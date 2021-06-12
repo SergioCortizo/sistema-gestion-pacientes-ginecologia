@@ -196,7 +196,15 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
-			
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skipTests>${skipSqlTests}</skipTests>
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>sql-maven-plugin</artifactId>
@@ -229,7 +237,7 @@
 							</include>
 						</includes>
 					</fileset>
-					<skip>${skipSqlMavenPlugin}</skip>
+					<skip>${skipSqlTests}</skip>
 				</configuration>
 
 				<executions>

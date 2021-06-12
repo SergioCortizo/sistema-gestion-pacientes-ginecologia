@@ -6,31 +6,26 @@ volumes:
       driver_opts:
          type: none
          o: bind
-         device: /data-mysql/
+         device: /home/scortizo/data-mysql/
    ginecology-backup:
       driver: local
       driver_opts:
          type: none
          o: bind
-         device: /data-mysql-backup/
+         device: /home/scortizo/data-mysql-backup/
    cache: null
    
 services:
    ginecology-database:
-      build: 
-         context: ./dockerfiles/ginecology-database
-         dockerfile: Dockerfile
-      env_file:
-      - ./.env.database
+      image: ginecology-database:1
       networks:
-         ginecology-network:
-            aliases:
-            - ginecology-database
-      container_name: ginecology-database
+        - proxynet
       environment:
       - MYSQL_ONETIME_PASSWORD=true
-      ports:
-      - 3306:3306
+      - MYSQL_ROOT_PASSWORD=*J+8huv4gRQW
+      - MYSQL_USER=admin
+      - MYSQL_PASSWORD=#F?5NVHrC?44
+      - MYSQL_DATABASE=ginecology
       volumes:
       - ./src/main/resources/sql/1-MySQLCreateTables.sql:/docker-entrypoint-initdb.d/1.sql
       - ./src/main/resources/sql/2-MySQLCreateData.sql:/docker-entrypoint-initdb.d/2.sql
@@ -40,17 +35,13 @@ services:
    ginecology-backup:
       image: fradelg/mysql-cron-backup
       networks:
-         ginecology-network:
-            aliases:
-            - ginecology-backup
-      container_name: ginecology-backup
-      env_file:
-      - ./.env.backup
+        - proxynet
       depends_on:
       - ginecology-database
-      links:
-      - ginecology-database
       environment:
+      - MYSQL_USER=admin
+      - MYSQL_PASS=#F?5NVHrC?44
+      - MYSQL_DB=ginecology
       - CRON_TIME=0 0 * * *
       - MYSQL_HOST=ginecology-database
       - MYSQL_PORT=3306
@@ -59,30 +50,39 @@ services:
       - TZ=Europe/Madrid
       volumes:
       - ginecology-backup:/backup
-      restart: on-failure
 
    ginecology-service:
-      build: 
-         context: ./dockerfiles/ginecology-service
-         dockerfile: Dockerfile
+      image: ginecology-service:1
       networks:
-         ginecology-network:
-            aliases:
-            - ginecology-service
-      volumes:
-      - .:/app
-      - ~/.m2:/root/.m2
+        - proxynet
+      #volumes:
+      #- .:/app
+      #- ~/.m2:/root/.m2 #esto para produccion no es buena idea
       container_name: ginecology-service
-      env_file:
-      - ./.env.service
+      environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://ginecology-database:3306/ginecology?useSSL=false&allowPublicKeyRetrieval=true&connectionCollation=latin1_spanish_ci
+      - SPRING_DATASOURCE_USERNAME=admin
+      - SPRING_DATASOURCE_PASSWORD=#F?5NVHrC?44
       depends_on:
       - ginecology-database
-      links:
-      - ginecology-database
-      restart: unless-stopped
-      ports:
-      - 192.168.56.101:443:8443
-      command: mvn -DskipSqlMavenPlugin=true -f /app/pom.xml clean spring-boot:run
+      #dns: #esto no es para lo que piensas ;)
+      #- vi214.udc.es
+      expose:
+      - 8080 # o 8080, revisar configuracion de la maquina. Si se cambia hay que modificar en deploy/labels el puerto tambien
+      #El puerto que usa es 8080. También lo modifico en "labels".
+      command: mvn -DskipSqlTests=true -f /app/pom.xml clean spring-boot:run
+      deploy:
+         labels:
+           - "traefik.enable=true"
+           - "traefik.http.routers.app-rnasa-imedir.rule=Host(`app.rnasa-imedir.udc.es`)"
+           - "traefik.http.routers.app-rnasa-imedir.entrypoints=web"
+           - "traefik.http.routers.app-rnasa-imedir-secured.rule=Host(`app.rnasa-imedir.udc.es`)"
+           - "traefik.http.routers.app-rnasa-imedir-secured.entrypoints=websecure"
+           - "traefik.http.routers.app-rnasa-imedir-secured.tls.certresolver=leresolver"
+           - "traefik.http.services.app-rnasa-imedir.loadbalancer.server.port=8080" # Siempre debemos definir un puerto.
+           - "traefik.http.routers.app-rnasa-imedir.middlewares=app-rnasa-imedir-redirect"
+           - "traefik.http.middlewares.app-rnasa-imedir-redirect.redirectscheme.scheme=https"
 
-networks:
-   ginecology-network:
+networks:           
+   proxynet:
+       external: true
