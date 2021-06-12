@@ -17,7 +17,7 @@ volumes:
    
 services:
    ginecology-database:
-      image: ginecology-database:1
+      image: ginecology-database:1.0.4
       networks:
         - proxynet
       environment:
@@ -52,7 +52,7 @@ services:
       - ginecology-backup:/backup
 
    ginecology-service:
-      image: ginecology-service:1
+      image: ginecology-service:1.0.4
       networks:
         - proxynet
       container_name: ginecology-service

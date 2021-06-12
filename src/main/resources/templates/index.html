@@ -29,7 +29,7 @@
 						<div class="card bg-primary text-white mb-4">
 							<div class="card-body">
 								<span th:text="#{label.agenda}">Agenda</span>
-								<span class="badge badge-pill badge-secondary" th:text="${newMeetings}"
+								<span class="badge badge-pill badge-secondary" th:text="${newMeetings} + ' ' + #{label.datefortoday}"
 									th:if="${newMeetings} > 0">New meetings</span>
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">
@@ -45,7 +45,7 @@
 						<div class="card bg-success text-white mb-4">
 							<div class="card-body">
 								<span th:text="#{label.mailbox}">Mailbox</span>
-								<span class="badge badge-pill badge-secondary" th:text="${newMessages}"
+								<span class="badge badge-pill badge-secondary" th:text="${newMessages} + ' ' + #{label.newmessages}"
 									th:if="${newMessages} > 0">New messages</span>
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">
@@ -61,9 +61,9 @@
 						<div class="card bg-warning text-dark mb-4">
 							<div class="card-body">
 								<span th:text="#{label.commontasks}">Common tasks</span>
-								<span class="badge badge-pill badge-secondary" th:text="${newGrupalMessages}"
+								<span class="badge badge-pill badge-secondary" th:text="${newGrupalMessages} + ' ' + #{label.newmessages}"
 									th:if="${newGrupalMessages} > 0">New grupal messages</span>
-								<span class="badge badge-pill badge-info" th:text="${newCommonTasks}"
+								<span class="badge badge-pill badge-info" th:text="${newCommonTasks} + ' ' + #{label.newtasks}"
 									th:if="${newCommonTasks} > 0">New common tasks</span>	
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">
@@ -79,7 +79,7 @@
 						<div class="card bg-info text-dark mb-4">
 							<div class="card-body">
 								<span th:text="#{label.notices}">Notices</span>
-								<span class="badge badge-pill badge-secondary" th:text="${newNotices}"
+								<span class="badge badge-pill badge-secondary" th:text="${newNotices} + ' ' + #{label.newnotices}"
 									th:if="${newNotices} > 0">New notices</span>
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">

@@ -40,7 +40,7 @@
 								th:object="${messageForm}">
 								<div class="row">
 									<div class="form-group">
-										<label class="small mb-1" for="users" th:text="#{label.user}">User</label>
+										<label class="small mb-1" for="users" th:text="#{label.receiver}">Receiver</label>
 										<div>
 											<select id="users" th:field="*{receiverId}" class="form-control py-4">
 												<option th:each="user : ${users}" th:value="${user.id}">

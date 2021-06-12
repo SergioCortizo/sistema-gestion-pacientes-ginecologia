@@ -165,10 +165,7 @@ public class CalendarEntryServiceImpl implements CalendarEntryService {
 	}
 
 	@Override
-	public long countMeetingsForToday(Integer userId) throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId)) {
-			throw new PermissionException();
-		}
+	public long countMeetingsForToday(Integer userId) throws InstanceNotFoundException {
 		
 		return calendarEntryDao.countMeetingsForToday(userId);
 	}

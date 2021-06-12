@@ -316,7 +316,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public long countNewMessages(Integer userId) throws PermissionException, InstanceNotFoundException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsFacultative(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
 			throw new PermissionException();
 		}
 		
@@ -325,7 +325,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public long countNewGrupalMessages(Integer userId) throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsFacultative(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
 			throw new PermissionException();
 		}
 		
@@ -334,7 +334,7 @@ public class MessageServiceImpl implements MessageService {
 
 	@Override
 	public long countNewCommonTasks(Integer userId) throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsFacultative(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
 			throw new PermissionException();
 		}
 		
