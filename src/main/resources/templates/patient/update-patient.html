@@ -38,6 +38,13 @@
 							<div th:if="${duplicatePatient}" class="alert alert-danger" role="alert">
 								<span th:text="#{label.patientexists}">Patient already exists.</span>
 							</div>
+							<div class="row">
+								<div class="mb-3">
+									<span class="text-muted" th:text="#{label.historynumber}">History
+										number</span>
+									<span class="ml-5" th:text="${patientId}">Id</span>
+								</div>
+							</div>
 							<form id="update-form" th:object="${updatePatientForm}"
 								th:action="@{/patient/update-patient/{id}(id=${patientId})}" method="POST">
 								<div class="form-row">
@@ -337,7 +344,7 @@
 
 							<form id="add-meeting-form" class="mb-4" method="POST"
 								th:action="@{/patient/add-meeting/{id}(id=${patientId})}" th:object="${addMeetingForm}"
-								enctype="multipart/form-data">
+								enctype="multipart/form-data" sec:authorize="hasRole('FACULTATIVE')">
 								<div class="form-group">
 									<label class="small mb-1" for="activity"
 										th:text="#{label.activity}">Activity</label>
@@ -661,7 +668,7 @@
 										th:attr="aria-labelledby='collapseHeadingCourseClinic-' + ${meeting.id}"
 										th:classappend="${rowStat.index} == 0 ? show : ''">
 										<div class="panel-body">
-											
+
 											<ul>
 												<li>
 													<span class="text-muted" th:text="#{label.activity}">Activity</span>

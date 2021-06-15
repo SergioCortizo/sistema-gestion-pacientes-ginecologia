@@ -41,25 +41,25 @@
 				</a>
 			</div>
 
-			<div class="nav" sec:authorize="hasRole('ADMIN')">
+			<div class="nav" sec:authorize="hasAnyRole('ADMIN', 'CITATIONS')">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.management}">Management</div>
-				<a class="nav-link" th:href="@{/user/user-list}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/user/user-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-lock"></i></div>
 					<span th:text="#{label.usersmanagement}">Users management</span>
 				</a>
-				<a class="nav-link" th:href="@{/speciality/speciality-list}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/speciality/speciality-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-certificate"></i></div>
 					<span th:text="#{label.specialitiesmanagement}">Specialities management</span>
 				</a>
-				<a class="nav-link" th:href="@{/medicine/medicine-list}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/medicine/medicine-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-prescription-bottle-alt"></i></div>
 					<span th:text="#{label.medicinesmanagement}">Medicines management</span>
 				</a>
-				<a class="nav-link" th:href="@{/diagnostic-test/diagnostic-test-list}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/diagnostic-test/diagnostic-test-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-stethoscope"></i></div>
 					<span th:text="#{label.diagnostictestsmanagement}">Diagnostic tests management</span>
 				</a>
-				<a class="nav-link" th:href="@{/contraceptive/contraceptive-list}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/contraceptive/contraceptive-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-capsules"></i></div>
 					<span th:text="#{label.contraceptivesmanagement}">Contraceptives management</span>
 				</a>

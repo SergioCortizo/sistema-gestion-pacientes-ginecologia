@@ -7,6 +7,8 @@ $.validator.addMethod('greaterThanEqual', function(value, element, param) {
 }, "La hora final debe ser mayor que la hora inicial");
 
 $(document).ready(function() {
+	$('.time-text').hunterTimePicker();
+	
 	$("#update-form").validate({
 		rules: {
 			"inputDNI": {

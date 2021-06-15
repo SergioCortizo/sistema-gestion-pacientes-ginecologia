@@ -232,7 +232,7 @@ public class PatientForm {
 				+ postal_address + ", location=" + location + ", email=" + email + ", allergies=" + allergies
 				+ ", diseases=" + diseases + ", interventions=" + interventions + ", family_background="
 				+ family_background + ", smoker=" + smoker + ", menarche=" + menarche + ", menopause=" + menopause
-				+ ", last_menstruation_date=" + last_menstruation_date.toString() + ", pregnancies=" + pregnancies
+				+ ", last_menstruation_date=" + (last_menstruation_date == null ? last_menstruation_date.toString() : "") + ", pregnancies=" + pregnancies
 				+ ", childbirths=" + childbirths + ", cesarean_sections=" + cesarean_sections + ", misbirths="
 				+ misbirths + ", menstrual_type=" + menstrual_type + ", contraceptives=" + contraceptives + "]";
 	}

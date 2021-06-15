@@ -45,22 +45,23 @@ public class MessageServiceImpl implements MessageService {
 
 	@Autowired
 	private CommonTaskDao commonTaskDao;
-	
+
 	@Autowired
 	private CommonTaskUserDao commonTaskUserDao;
-	
+
 	@Autowired
 	private GrupalMessageDao grupalMessageDao;
-	
+
 	@Autowired
 	private UserDao userDao;
-	
+
 	@Autowired
 	private NoticeDao noticeDao;
 
 	@Override
 	public Iterable<Message> findMessages(Integer userId) throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
@@ -70,7 +71,8 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public Message findMessage(Integer userId, Integer messageId)
 			throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
@@ -97,8 +99,10 @@ public class MessageServiceImpl implements MessageService {
 	public void addMessage(Integer senderId, Integer receiverId, String subject, String message_body)
 			throws InstanceNotFoundException, PermissionException {
 
-		if ((!permissionChecker.checkIsFacultative(senderId) && !permissionChecker.checkIsAdmin(senderId))
-				|| (!permissionChecker.checkIsFacultative(receiverId) && !permissionChecker.checkIsAdmin(receiverId))) {
+		if ((!permissionChecker.checkIsFacultative(senderId) && !permissionChecker.checkIsAdmin(senderId)
+				&& !permissionChecker.checkIsCitations(senderId))
+				|| (!permissionChecker.checkIsFacultative(receiverId) && !permissionChecker.checkIsAdmin(receiverId))
+						&& !permissionChecker.checkIsCitations(receiverId)) {
 			throw new PermissionException();
 		}
 
@@ -116,7 +120,8 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public void replyMessage(Integer senderId, Integer messageId, String subject, String message_body)
 			throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(senderId) && !permissionChecker.checkIsAdmin(senderId)) {
+		if (!permissionChecker.checkIsFacultative(senderId) && !permissionChecker.checkIsAdmin(senderId)
+				&& !permissionChecker.checkIsCitations(senderId)) {
 			throw new PermissionException();
 		}
 
@@ -173,7 +178,8 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public Iterable<CommonTask> findCommonTasks(Integer userId) throws InstanceNotFoundException, PermissionException {
 
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
@@ -184,7 +190,8 @@ public class MessageServiceImpl implements MessageService {
 	public CommonTask findCommonTask(Integer userId, Integer commonTaskId)
 			throws InstanceNotFoundException, PermissionException {
 
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
@@ -195,14 +202,15 @@ public class MessageServiceImpl implements MessageService {
 		}
 
 		CommonTask commonTask = commonTaskFound.get();
-		
-		Optional<CommonTaskUser> commonTaskUserFound = StreamSupport.stream(commonTask.getCommonTaskUsers().spliterator(), false)
+
+		Optional<CommonTaskUser> commonTaskUserFound = StreamSupport
+				.stream(commonTask.getCommonTaskUsers().spliterator(), false)
 				.filter(ctu -> ctu.getPk().getUser_id() == userId).findFirst();
-		
+
 		if (!commonTaskUserFound.isPresent()) {
 			throw new PermissionException();
 		}
-		
+
 		CommonTaskUser commonTaskUser = commonTaskUserFound.get();
 		commonTaskUser.setLast_time_read(LocalDateTime.now());
 
@@ -212,46 +220,48 @@ public class MessageServiceImpl implements MessageService {
 	@Override
 	public void addCommonTask(Integer userId, String title, String description, List<Integer> userIds)
 			throws InstanceNotFoundException, PermissionException {
-		
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
-				
+
 		CommonTask commonTask = new CommonTask(title, description);
 		commonTaskDao.save(commonTask);
-		
+
 		userIds.add(userId);
 		Iterable<User> users = userDao.findAllById(userIds);
-		
+
 		Set<CommonTaskUser> commonTaskUsers = new HashSet<>();
-		
+
 		users.forEach(u -> {
 			CommonTaskUser commonTaskUser = new CommonTaskUser();
-			
+
 			CommonTaskUserPK pk = new CommonTaskUserPK(u.getId(), commonTask.getId());
-			
+
 			commonTaskUser.setPk(pk);
 			commonTaskUser.setLast_time_read(LocalDateTime.now());
 			commonTaskUser.setUser(u);
 			commonTaskUser.setCommonTask(commonTask);
-			
+
 			commonTaskUserDao.save(commonTaskUser);
-			
+
 			commonTaskUsers.add(commonTaskUser);
 		});
-		
+
 		commonTask.setCommonTaskUsers(commonTaskUsers);
-		
+
 	}
 
 	@Override
 	public void addGrupalMessage(Integer userId, Integer commonTaskId, String message_body)
 			throws InstanceNotFoundException, PermissionException {
-		
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
-		
+
 		Optional<CommonTask> commonTaskFound = commonTaskDao.findById(commonTaskId);
 
 		if (!commonTaskFound.isPresent()) {
@@ -262,19 +272,19 @@ public class MessageServiceImpl implements MessageService {
 
 		boolean isAllowed = StreamSupport.stream(commonTask.getCommonTaskUsers().spliterator(), false)
 				.anyMatch(ctu -> ctu.getPk().getUser_id() == userId);
-		
+
 		if (!isAllowed) {
 			throw new PermissionException();
 		}
-		
+
 		User user = permissionChecker.checkUser(userId);
-		
+
 		GrupalMessage grupalMessage = new GrupalMessage(message_body);
 		grupalMessage.setCommonTask(commonTask);
 		grupalMessage.setUser(user);
-		
+
 		grupalMessageDao.save(grupalMessage);
-		
+
 	}
 
 	@Override
@@ -282,62 +292,67 @@ public class MessageServiceImpl implements MessageService {
 		if (datetime == null) {
 			return noticeDao.countNewNotices(LocalDateTime.now());
 		}
-		
+
 		return noticeDao.countNewNotices(datetime);
 	}
 
 	@Override
 	public Iterable<Notice> findNotices(Integer userId) throws PermissionException, InstanceNotFoundException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
-		
+
 		User user = permissionChecker.checkUser(userId);
 		user.setLast_time_seen_notices(LocalDateTime.now());
-		
+
 		return noticeDao.findAll();
 	}
 
 	@Override
 	public void addNotice(Integer userId, String notice) throws PermissionException, InstanceNotFoundException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
-		
+
 		User user = permissionChecker.checkUser(userId);
-		
+
 		Notice noticeToAdd = new Notice();
 		noticeToAdd.setNotice(notice);
 		noticeToAdd.setDatetime(LocalDateTime.now());
 		noticeToAdd.setUser(user);
-		
+
 		noticeDao.save(noticeToAdd);
 	}
 
 	@Override
 	public long countNewMessages(Integer userId) throws PermissionException, InstanceNotFoundException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
-		
+
 		return messageDao.countNewMessages(userId);
 	}
 
 	@Override
 	public long countNewGrupalMessages(Integer userId) throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
-		
+
 		return commonTaskDao.countNewGrupalMessages(userId);
 	}
 
 	@Override
 	public long countNewCommonTasks(Integer userId) throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
-		
+
 		return commonTaskDao.countNewCommonTasks(userId);
 	}
 

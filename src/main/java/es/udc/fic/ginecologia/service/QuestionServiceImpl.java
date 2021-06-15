@@ -23,7 +23,8 @@ public class QuestionServiceImpl implements QuestionService {
 
 	@Override
 	public Iterable<Question> findAllQuestions(Integer userId) throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 

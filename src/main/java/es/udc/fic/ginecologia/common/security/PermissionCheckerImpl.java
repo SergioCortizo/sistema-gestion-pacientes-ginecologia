@@ -71,5 +71,22 @@ public class PermissionCheckerImpl implements PermissionChecker {
 
 		return false;
 	}
+	
+	@Override
+	public boolean checkIsCitations(Integer userId) throws InstanceNotFoundException {
+		Optional<User> user = userDao.findById(userId);
+		
+		if (!user.isPresent()) {
+			throw new InstanceNotFoundException("entities.user", userId);
+		}
+		
+		for (Role role : user.get().getRoles()) {
+			if (role.getName().equals("ROLE_CITATIONS")) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 }

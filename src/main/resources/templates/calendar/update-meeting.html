@@ -51,12 +51,61 @@
 								</div>
 							</div>
 							<div class="col-md-2">
-								<div class="form-group">
+								<div class="form-group" id="hourEntryGroup">
 									<label class="small mb-1" for="hourEntry" th:text="#{label.entryhour}">Entry
 										hour</label>
-									<input type="time" class="form-control" id="hourEntry" name="hourEntry"
-										th:value="${#temporals.format(updateCalendarEntryForm.hourEntry, 'HH:mm')}" min="00:00" max="23:59"
-										required />
+									<select id="hourEntry" name="hourEntry" th:field="*{hourEntry}" required>
+										<option th:text="#{label.entryhour}" value="">
+											Entry hour</option>
+										<option id="00:00" class="hourOption-0" value="00:00">00:00</option>
+										<option id="00:30" class="hourOption-1" value="00:30">00:30</option>
+										<option id="01:00" class="hourOption-2" value="01:00">01:00</option>
+										<option id="01:30" class="hourOption-3" value="01:30">01:30</option>
+										<option id="02:00" class="hourOption-4" value="02:00">02:00</option>
+										<option id="02:30" class="hourOption-5" value="02:30">02:30</option>
+										<option id="03:00" class="hourOption-6" value="03:00">03:00</option>
+										<option id="03:30" class="hourOption-7" value="03:30">03:30</option>
+										<option id="04:00" class="hourOption-8" value="04:00">04:00</option>
+										<option id="04:30" class="hourOption-9" value="04:30">04:30</option>
+										<option id="05:00" class="hourOption-10" value="05:00">05:00</option>
+										<option id="05:30" class="hourOption-11" value="05:30">05:30</option>
+										<option id="06:00" class="hourOption-12" value="06:00">06:00</option>
+										<option id="06:30" class="hourOption-13" value="06:30">06:30</option>
+										<option id="07:00" class="hourOption-14" value="07:00">07:00</option>
+										<option id="07:30" class="hourOption-15" value="07:30">07:30</option>
+										<option id="08:00" class="hourOption-16" value="08:00">08:00</option>
+										<option id="08:30" class="hourOption-17" value="08:30">08:30</option>
+										<option id="09:00" class="hourOption-18" value="09:00">09:00</option>
+										<option id="09:30" class="hourOption-19" value="09:30">09:30</option>
+										<option id="10:00" class="hourOption-20" value="10:00">10:00</option>
+										<option id="10:30" class="hourOption-21" value="10:30">10:30</option>
+										<option id="11:00" class="hourOption-22" value="11:00">11:00</option>
+										<option id="11:30" class="hourOption-23" value="11:30">11:30</option>
+										<option id="12:00" class="hourOption-24" value="12:00">12:00</option>
+										<option id="12:30" class="hourOption-25" value="12:30">12:30</option>
+										<option id="13:00" class="hourOption-26" value="13:00">13:00</option>
+										<option id="13:30" class="hourOption-27" value="13:30">13:30</option>
+										<option id="14:00" class="hourOption-28" value="14:00">14:00</option>
+										<option id="14:30" class="hourOption-29" value="14:30">14:30</option>
+										<option id="15:00" class="hourOption-30" value="15:00">15:00</option>
+										<option id="15:30" class="hourOption-31" value="15:30">15:30</option>
+										<option id="16:00" class="hourOption-32" value="16:00">16:00</option>
+										<option id="16:30" class="hourOption-33" value="16:30">16:30</option>
+										<option id="17:00" class="hourOption-34" value="17:00">17:00</option>
+										<option id="17:30" class="hourOption-35" value="17:30">17:30</option>
+										<option id="18:00" class="hourOption-36" value="18:00">18:00</option>
+										<option id="18:30" class="hourOption-37" value="18:30">18:30</option>
+										<option id="19:00" class="hourOption-38" value="19:00">19:00</option>
+										<option id="19:30" class="hourOption-39" value="19:30">19:30</option>
+										<option id="20:00" class="hourOption-40" value="20:00">20:00</option>
+										<option id="20:30" class="hourOption-41" value="20:30">20:30</option>
+										<option id="21:00" class="hourOption-42" value="21:00">21:00</option>
+										<option id="21:30" class="hourOption-43" value="21:30">21:30</option>
+										<option id="22:00" class="hourOption-44" value="22:00">22:00</option>
+										<option id="22:30" class="hourOption-45" value="22:30">22:30</option>
+										<option id="23:00" class="hourOption-46" value="23:00">23:00</option>
+										<option id="23:30" class="hourOption-47" value="23:30">23:30</option>
+									</select>
 								</div>
 							</div>
 						</div>
@@ -74,10 +123,10 @@
 											</option>
 										</select>
 									</div>
-									<div th:each="f : ${facultatives}" th:id="'schedule-' + ${f.id}"
-										th:style="${f.id == updateCalendarEntryForm.facultative ? 'display: none;' : ''}">
-										<ul>
-											<li th:each="s : ${f.schedules}">
+									<div th:each="f : ${facultatives}" th:id="'schedule-' + ${f.id}" class="schedule"
+										th:style="${f.id != updateCalendarEntryForm.facultative ? 'display: none;' : ''}">
+										<ul class="schedule-ul">
+											<li th:each="s : ${f.schedules}" th:class="${s.pk.weekday.name}">
 												<th:block th:switch="${s.pk.weekday.name}">
 													<span th:case="'monday'" th:text="#{label.monday}"
 														class="font-weight-bold">Monday</span>
@@ -90,9 +139,24 @@
 													<span th:case="'friday'" th:text="#{label.friday}"
 														class="font-weight-bold">Friday</span>
 												</th:block>
-												<span th:text="${s.initial_hour} + ' - '">Initial
+												<span th:text="${s.initial_hour}" class="initialHour">Initial
 													hour</span>
-												<span th:text="${s.final_hour}">Final hour</span>
+												<span> - </span>
+												<span th:text="${s.final_hour}" class="finalHour">Final hour</span>
+											</li>
+										</ul>
+										<ul class="calEntries-ul">
+											<li th:each="ce : ${f.calendarEntries}"
+												th:class="${ce.entryDate.toLocalDate()}"
+												th:if="${ce.entryDate.toLocalDate().isAfter(actualDate)} and ${ce.state.name.equals('opened')}">
+												<span class="calendar-meeting-date"
+													th:text="${ce.entryDate.toLocalDate()}">Calendar
+													meeting date</span>
+												<span> </span>
+												<span class="calendar-meeting-hour"
+													th:text="${ce.entryDate.toLocalTime()}">Calendar meeting hour</span>
+												<br>
+												<span th:text="${ce.patient.name}">Patient</span>
 											</li>
 										</ul>
 									</div>
@@ -102,7 +166,8 @@
 								<div class="form-group">
 									<label class="small mb-1" for="patients" th:text="#{label.patient}">Patient</label>
 									<div>
-										<select id="patients" th:field="*{patient}" class="form-control py-4">
+										<select id="patients" th:field="*{patient}"
+											class="form-control selectpicker" data-live-search="true">
 											<option th:text="#{label.selectpatient}" value="">
 												Select a patient</option>
 											<option th:each="p : ${patients}" th:value="${p.id}" th:text="${p.name}">

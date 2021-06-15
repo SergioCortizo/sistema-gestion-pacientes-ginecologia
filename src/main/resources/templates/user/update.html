@@ -117,6 +117,10 @@
 													th:text="#{label.admin}">
 													Admin
 												</label>
+												<label th:case="'ROLE_CITATIONS'" class="form-check-label" th:for="'check-' + ${role.id}"
+													th:text="#{label.citations}">
+													Citations
+												</label>
 											</div>
 										</div>
 									</div>
@@ -197,19 +201,19 @@
 											</th:block>
 										</label>
 										<div class="form-row">
-											<div class="col-sm-6">
-												<input type="time" class="form-control"
+											<div class="col-sm-3">
+												<input type="text" class="form-control time-text"
 													th:id="'initialHour-' + ${schedule.weekday}"
 													th:field="*{schedules[__${scheduleStat.index}__].initial_hour}"
-													th:disabled="${!schedule.selected}" min="00:00" max="23:59"
-													th:required="${schedule.selected} ? 'required' : ''" />
+													th:disabled="${!schedule.selected}" th:value="${schedule.initial_hour}"
+													th:required="${schedule.selected} ? 'required' : ''"/>
 											</div>
-											<div class="col-sm-6">
-												<input type="time" class="form-control"
+											<div class="col-sm-3">
+												<input type="text" class="form-control time-text"
 													th:id="'finalHour-' + ${schedule.weekday}"
 													th:field="*{schedules[__${scheduleStat.index}__].final_hour}"
-													th:disabled="${!schedule.selected}" min="00:00" max="23:59"
-													th:required="${schedule.selected} ? 'required' : ''" />
+													th:disabled="${!schedule.selected}" th:value="${schedule.final_hour}"
+													th:required="${schedule.selected} ? 'required' : ''"/>
 											</div>
 										</div>
 									</div>

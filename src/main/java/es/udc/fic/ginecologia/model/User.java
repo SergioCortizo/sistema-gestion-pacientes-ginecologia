@@ -66,6 +66,10 @@ public class User {
 	@JoinColumn(name = "user_id", referencedColumnName = "id")
 	private Set<CommonTaskUser> commonTaskUsers = new HashSet<>();
 	
+	@OneToMany
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private Set<CalendarEntry> calendarEntries = new HashSet<>();
+	
 	private LocalDateTime last_time_seen_notices;
 
 	public User() {
@@ -229,6 +233,14 @@ public class User {
 
 	public void setLast_time_seen_notices(LocalDateTime last_time_seen_notices) {
 		this.last_time_seen_notices = last_time_seen_notices;
+	}
+
+	public Set<CalendarEntry> getCalendarEntries() {
+		return calendarEntries;
+	}
+
+	public void setCalendarEntries(Set<CalendarEntry> calendarEntries) {
+		this.calendarEntries = calendarEntries;
 	}
 
 	@Override

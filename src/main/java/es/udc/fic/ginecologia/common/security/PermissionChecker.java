@@ -11,4 +11,6 @@ public interface PermissionChecker {
 	boolean checkIsAdmin(Integer userId) throws InstanceNotFoundException;
 
 	boolean checkIsFacultative(Integer userId) throws InstanceNotFoundException;
+
+	boolean checkIsCitations(Integer userId) throws InstanceNotFoundException;
 }

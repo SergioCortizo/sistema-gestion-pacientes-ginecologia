@@ -25,6 +25,7 @@ import es.udc.fic.ginecologia.form.FacultativeDiaryLine;
 import es.udc.fic.ginecologia.form.FacultativeDiaryLineConversor;
 import es.udc.fic.ginecologia.model.CalendarEntry;
 import es.udc.fic.ginecologia.model.CustomUserDetails;
+import es.udc.fic.ginecologia.model.User;
 import es.udc.fic.ginecologia.service.CalendarEntryService;
 import es.udc.fic.ginecologia.service.PatientService;
 import es.udc.fic.ginecologia.service.UserService;
@@ -90,7 +91,7 @@ public class CalendarController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/calendar/meetings-management");
 				return "/error/403";
 			}
@@ -125,7 +126,7 @@ public class CalendarController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/calendar/update-meeting/" + id);
 				return "/error/403";
 			}
@@ -159,6 +160,7 @@ public class CalendarController {
 		model.addAttribute("updateCalendarEntryForm", updateCalendarEntryForm);
 		model.addAttribute("lineId", id);
 		model.addAttribute("facultatives", userService.findAllFacultatives());
+		model.addAttribute("actualDate", LocalDate.now());
 
 		LoggingUtility.updatedCalendarEntry(username, id, updateCalendarEntryForm);
 
@@ -176,7 +178,7 @@ public class CalendarController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/calendar/add-calendar-entry");
 				return "/error/403";
 			}
@@ -215,7 +217,7 @@ public class CalendarController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/calendar/update-calendar-entry/" + id);
 				return "/error/403";
 			}
@@ -254,7 +256,7 @@ public class CalendarController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/calendar/cancel-meeting/" + id);
 				return "/error/403";
 			}
@@ -297,9 +299,12 @@ public class CalendarController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/calendar/set-entry-as-closed/" + id);
 			return "/error/403";
 		}
+		
+		CalendarEntry cEntry = null;
 
 		try {
 			calendarService.setEntryAsClosed(userId, id);
+			cEntry = calendarService.findById(userId, id);
 		} catch (InstanceNotFoundException e) {
 			LoggingUtility.logInstanceNotFound(username, CalendarEntry.class.getName(), id, "POST", "/calendar/set-entry-as-closed/" + id);
 			return "/error/404";
@@ -310,7 +315,7 @@ public class CalendarController {
 		
 		LoggingUtility.logSetEntryAsClosed(username, id);
 
-		return "redirect:/calendar/check-agenda";
+		return "redirect:/patient/update-patient/" + cEntry.getPatient().getId();
 	}
 
 	private void prepareModel(Model model, Iterable<CalendarEntry> calendarEntries, Integer userId)
@@ -343,11 +348,14 @@ public class CalendarController {
 				.collect(Collectors.toList());
 
 		model.addAttribute("previousDays", previousDays);
+		
+		Iterable<User> facultatives = userService.findAllFacultatives();
 
 		model.addAttribute("today", LocalDate.now());
 		model.addAttribute("tomorrow", LocalDate.now().plusDays(1));
 		model.addAttribute("addCalendarEntryForm", new CalendarEntryForm());
-		model.addAttribute("facultatives", userService.findAllFacultatives());
+		model.addAttribute("facultatives", facultatives);
+		model.addAttribute("actualDate", LocalDate.now());
 		model.addAttribute("patients", patientService.findAllPatients(userId));
 
 	}

@@ -9,7 +9,7 @@ public class CalendarEntryForm {
 
 	private String reason;
 
-	@DateTimeFormat(pattern = "dd/MM/yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateEntry;
 
 	private LocalTime hourEntry;

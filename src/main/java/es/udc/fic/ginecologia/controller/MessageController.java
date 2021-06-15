@@ -57,7 +57,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/messages/messages-list");
 				return "/error/403";
 			}
@@ -92,7 +93,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/messages/read-message/" + id);
 				return "/error/403";
 			}
@@ -138,7 +140,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/messages/add-message");
 				return "/error/403";
 			}
@@ -168,7 +171,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-message");
 				return "/error/403";
 			}
@@ -188,7 +192,7 @@ public class MessageController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-message");
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logAddMessage(username, messageForm);
 
 		return "redirect:/messages/messages-list";
@@ -205,7 +209,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/messages/reply-message/" + id);
 				return "/error/403";
 			}
@@ -224,7 +229,7 @@ public class MessageController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/messages/reply-message/" + id);
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logReplyMessage(username, id, messageForm);
 
 		return "redirect:/messages/messages-list";
@@ -261,7 +266,7 @@ public class MessageController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/messages/open-interconsultation/" + id);
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logOpenInterconsultation(username, id, messageForm);
 
 		return "redirect:/messages/messages-list/";
@@ -277,7 +282,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/messages/common-tasks-list");
 				return "/error/403";
 			}
@@ -300,7 +306,7 @@ public class MessageController {
 		model.addAttribute("users", userService.findAllUsers());
 		model.addAttribute("userId", userId);
 		model.addAttribute("commonTaskForm", new CommonTaskForm());
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/messages/common-tasks-list");
 
 		return "messages/common-tasks-list";
@@ -316,7 +322,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/messages/common-task/" + id);
 				return "/error/403";
 			}
@@ -342,7 +349,7 @@ public class MessageController {
 		model.addAttribute("commonTask", commonTask);
 		model.addAttribute("addMessageForm", new MessageForm());
 		model.addAttribute("messages", messages);
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/messages/common-task/" + id);
 
 		return "messages/common-task-details";
@@ -358,7 +365,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/messages/open-common-task/");
 				return "/error/403";
 			}
@@ -374,7 +382,7 @@ public class MessageController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/messages/open-common-task/");
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logAddCommonTask(username, commonTaskForm);
 
 		return "redirect:/messages/common-tasks-list";
@@ -390,7 +398,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-grupal-message/" + id);
 				return "/error/403";
 			}
@@ -407,7 +416,7 @@ public class MessageController {
 				return "/error/403";
 			}
 		}
-		
+
 		LoggingUtility.logAddGrupalMessage(username, id, addMessageForm);
 
 		return "redirect:/messages/common-task/" + id;
@@ -423,7 +432,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/messages/notices-list/");
 				return "/error/403";
 			}
@@ -442,7 +452,7 @@ public class MessageController {
 		}
 
 		model.addAttribute("noticeForm", new NoticeForm());
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/messages/notices-list/");
 
 		return "messages/notices-list";
@@ -458,7 +468,8 @@ public class MessageController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-notice/");
 				return "/error/403";
 			}
@@ -473,7 +484,7 @@ public class MessageController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/messages/add-notice/");
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logAddNotice(username, noticeForm);
 
 		return "redirect:/messages/notices-list/";

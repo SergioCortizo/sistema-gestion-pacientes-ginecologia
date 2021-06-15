@@ -141,10 +141,20 @@
 										<div class="form-check" th:each="role : ${roles}">
 											<input class="form-check-input" type="checkbox" name="roles[]"
 												th:field="*{roles}" th:value="${role.id}" th:id="'check-' + ${role.id}">
-											<label class="form-check-label" th:for="'check-' + ${role.id}"
-												th:text="${role.name}">
-												Role
-											</label>
+											<div th:switch="${role.name}">
+												<label th:case="'ROLE_FACULTATIVE'" class="form-check-label" th:for="'check-' + ${role.id}"
+													th:text="#{label.facultative}">
+													Facultative
+												</label>
+												<label th:case="'ROLE_ADMIN'" class="form-check-label" th:for="'check-' + ${role.id}"
+													th:text="#{label.admin}">
+													Admin
+												</label>
+												<label th:case="'ROLE_CITATIONS'" class="form-check-label" th:for="'check-' + ${role.id}"
+													th:text="#{label.citations}">
+													Citations
+												</label>
+											</div>
 										</div>
 									</div>
 								</fieldset>

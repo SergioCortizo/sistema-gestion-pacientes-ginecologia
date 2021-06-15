@@ -75,7 +75,8 @@ public class PatientController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/patient/patient-list");
 				return "/error/403";
 			}
@@ -110,7 +111,8 @@ public class PatientController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/patient/search-patients");
 				return "/error/403";
 			}
@@ -147,7 +149,8 @@ public class PatientController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/patient/patient-details/" + id);
 				return "/error/403";
 			}
@@ -188,7 +191,8 @@ public class PatientController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/patient/add-patient");
 				return "/error/403";
 			}
@@ -215,7 +219,8 @@ public class PatientController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/patient/add-patient-error");
 				return "/error/403";
 			}
@@ -243,7 +248,8 @@ public class PatientController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/patient/add-patient");
 				return "/error/403";
 			}
@@ -279,7 +285,8 @@ public class PatientController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/patient/update-patient/" + id);
 				return "/error/403";
 			}
@@ -342,7 +349,8 @@ public class PatientController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "GET", "/patient/update-patient-error/" + id);
 				return "/error/403";
 			}
@@ -399,7 +407,8 @@ public class PatientController {
 		String username = userDetails.getUsername();
 
 		try {
-			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)) {
+			if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsFacultative(userId)
+					&& !permissionChecker.checkIsCitations(userId)) {
 				LoggingUtility.logDeniedAccess(username, "POST", "/patient/update-patient/" + id);
 				return "/error/403";
 			}
@@ -455,7 +464,7 @@ public class PatientController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/patient/change-patient-state/" + id);
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logChangeEnablingPatientState(username, Patient.class.getSimpleName(), id);
 
 		return "redirect:/patient/patient-list";
@@ -491,7 +500,7 @@ public class PatientController {
 			LoggingUtility.logDeniedAccess(username, "POST", "/patient/change-patient-of-interest/" + id);
 			return "/error/403";
 		}
-		
+
 		LoggingUtility.logChangePatientOfInterest(username, id);
 
 		return "redirect:/patient/patient-list";
@@ -526,7 +535,7 @@ public class PatientController {
 		}
 
 		prepareModel(model, user.getPatientsOfInterest(), userId);
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/patient/patients-of-interest");
 
 		return "patient/patients-of-interest";
@@ -561,7 +570,7 @@ public class PatientController {
 		}
 
 		prepareModelForLastSeenPatients(model, meetings);
-		
+
 		LoggingUtility.logGetResource(username, "GET", "/patient/last-seen-patients");
 
 		return "patient/last-seen-patients";
@@ -571,7 +580,7 @@ public class PatientController {
 		model.addAttribute("patients", PatientConversor.createPatientElemList(patients, userId));
 		model.addAttribute("searchPatientsForm", new SearchPatientsForm());
 	}
-	
+
 	private void prepareModelForLastSeenPatients(Model model, Iterable<Meeting> meetings) {
 		model.addAttribute("patients", PatientConversor.createPatientElemListForLastSeenPatients(meetings));
 		model.addAttribute("searchPatientsForm", new SearchPatientsForm());

@@ -42,7 +42,7 @@
 									<div class="form-group">
 										<label class="small mb-1" for="users" th:text="#{label.receiver}">Receiver</label>
 										<div>
-											<select id="users" th:field="*{receiverId}" class="form-control py-4">
+											<select id="users" th:field="*{receiverId}" class="selectpicker" data-live-search="true">
 												<option th:each="user : ${users}" th:value="${user.id}">
 													<span th:text="${user.name}">User</span>
 												</option>

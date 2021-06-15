@@ -12,8 +12,6 @@ $(document).ready(() => {
 
 	startInputs();
 
-	$('#users').multiselect({});
-
 	$('#add-message-form').validate({
 		rules: {
 			subject: {

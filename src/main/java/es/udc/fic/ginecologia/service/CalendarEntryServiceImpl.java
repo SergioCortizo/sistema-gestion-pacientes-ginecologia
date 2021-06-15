@@ -44,7 +44,7 @@ public class CalendarEntryServiceImpl implements CalendarEntryService {
 	@Override
 	public Iterable<CalendarEntry> findAllCalendarEntries(Integer userId)
 			throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
@@ -55,7 +55,7 @@ public class CalendarEntryServiceImpl implements CalendarEntryService {
 	public CalendarEntry findById(Integer userId, Integer calendarEntryId)
 			throws InstanceNotFoundException, PermissionException {
 
-		if (!permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
@@ -72,7 +72,8 @@ public class CalendarEntryServiceImpl implements CalendarEntryService {
 	public void addCalendarEntry(Integer userId, Integer facultativeId, Long patientId, LocalDateTime entryDate,
 			String reason) throws InstanceNotFoundException, PermissionException {
 
-		if (!permissionChecker.checkIsAdmin(userId) || !permissionChecker.checkIsFacultative(facultativeId)) {
+		if ((!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId))
+				|| !permissionChecker.checkIsFacultative(facultativeId)) {
 			throw new PermissionException();
 		}
 
@@ -93,7 +94,8 @@ public class CalendarEntryServiceImpl implements CalendarEntryService {
 	public void updateCalendarEntry(Integer userId, Integer calendarEntryId, Integer facultativeId, Long patientId,
 			LocalDateTime entryDate, String reason) throws InstanceNotFoundException, PermissionException {
 
-		if (!permissionChecker.checkIsAdmin(userId) || !permissionChecker.checkIsFacultative(facultativeId)) {
+		if ((!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId))
+				|| !permissionChecker.checkIsFacultative(facultativeId)) {
 			throw new PermissionException();
 		}
 
@@ -126,7 +128,7 @@ public class CalendarEntryServiceImpl implements CalendarEntryService {
 	public void cancelEntry(Integer userId, Integer calendarEntryId)
 			throws PermissionException, InstanceNotFoundException {
 
-		if (!permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
@@ -166,7 +168,7 @@ public class CalendarEntryServiceImpl implements CalendarEntryService {
 
 	@Override
 	public long countMeetingsForToday(Integer userId) throws InstanceNotFoundException {
-		
+
 		return calendarEntryDao.countMeetingsForToday(userId);
 	}
 

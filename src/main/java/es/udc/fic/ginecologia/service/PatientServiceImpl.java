@@ -40,11 +40,13 @@ public class PatientServiceImpl implements PatientService {
 
 	@Override
 	public Iterable<Patient> findAllPatients(Integer userId) throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
-		if (permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			return patientDao.findByEnabledOrderByIdDesc(true);
 		}
 
@@ -57,13 +59,14 @@ public class PatientServiceImpl implements PatientService {
 		if (!permissionChecker.checkIsFacultative(userId)) {
 			throw new PermissionException();
 		}
-		
+
 		return meetingDao.findLastSeenPatients(userId);
 	}
 
 	@Override
 	public Patient findPatient(Integer userId, Long patientId) throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
@@ -79,11 +82,13 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public Iterable<Patient> findPatients(Integer userId, String name, String DNI_NIF, String histNumSERGAS,
 			boolean enabled) throws InstanceNotFoundException, PermissionException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
-		if (permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			patientDao.findPatients(name, DNI_NIF, histNumSERGAS, true);
 		}
 
@@ -93,7 +98,8 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public void addPatient(Integer userId, Patient patient, List<Integer> contraceptivesIds)
 			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
@@ -122,7 +128,8 @@ public class PatientServiceImpl implements PatientService {
 	@Override
 	public void updatePatient(Integer userId, Long patientId, Patient patient, List<Integer> contraceptivesIds)
 			throws InstanceNotFoundException, PermissionException, DuplicateInstanceException {
-		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)) {
+		if (!permissionChecker.checkIsFacultative(userId) && !permissionChecker.checkIsAdmin(userId)
+				&& !permissionChecker.checkIsCitations(userId)) {
 			throw new PermissionException();
 		}
 
