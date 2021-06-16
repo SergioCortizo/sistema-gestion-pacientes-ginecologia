@@ -193,17 +193,17 @@
 																th:class="${s.pk.weekday.name}">
 																<th:block th:switch="${s.pk.weekday.name}">
 																	<span th:case="'monday'" th:text="#{label.monday}"
-																		class="font-weight-bold">Monday</span>
+																		class="font-weight-bold monday">Monday</span>
 																	<span th:case="'tuesday'" th:text="#{label.tuesday}"
-																		class="font-weight-bold">Tuesday</span>
+																		class="font-weight-bold tuesday">Tuesday</span>
 																	<span th:case="'wednesday'"
 																		th:text="#{label.wednesday}"
-																		class="font-weight-bold">Wednesday</span>
+																		class="font-weight-bold wednesday">Wednesday</span>
 																	<span th:case="'thursday'"
 																		th:text="#{label.thursday}"
-																		class="font-weight-bold">Thursday</span>
+																		class="font-weight-bold thursday">Thursday</span>
 																	<span th:case="'friday'" th:text="#{label.friday}"
-																		class="font-weight-bold">Friday</span>
+																		class="font-weight-bold friday">Friday</span>
 																</th:block>
 																<span th:text="${s.initial_hour}"
 																	class="initialHour">Initial
@@ -213,7 +213,7 @@
 																	hour</span>
 															</li>
 														</ul>
-														<ul class="calEntries-ul">
+														<ul class="calEntries-ul" style="display: none;">
 															<li th:each="ce : ${f.calendarEntries}"
 																th:class="${ce.entryDate.toLocalDate()}"
 																th:if="${ce.entryDate.toLocalDate().isAfter(actualDate)} and ${ce.state.name.equals('opened')}">

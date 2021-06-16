@@ -145,7 +145,7 @@
 												<span th:text="${s.final_hour}" class="finalHour">Final hour</span>
 											</li>
 										</ul>
-										<ul class="calEntries-ul">
+										<ul class="calEntries-ul" style="display: none;">
 											<li th:each="ce : ${f.calendarEntries}"
 												th:class="${ce.entryDate.toLocalDate()}"
 												th:if="${ce.entryDate.toLocalDate().isAfter(actualDate)} and ${ce.state.name.equals('opened')}">

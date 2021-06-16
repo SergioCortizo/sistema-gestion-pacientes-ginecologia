@@ -13,6 +13,7 @@ function startDateInputs() {
 		container: container,
 		todayHighlight: true,
 		autoclose: true,
+		orientation: 'bottom',
 		daysOfWeekDisabled: [0, 6]
 	};
 
@@ -66,6 +67,19 @@ $(document).ready(() => {
 
 	$('#facultatives').change(() => {
 		const scheduleId = $('#facultatives option').filter(':selected').val();
+
+		var daysOfWeekDisabled = [0, 1, 2, 3, 4, 5, 6];
+		var weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+		$('#schedule-' + scheduleId + " ul.schedule-ul li").each((i, e) => {
+			var number = weekdays.indexOf(e.className);
+			var index = daysOfWeekDisabled.indexOf(number);
+			daysOfWeekDisabled.splice(index, 1);
+
+			console.log(daysOfWeekDisabled);
+		});
+
+		$('#dateEntry').datepicker('setDaysOfWeekDisabled', daysOfWeekDisabled);
 
 		$('div[id^="schedule-"]').hide();
 
@@ -132,5 +146,17 @@ $(document).ready(() => {
 	if ($('#hourEntry').find(":selected").css('display') == 'none') {
 		$("#hourEntry option[value='']").attr("selected", true);
 	}
+	
+	const scheduleId = $('#facultatives option').filter(':selected').val();
+	var daysOfWeekDisabled = [0, 1, 2, 3, 4, 5, 6];
+	var weekdays = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+
+	$('#schedule-' + scheduleId + " ul.schedule-ul li").each((i, e) => {
+		var number = weekdays.indexOf(e.className);
+		var index = daysOfWeekDisabled.indexOf(number);
+		daysOfWeekDisabled.splice(index, 1);
+	});
+	
+	$('#dateEntry').datepicker('setDaysOfWeekDisabled', daysOfWeekDisabled);
 
 });

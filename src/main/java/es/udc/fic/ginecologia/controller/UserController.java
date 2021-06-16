@@ -148,14 +148,19 @@ public class UserController {
 		newUser.setPassword(signUpForm.getPassword());
 		Iterable<Integer> roleIds = Arrays.asList(signUpForm.getRoles());
 
+		Integer newUserId;
 		try {
-			userService.registerUser(newUser, roleIds);
+			newUserId = userService.registerUser(newUser, roleIds);
 		} catch (DuplicateInstanceException e) {
 			LoggingUtility.logDuplicateUser(username, signUpForm);
 			return "redirect:/user/register-error";
 		}
-
+		
 		LoggingUtility.logRegisteredUser(username, signUpForm);
+		
+		if (Arrays.asList(signUpForm.getRoles()).contains(1)) {
+			return "redirect:/user/update/" + newUserId + "#schedule-card";
+		}
 
 		return "redirect:/user/user-list";
 	}

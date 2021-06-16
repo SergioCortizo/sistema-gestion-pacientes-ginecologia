@@ -8,7 +8,7 @@ $.validator.addMethod('greaterThanEqual', function(value, element, param) {
 
 $(document).ready(function() {
 	$('.time-text').hunterTimePicker();
-	
+
 	$("#update-form").validate({
 		rules: {
 			"inputDNI": {
@@ -47,12 +47,21 @@ $(document).ready(function() {
 	});
 
 	$("#schedule-form").validate({});
-	
+
+	$("#schedule-form").submit((e) => {
+		$("#schedule-alert").hide();
+		
+		if ($('#check-1').is(':checked') && !$(".checkbox-schedule").is(":checked")) {
+			$("#schedule-alert").show();
+			e.preventDefault();
+		}
+	});
+
 	$("[id^=initialHour-]").each(function(i, e) {
 		$("#" + e.id).rules("add", {
 			lessThanEqual: "#finalHour-" + i
 		});
-		
+
 		$("#finalHour-" + i).rules("add", {
 			greaterThanEqual: "#" + e.id
 		});
@@ -69,21 +78,21 @@ $(document).ready(function() {
 		$(finalHourId).prop("disabled", !$(finalHourId).prop("disabled"));
 
 	});
-	
+
 	$("#btnAddSpecialities").click(() => {
 		$("#selectAddSpecialities").val().forEach(s => {
 			$('#selectQuitSpecialities').append($("#speciality-" + s));
 			$('#selectAddSpecialities').children('option[value=' + s + ']').remove();
 		});
 	});
-	
+
 	$("#btnQuitSpecialities").click(() => {
-		$("#selectQuitSpecialities").val().forEach(s =>{
+		$("#selectQuitSpecialities").val().forEach(s => {
 			$('#selectAddSpecialities').append($("#speciality-" + s));
 			$('#selectQuitSpecialities').children('option[value=' + s + ']').remove();
 		});
 	});
-	
+
 	$("#btnSubmitSpecialities").click(() => {
 		$("#selectQuitSpecialities").children().attr("selected", "selected");
 	});

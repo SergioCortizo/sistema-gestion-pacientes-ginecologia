@@ -109,16 +109,16 @@
 											<input class="form-check-input" type="checkbox" name="roles[]"
 												th:field="*{roles}" th:value="${role.id}" th:id="'check-' + ${role.id}">
 											<div th:switch="${role.name}">
-												<label th:case="'ROLE_FACULTATIVE'" class="form-check-label" th:for="'check-' + ${role.id}"
-													th:text="#{label.facultative}">
+												<label th:case="'ROLE_FACULTATIVE'" class="form-check-label"
+													th:for="'check-' + ${role.id}" th:text="#{label.facultative}">
 													Facultative
 												</label>
-												<label th:case="'ROLE_ADMIN'" class="form-check-label" th:for="'check-' + ${role.id}"
-													th:text="#{label.admin}">
+												<label th:case="'ROLE_ADMIN'" class="form-check-label"
+													th:for="'check-' + ${role.id}" th:text="#{label.admin}">
 													Admin
 												</label>
-												<label th:case="'ROLE_CITATIONS'" class="form-check-label" th:for="'check-' + ${role.id}"
-													th:text="#{label.citations}">
+												<label th:case="'ROLE_CITATIONS'" class="form-check-label"
+													th:for="'check-' + ${role.id}" th:text="#{label.citations}">
 													Citations
 												</label>
 											</div>
@@ -168,18 +168,21 @@
 						</div>
 					</div>
 
-					<div class="card mb-4">
+					<div class="card mb-4" id="schedule-card">
 						<div class="card-header">
 							<i class="fas fa-calendar-week mr-1"></i>
 							<span th:text="#{label.schedule}">Schedule</span>
 						</div>
 						<div class="card-body">
+							<div id="schedule-alert" th:text="#{label.schedulealert}" class="alert alert-danger" role="alert" style="display: none;">
+								The user is registered as facultative. Please, establish a schedule.
+							</div>
 							<form id="schedule-form" th:method="POST"
 								th:action="@{/user/change-schedule/{id}(id=${userId})}" th:object="${scheduleForm}">
 								<div class="form-row" th:each="schedule, scheduleStat : *{schedules}">
 									<div class="form-check mr-5">
-										<input class="form-check-input" type="checkbox" th:value="${schedule.weekday}"
-											th:id="'day-' + ${schedule.weekday}"
+										<input class="form-check-input checkbox-schedule" type="checkbox"
+											th:value="${schedule.weekday}" th:id="'day-' + ${schedule.weekday}"
 											th:field="*{schedules[__${scheduleStat.index}__].selected}">
 										<label class="form-check-label" th:for="'day-' + ${schedule.weekday}">
 											<th:block th:switch="${schedule.weekday}">
@@ -205,15 +208,17 @@
 												<input type="text" class="form-control time-text"
 													th:id="'initialHour-' + ${schedule.weekday}"
 													th:field="*{schedules[__${scheduleStat.index}__].initial_hour}"
-													th:disabled="${!schedule.selected}" th:value="${schedule.initial_hour}"
-													th:required="${schedule.selected} ? 'required' : ''"/>
+													th:disabled="${!schedule.selected}"
+													th:value="${schedule.initial_hour}"
+													th:required="${schedule.selected} ? 'required' : ''" />
 											</div>
 											<div class="col-sm-3">
 												<input type="text" class="form-control time-text"
 													th:id="'finalHour-' + ${schedule.weekday}"
 													th:field="*{schedules[__${scheduleStat.index}__].final_hour}"
-													th:disabled="${!schedule.selected}" th:value="${schedule.final_hour}"
-													th:required="${schedule.selected} ? 'required' : ''"/>
+													th:disabled="${!schedule.selected}"
+													th:value="${schedule.final_hour}"
+													th:required="${schedule.selected} ? 'required' : ''" />
 											</div>
 										</div>
 									</div>
@@ -258,7 +263,8 @@
 											especialidades</button>
 									</div>
 								</div>
-								<button class="btn btn-primary form-control mt-2" id="btnSubmitSpecialities">Guardar cambios</button>
+								<button class="btn btn-primary form-control mt-2" id="btnSubmitSpecialities">Guardar
+									cambios</button>
 							</form>
 						</div>
 					</div>

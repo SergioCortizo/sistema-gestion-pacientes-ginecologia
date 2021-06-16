@@ -62,7 +62,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public void registerUser(User user, Iterable<Integer> roles) throws DuplicateInstanceException {
+	public Integer registerUser(User user, Iterable<Integer> roles) throws DuplicateInstanceException {
 
 		if (userRepo.existsByUsername(user.getUsername())) {
 			throw new DuplicateInstanceException("entities.user", user.getUsername());
@@ -75,6 +75,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		user.setRoles(foundRoles);
 
 		userRepo.save(user);
+		
+		return user.getId();
 	}
 
 	@Override
