@@ -3,7 +3,7 @@
 		<div class="sb-sidenav-menu">
 			<div class="nav">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.gotohome}">Go to home</div>
-				<a class="nav-link" th:href="@{/}">
+				<a class="nav-link" th:href="@{~/}">
 					<div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
 					<span th:text="#{label.home}">Home</span>
 				</a>
@@ -11,7 +11,7 @@
 			
 			<div class="nav"  sec:authorize="hasRole('ADMIN')">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.backups}">Backups</div>
-				<a class="nav-link" th:href="@{/backup/backup-management}">
+				<a class="nav-link" th:href="@{~/backup/backup-management}">
 					<div class="sb-nav-link-icon"><i class="fas fa-archive"></i></div>
 					<span th:text="#{label.backupmanagement}">Backup management</span>
 				</a>
@@ -19,7 +19,7 @@
 
 			<div class="nav"  sec:authorize="hasRole('ADMIN')">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.settings}">Settings</div>
-				<a class="nav-link" th:href="@{/settings/name-and-logo}">
+				<a class="nav-link" th:href="@{~/settings/name-and-logo}">
 					<div class="sb-nav-link-icon"><i class="fas fa-images"></i></div>
 					<span th:text="#{label.nameandlogosettings}">Name and logo settings</span>
 				</a>
@@ -27,7 +27,7 @@
 			
 			<div class="nav"  sec:authorize="hasRole('ADMIN')">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.logs}">Logs</div>
-				<a class="nav-link" th:href="@{/log/log-list}">
+				<a class="nav-link" th:href="@{~/log/log-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-clipboard-list"></i></div>
 					<span th:text="#{label.checklogs}">Check logs</span>
 				</a>
@@ -35,7 +35,7 @@
 
 			<div class="nav">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.patients}">Patients</div>
-				<a class="nav-link" th:href="@{/patient/patient-list}">
+				<a class="nav-link" th:href="@{~/patient/patient-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-hospital-user"></i></div>
 					<span th:text="#{label.watchpatients}">Watch patients</span>
 				</a>
@@ -43,27 +43,27 @@
 
 			<div class="nav" sec:authorize="hasAnyRole('ADMIN', 'CITATIONS')">
 				<div class="sb-sidenav-menu-heading" th:text="#{label.management}">Management</div>
-				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/user/user-list}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{~/user/user-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-lock"></i></div>
 					<span th:text="#{label.usersmanagement}">Users management</span>
 				</a>
-				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/speciality/speciality-list}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{~/speciality/speciality-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-certificate"></i></div>
 					<span th:text="#{label.specialitiesmanagement}">Specialities management</span>
 				</a>
-				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/medicine/medicine-list}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{~/medicine/medicine-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-prescription-bottle-alt"></i></div>
 					<span th:text="#{label.medicinesmanagement}">Medicines management</span>
 				</a>
-				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/diagnostic-test/diagnostic-test-list}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{~/diagnostic-test/diagnostic-test-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-stethoscope"></i></div>
 					<span th:text="#{label.diagnostictestsmanagement}">Diagnostic tests management</span>
 				</a>
-				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{/contraceptive/contraceptive-list}">
+				<a class="nav-link" sec:authorize="hasRole('ADMIN')" th:href="@{~/contraceptive/contraceptive-list}">
 					<div class="sb-nav-link-icon"><i class="fas fa-capsules"></i></div>
 					<span th:text="#{label.contraceptivesmanagement}">Contraceptives management</span>
 				</a>
-				<a class="nav-link" th:href="@{/calendar/meetings-management}">
+				<a class="nav-link" th:href="@{~/calendar/meetings-management}">
 					<div class="sb-nav-link-icon"><i class="fas fa-calendar"></i></div>
 					<span th:text="#{label.meetingsmanagement}">Meetings management</span>
 				</a>

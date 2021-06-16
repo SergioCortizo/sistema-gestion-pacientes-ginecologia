@@ -22,13 +22,13 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.watchmailbox}">Watch mailbox</span>
 						</li>
 					</ol>
 
-					<a th:href="@{/messages/add-message}" class="btn btn-primary mb-4" role"button">
+					<a th:href="@{~/messages/add-message}" class="btn btn-primary mb-4" role"button">
 						<i class="fas fa-envelope mr-1"></i>
 						<span th:text="#{label.addmessage}">Add message</span>
 					</a>
@@ -57,7 +57,7 @@
 											<span class="badge badge-success"
 												th:if="${message.interconsultationMeeting}"
 												th:text="#{label.interconsultation}">Interconsultation</span>
-											<a th:href="@{/messages/read-message/{id}(id=${message.id})}"
+											<a th:href="@{~/messages/read-message/{id}(id=${message.id})}"
 												th:text="${message.subject}">Subject</a>
 										</td>
 										<td

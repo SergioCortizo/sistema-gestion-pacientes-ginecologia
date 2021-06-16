@@ -22,9 +22,9 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item">
-							<a th:href="@{/messages/common-tasks-list}" th:text="#{label.commontasks}">Common tasks</a>
+							<a th:href="@{~/messages/common-tasks-list}" th:text="#{label.commontasks}">Common tasks</a>
 						</li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.watchcommontask}">Watch common task</span>
@@ -32,7 +32,7 @@
 					</ol>
 
 					<form id="open-common-task-form" method="POST" th:object="${addMessageForm}"
-						th:action="@{/messages/add-grupal-message/{id}(id=${commonTask.id})}">
+						th:action="@{~/messages/add-grupal-message/{id}(id=${commonTask.id})}">
 						<label class="small" for="message_body" th:text="#{label.messagebody}">Message
 							body</label>
 						<div class="form-group">

@@ -20,13 +20,13 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active"><span th:text="#{label.nameandlogosettings}">Ajustar nombre y
 								logo</span></li>
 					</ol>
 
 					<form id="name-and-logo-form" method="POST" th:object="${nameAndLogoForm}"
-						th:action="@{/settings/change-name-and-logo}" enctype="multipart/form-data">
+						th:action="@{~/settings/change-name-and-logo}" enctype="multipart/form-data">
 						<div class="form-group">
 							<label class="small mb-1" for="inputName" th:text="#{label.enterprisename}">Name</label>
 							<input class="form-control py-4" id="inputName" name="inputName" type="text"
@@ -51,7 +51,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/name-and-logo.js}"></script>
+			<script th:src="@{~/js/name-and-logo.js}"></script>
 		</div>
 	</div>
 </body>

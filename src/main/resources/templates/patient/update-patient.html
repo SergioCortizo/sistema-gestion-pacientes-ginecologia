@@ -21,8 +21,8 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
-						<li class="breadcrumb-item"><a th:href="@{/patient/patient-list}"
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/patient/patient-list}"
 								th:text="#{label.watchpatients}">Ver pacientes</a></li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.updatepatient}">Actualizar paciente</span>
@@ -46,7 +46,7 @@
 								</div>
 							</div>
 							<form id="update-form" th:object="${updatePatientForm}"
-								th:action="@{/patient/update-patient/{id}(id=${patientId})}" method="POST">
+								th:action="@{~/patient/update-patient/{id}(id=${patientId})}" method="POST">
 								<div class="form-row">
 									<div class="col-md-5">
 										<div class="form-group">
@@ -343,7 +343,7 @@
 						<div class="card-body">
 
 							<form id="add-meeting-form" class="mb-4" method="POST"
-								th:action="@{/patient/add-meeting/{id}(id=${patientId})}" th:object="${addMeetingForm}"
+								th:action="@{~/patient/add-meeting/{id}(id=${patientId})}" th:object="${addMeetingForm}"
 								enctype="multipart/form-data" sec:authorize="hasRole('FACULTATIVE')">
 								<div class="form-group">
 									<label class="small mb-1" for="activity"
@@ -706,7 +706,7 @@
 													<ul>
 														<li th:each="complementaryTest : ${meeting.complementaryTests}">
 															<a
-																th:href="@{/downloadFile/{id}(id=${complementaryTest.id})}">
+																th:href="@{~/downloadFile/{id}(id=${complementaryTest.id})}">
 																<span
 																	th:text="${complementaryTest.fileName} + ' - '">Complementary
 																	test name</span>
@@ -793,7 +793,7 @@
 
 															<div class="row">
 																<form method="GET"
-																	th:action="@{/recipe/get-recipe/{id}(id=${recipe.id})}">
+																	th:action="@{~/recipe/get-recipe/{id}(id=${recipe.id})}">
 																	<button class="btn btn-link" type="submit">
 																		<span th:text="#{label.generaterecipe}">Generate
 																			recipe</span>
@@ -820,7 +820,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/update-patient.js}"></script>
+			<script th:src="@{~/js/update-patient.js}"></script>
 
 		</div>
 	</div>

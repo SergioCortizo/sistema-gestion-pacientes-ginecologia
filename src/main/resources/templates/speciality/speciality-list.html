@@ -22,7 +22,7 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active"><span th:text="#{label.specialitiesmanagement}">Gestión de
 								especialidades</span></li>
 					</ol>
@@ -46,7 +46,7 @@
 								aria-labelledby="headingAddSpeciality">
 								<div class="panel-body">
 									<form id="add-speciality-form" method="POST" th:object="${addSpecialityForm}"
-										th:action="@{/speciality/add-speciality}">
+										th:action="@{~/speciality/add-speciality}">
 										<div class="form-group">
 											<label class="small mb-1" for="inputName"
 												th:text="#{label.specialityname}">Name</label>
@@ -85,7 +85,7 @@
 									<div class="card card-body">
 										<form id="search-specialities-form" method="POST"
 											th:object="${searchSpecialitiesForm}"
-											th:action="@{/speciality/search-specialities}">
+											th:action="@{~/speciality/search-specialities}">
 											<div class="form-group">
 												<label class="small mb-1" for="inputName"
 													th:text="#{label.specialityname}">Name</label>
@@ -138,7 +138,7 @@
 																</div>
 																<div class="modal-body">
 																	<form th:id="'update-speciality-form-' + ${speciality.id}" method="POST"
-																	 th:action="@{/speciality/update/{id}(id=${speciality.id})}"
+																	 th:action="@{~/speciality/update/{id}(id=${speciality.id})}"
 																	 th:object="${updateSpecialityForm}" >
 																		<div class="form-group">
 																			<label class="small mb-1" for="inputName"
@@ -165,7 +165,7 @@
 													</div>
 
 													<form method="POST"
-														th:action="@{/speciality/change-speciality-state/{id}(id=${speciality.id})}">
+														th:action="@{~/speciality/change-speciality-state/{id}(id=${speciality.id})}">
 														<button class="btn btn-link" type="submit">
 															<i th:title="#{label.enable}" class="fas fa-check" th:if="${!speciality.enabled}"></i>
 															<i th:title="#{label.disable}" class="fas fa-times" th:if="${speciality.enabled}"></i>
@@ -189,7 +189,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/speciality-list.js}"></script>
+			<script th:src="@{~/js/speciality-list.js}"></script>
 
 		</div>
 

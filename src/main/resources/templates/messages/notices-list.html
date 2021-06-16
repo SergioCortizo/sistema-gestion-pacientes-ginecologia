@@ -22,7 +22,7 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.watchnotices}">Watch notices</span>
 						</li>
@@ -35,7 +35,7 @@
 						</div>
 						<div class="card-body">
 							<form id="add-notice-form" method="POST" th:object="${noticeForm}"
-								th:action="@{/messages/add-notice/}">
+								th:action="@{~/messages/add-notice/}">
 								<label class="small" for="notice" th:text="#{label.notice}">Notice</label>
 								<div class="form-group">
 									<textarea class="form-control py-4" th:field="*{notice}" id="notice" name="notice"
@@ -82,7 +82,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 			
-			<script th:src="@{/js/notices-list.js}"></script>
+			<script th:src="@{~/js/notices-list.js}"></script>
 
 		</div>
 

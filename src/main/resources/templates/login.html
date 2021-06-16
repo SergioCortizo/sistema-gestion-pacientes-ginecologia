@@ -20,7 +20,7 @@
 										  <span th:text="#{label.wrongcredentials}">Wrong user or password</span>
 										</div>
 										<img class="d-block mx-auto" width="200" height="200" th:src="${logo}" />
-                                        <form id="login-form" th:action="@{/login}" method="POST">
+                                        <form id="login-form" th:action="@{~/login}" method="POST">
                                             <div class="form-group">
                                                 <label class="small mb-1" for="username" th:text="#{label.loginusername}">Username (at least 3 characters)</label>
                                                 <input 
@@ -59,7 +59,7 @@
 				<footer class="py-4 bg-light mt-auto fixed-bottom">
 		        	<div th:include="fragments/copyright :: copyright" class="container-fluid"/>
 					<div th:include="fragments/scripts :: general" />
-					<script th:src="@{/js/login.js}"></script>
+					<script th:src="@{~/js/login.js}"></script>
 		        </footer>
             </div>
         </div>

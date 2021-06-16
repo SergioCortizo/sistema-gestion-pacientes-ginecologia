@@ -22,9 +22,9 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item">
-							<a th:href="@{/messages/messages-list}" th:text="#{label.watchmailbox}">Watch mailbox</a>
+							<a th:href="@{~/messages/messages-list}" th:text="#{label.watchmailbox}">Watch mailbox</a>
 						</li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.readmessage}">Read message</span>
@@ -42,7 +42,7 @@
 								</div>
 								<div class="modal-body">
 									<form id="add-message-form" method="POST"
-										th:action="@{/messages/reply-message/{id}(id=${message.id})}"
+										th:action="@{~/messages/reply-message/{id}(id=${message.id})}"
 										th:object="${messageForm}">
 										<div class="row">
 											<label class="small mb-1" for="subject"
@@ -99,7 +99,7 @@
 							<div th:utext="${message.message_body}"></div>
 
 							<a th:if="${message.messageReplied}"
-								th:href="@{/messages/read-message/{id}(id=${message.messageReplied.id})}">
+								th:href="@{~/messages/read-message/{id}(id=${message.messageReplied.id})}">
 								<h5 th:text="#{label.watchmessagereplied}">Watch message replied</h5>
 							</a>
 
@@ -119,7 +119,7 @@
 											</div>
 											<div class="modal-body">
 												<form id="open-interconsultation-form" method="POST"
-													th:action="@{/messages/open-interconsultation/{id}(id=${message.interconsultationMeeting.id})}"
+													th:action="@{~/messages/open-interconsultation/{id}(id=${message.interconsultationMeeting.id})}"
 													th:object="${messageForm}">
 													<div class="row">
 														<div class="form-group">
@@ -215,7 +215,7 @@
 											<ul>
 												<li
 													th:each="complementaryTest : ${message.interconsultationMeeting.complementaryTests}">
-													<a th:href="@{/downloadFile/{id}(id=${complementaryTest.id})}">
+													<a th:href="@{~/downloadFile/{id}(id=${complementaryTest.id})}">
 														<span
 															th:text="${complementaryTest.fileName} + ' - '">Complementary
 															test name</span>
@@ -296,7 +296,7 @@
 													</ul>
 													<div class="row">
 														<form method="GET"
-															th:action="@{/recipe/get-recipe/{id}(id=${recipe.id})}">
+															th:action="@{~/recipe/get-recipe/{id}(id=${recipe.id})}">
 															<button class="btn btn-link" type="submit">
 																<span th:text="#{label.generaterecipe}">Generate
 																	recipe</span>
@@ -322,7 +322,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/read-message.js}"></script>
+			<script th:src="@{~/js/read-message.js}"></script>
 
 		</div>
 

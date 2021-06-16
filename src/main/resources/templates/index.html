@@ -33,7 +33,7 @@
 									th:if="${newMeetings} > 0">New meetings</span>
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">
-								<a class="small text-white stretched-link" th:href="@{/calendar/check-agenda}">
+								<a class="small text-white stretched-link" th:href="@{~/calendar/check-agenda}">
 									<span th:text="#{label.checkagenda}">Check agenda</span>
 								</a>
 								<div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -49,7 +49,7 @@
 									th:if="${newMessages} > 0">New messages</span>
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">
-								<a class="small text-white stretched-link" th:href="@{/messages/messages-list}">
+								<a class="small text-white stretched-link" th:href="@{~/messages/messages-list}">
 									<span th:text="#{label.watchmailbox}">Watch mailbox</span>
 								</a>
 								<div class="small text-white"><i class="fas fa-angle-right"></i></div>
@@ -67,7 +67,7 @@
 									th:if="${newCommonTasks} > 0">New common tasks</span>	
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">
-								<a class="small text-dark stretched-link" th:href="@{/messages/common-tasks-list}">
+								<a class="small text-dark stretched-link" th:href="@{~/messages/common-tasks-list}">
 									<span th:text="#{label.watchcommontasks}">Watch common tasks</span>
 								</a>
 								<div class="small text-dark"><i class="fas fa-angle-right"></i></div>
@@ -83,7 +83,7 @@
 									th:if="${newNotices} > 0">New notices</span>
 							</div>
 							<div class="card-footer d-flex align-items-center justify-content-between">
-								<a class="small text-dark stretched-link" th:href="@{/messages/notices-list/}">
+								<a class="small text-dark stretched-link" th:href="@{~/messages/notices-list/}">
 									<span th:text="#{label.watchnotices}">Watch notices</span>
 								</a>
 								<div class="small text-dark"><i class="fas fa-angle-right"></i></div>
@@ -99,7 +99,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/index.js}"></script>
+			<script th:src="@{~/js/index.js}"></script>
 
 		</div>
 	</div>

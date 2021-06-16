@@ -22,7 +22,7 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active"><span th:text="#{label.contraceptivesmanagement}">Gestión de
 								métodos anticonceptivos</span></li>
 					</ol>
@@ -48,7 +48,7 @@
 								<div class="panel-body">
 									<form id="add-contraceptive-form" method="POST"
 										th:object="${addContraceptiveForm}"
-										th:action="@{/contraceptive/add-contraceptive}">
+										th:action="@{~/contraceptive/add-contraceptive}">
 										<div class="form-group">
 											<label class="small mb-1" for="inputName"
 												th:text="#{label.contraceptivename}">Name</label>
@@ -86,7 +86,7 @@
 									<div class="card card-body">
 										<form id="search-contraceptives-form" method="POST"
 											th:object="${searchContraceptivesForm}"
-											th:action="@{/contraceptive/search-contraceptives}">
+											th:action="@{~/contraceptive/search-contraceptives}">
 											<div class="form-group">
 												<label class="small mb-1" for="inputName"
 													th:text="#{label.contraceptivename}">Name</label>
@@ -139,7 +139,7 @@
 																</div>
 																<div class="modal-body">
 																	<form
-																		th:action="@{/contraceptive/update/{id}(id=${contraceptive.id})}"
+																		th:action="@{~/contraceptive/update/{id}(id=${contraceptive.id})}"
 																		th:object="${updateContraceptiveForm}"
 																		th:id="'update-contraceptive-form-' + ${contraceptive.id}"
 																		method="POST">
@@ -168,7 +168,7 @@
 													</div>
 
 													<form method="POST"
-														th:action="@{/contraceptive/change-contraceptive-state/{id}(id=${contraceptive.id})}">
+														th:action="@{~/contraceptive/change-contraceptive-state/{id}(id=${contraceptive.id})}">
 														<button class="btn btn-link" type="submit">
 															<i th:title="#{label.enable}" class="fas fa-check"
 																th:if="${!contraceptive.enabled}"></i>
@@ -194,7 +194,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/contraceptive-list.js}"></script>
+			<script th:src="@{~/js/contraceptive-list.js}"></script>
 
 		</div>
 

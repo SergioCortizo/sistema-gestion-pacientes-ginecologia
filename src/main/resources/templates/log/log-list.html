@@ -23,7 +23,7 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.checklogs}">Check logs</span>
 						</li>
@@ -40,7 +40,7 @@
 						</div>
 						<div class="card-body">
 							<div class="row">
-								<form method="GET" th:action="@{/log/get-logs/}">
+								<form method="GET" th:action="@{~/log/get-logs/}">
 									<button class="btn btn-link" type="submit">
 										<span th:text="#{label.generatelogs}">Generate logs</span>
 									</button>
@@ -62,7 +62,7 @@
 										aria-labelledby="headingSearchLogs">
 										<div class="panel-body">
 											<form id="search-logs-form" method="POST" th:object="${logForm}"
-												th:action="@{/log/search-logs/}">
+												th:action="@{~/log/search-logs/}">
 												<div class="form-group">
 													<label class="small mb-1" for="levels"
 														th:text="#{label.level}">Level</label>
@@ -165,7 +165,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/log-list.js}"></script>
+			<script th:src="@{~/js/log-list.js}"></script>
 
 		</div>
 	</div>

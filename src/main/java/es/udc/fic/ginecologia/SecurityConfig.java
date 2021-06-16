@@ -1,6 +1,5 @@
 package es.udc.fic.ginecologia;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -14,27 +13,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.csrf.CsrfFilter;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
-import es.udc.fic.ginecologia.common.security.CustomAccessDeniedHandler;
-import es.udc.fic.ginecologia.common.security.LoginFailureHandler;
-import es.udc.fic.ginecologia.common.security.LoginSuccessHandler;
-import es.udc.fic.ginecologia.common.security.LogoutHandler;
 import es.udc.fic.ginecologia.service.UserServiceImpl;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
-	
-	@Autowired
-	private LoginSuccessHandler loginSuccessHandler;
-	
-	@Autowired
-	private LoginFailureHandler loginFailureHandler;
-	
-	@Autowired
-	private LogoutHandler logoutHandler;
-	
-	@Autowired
-	private CustomAccessDeniedHandler customAccessDeniedHandler;
 	
 	@Bean
     public UserDetailsService userDetailsService() {
@@ -59,6 +42,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(authenticationProvider());
     }
+	
+	private final String pathVariable = "/{pathvariable:[0-9A-Za-z]+}";
 
 	@Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -147,16 +132,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	        .and()
 		        .formLogin()
 	            .loginPage("/login")
-	            .successHandler(loginSuccessHandler)
-	            .failureHandler(loginFailureHandler)
 	            .permitAll()
 	        .and()
 	        	.logout()
-	        	.logoutSuccessHandler(logoutHandler)
-	        	.permitAll()
-	        .and()
-	        	.exceptionHandling()
-	        	.accessDeniedHandler(customAccessDeniedHandler);
+	        	.permitAll();
 		
 	}
 	

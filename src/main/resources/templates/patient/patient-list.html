@@ -22,14 +22,14 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.watchpatients}">Ver pacientes</span>
 						</li>
 					</ol>
 
 					<div class="mb-4">
-						<a th:href="@{/patient/add-patient}" class="btn btn-primary btn-lg active" role="button"
+						<a th:href="@{~/patient/add-patient}" class="btn btn-primary btn-lg active" role="button"
 							aria-pressed="true">
 							<span th:text="#{label.addpatient}">Add patient</span>
 							<i class="fas fa-plus"></i>
@@ -38,15 +38,15 @@
 
 					<ul class="nav nav-tabs" sec:authorize="hasRole('FACULTATIVE')">
 						<li class="nav-item">
-							<a class="nav-link active" th:href="@{/patient/patient-list}"
+							<a class="nav-link active" th:href="@{~/patient/patient-list}"
 								th:text="#{label.allpatients}">All patients</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" th:href="@{/patient/patients-of-interest}"
+							<a class="nav-link" th:href="@{~/patient/patients-of-interest}"
 								th:text="#{label.patientsofinterest}">Patients of interest</a>
 						</li>
 						<li class="nav-item">
-							<a class="nav-link" th:href="@{/patient/last-seen-patients}"
+							<a class="nav-link" th:href="@{~/patient/last-seen-patients}"
 								th:text="#{label.lastseenpatients}">Last seen patients</a>
 						</li>
 					</ul>
@@ -70,7 +70,7 @@
 								<div class="collapse mb-3" id="collapseSearchPatients">
 									<div class="card card-body">
 										<form id="search-patients-form" method="POST" th:object="${searchPatientsForm}"
-											th:action="@{/patient/search-patients}">
+											th:action="@{~/patient/search-patients}">
 											<div class="form-row">
 												<div class="col md-4">
 													<div class="form-group">
@@ -131,7 +131,7 @@
 									</thead>
 									<tbody>
 										<tr th:each="patient : ${patients}">
-											<td><a th:href="@{/patient/patient-details/{id}(id=${patient.id})}"><span
+											<td><a th:href="@{~/patient/patient-details/{id}(id=${patient.id})}"><span
 														th:text="${patient.id}">History number</span></a></td>
 											<td th:text="${patient.DNI_NIF}">DNI/NIF</td>
 											<td th:text="${patient.hist_numsergas}">History Number in SERGAS</td>
@@ -142,13 +142,13 @@
 											</td>
 											<td>
 												<div class="row">
-													<form th:action="@{/patient/update-patient/{id}(id=${patient.id})}"
+													<form th:action="@{~/patient/update-patient/{id}(id=${patient.id})}"
 														method="GET">
 														<button th:title="#{label.updatepatient}" class="btn btn-link" type="submit"><i
 																class="fas fa-edit"></i></button>
 													</form>
 													<form sec:authorize="hasRole('ADMIN')"
-														th:action="@{/patient/change-patient-state/{id}(id=${patient.id})}"
+														th:action="@{~/patient/change-patient-state/{id}(id=${patient.id})}"
 														method="POST">
 														<button class="btn btn-link" type="submit">
 															<i th:title="#{label.enable}" class="fas fa-check" th:if="${!patient.enabled}"></i>
@@ -156,7 +156,7 @@
 														</button>
 													</form>
 													<form sec:authorize="hasRole('FACULTATIVE')"
-														th:action="@{/patient/change-patient-of-interest/{id}(id=${patient.id})}"
+														th:action="@{~/patient/change-patient-of-interest/{id}(id=${patient.id})}"
 														method="POST">
 														<button class="btn btn-link" type="submit">
 															<i th:title="#{label.markaspatientofinterest}" class="fas fa-clipboard"
@@ -182,7 +182,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/patient-list.js}"></script>
+			<script th:src="@{~/js/patient-list.js}"></script>
 
 		</div>
 

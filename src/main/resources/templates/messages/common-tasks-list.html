@@ -22,7 +22,7 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.commontasks}">Common tasks</span>
 						</li>
@@ -40,7 +40,7 @@
 								</div>
 								<div class="modal-body">
 									<form id="open-common-task-form" method="POST"
-										th:action="@{/messages/open-common-task/}" th:object="${commonTaskForm}">
+										th:action="@{~/messages/open-common-task/}" th:object="${commonTaskForm}">
 										<div class="row">
 											<label class="small mb-1" for="users" th:text="#{label.user}">User</label>
 										</div>
@@ -103,7 +103,7 @@
 												th:text="${task.newMessages}">New messages</span>
 											<span class="badge badge-warning" th:if="${task.isNew}"
 												th:text="#{label.newtask}">New task</span>
-											<a th:href="@{/messages/common-task/{id}(id=${task.id})}"
+											<a th:href="@{~/messages/common-task/{id}(id=${task.id})}"
 												th:text="${task.title}">Title</a>
 										</td>
 										<td
@@ -124,7 +124,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/common-tasks-list.js}"></script>
+			<script th:src="@{~/js/common-tasks-list.js}"></script>
 
 		</div>
 

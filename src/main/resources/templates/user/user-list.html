@@ -22,13 +22,13 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active"><span th:text="#{label.usersmanagement}">Gestión de
 								usuarios</span></li>
 					</ol>
 
 					<div class="mb-4">
-						<a th:href="@{/user/register}" class="btn btn-primary btn-lg active" role="button"
+						<a th:href="@{~/user/register}" class="btn btn-primary btn-lg active" role="button"
 							aria-pressed="true">
 							<span th:text="#{label.adduser}">Register user</span>
 							<i class="fas fa-plus"></i>
@@ -51,7 +51,7 @@
 								</p>
 								<div class="collapse mb-3" id="collapseExample">
 									<div class="card card-body">
-										<form id="search-user-form" th:action="@{/user/search}" method="POST"
+										<form id="search-user-form" th:action="@{~/user/search}" method="POST"
 											th:object="${userSearchForm}">
 											<div class="form-row">
 												<div class="col md-6">
@@ -161,11 +161,11 @@
 											</td>
 											<td>
 												<div class="row">
-													<form th:action="@{/user/update/{id}(id=${user.id})}" method="GET">
+													<form th:action="@{~/user/update/{id}(id=${user.id})}" method="GET">
 														<button th:title="#{label.updateUser}" class="btn btn-link" type="submit"><i
 																class="fas fa-edit"></i></button>
 													</form>
-													<form th:action="@{/user/change-enabling-state/{id}(id=${user.id})}"
+													<form th:action="@{~/user/change-enabling-state/{id}(id=${user.id})}"
 														method="POST">
 														<button class="btn btn-link" type="submit">
 															<i th:title="#{label.enable}" class="fas fa-check" th:if="${!user.enabled}"></i>
@@ -189,7 +189,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/user-list.js}"></script>
+			<script th:src="@{~/js/user-list.js}"></script>
 
 		</div>
 	</div>

@@ -23,8 +23,8 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
-						<li class="breadcrumb-item"><a th:href="@{/calendar/meetings-management}"
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/calendar/meetings-management}"
 								th:text="#{label.meetingsmanagement}">Meetings management</a></li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.updatemeeting}">Update meeting</span>
@@ -32,7 +32,7 @@
 					</ol>
 
 					<form method="POST" id="update-calendar-entry-form"
-						th:action="@{/calendar/update-calendar-entry/{id}(id=${lineId})}"
+						th:action="@{~/calendar/update-calendar-entry/{id}(id=${lineId})}"
 						th:object="${updateCalendarEntryForm}">
 						<div class="form-row">
 							<div class="col-md-8">
@@ -191,7 +191,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/update-meeting.js}"></script>
+			<script th:src="@{~/js/update-meeting.js}"></script>
 
 		</div>
 

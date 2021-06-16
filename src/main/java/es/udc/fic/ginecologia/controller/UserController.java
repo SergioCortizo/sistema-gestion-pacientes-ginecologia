@@ -57,14 +57,14 @@ public class UserController {
 	// Login form
 	@GetMapping("/login")
 	public String loginPage() {
-		return "login";
+		return "/login";
 	}
 
 	// Login error
 	@GetMapping("/login-error")
 	public String loginErrorPage(Model model) {
 		model.addAttribute("loginError", true);
-		return "login";
+		return "/login";
 	}
 
 	// Register form
@@ -92,7 +92,7 @@ public class UserController {
 
 		LoggingUtility.logGetResource(username, "GET", "/user/register");
 
-		return "user/register";
+		return "/user/register";
 	}
 
 	// Register form
@@ -119,7 +119,7 @@ public class UserController {
 
 		LoggingUtility.logGetResource(username, "GET", "/user/register");
 
-		return "user/register";
+		return "/user/register";
 	}
 
 	// Endpoint to save new user
@@ -194,7 +194,7 @@ public class UserController {
 
 		LoggingUtility.logGetResource(username, "GET", "/user/user-list");
 
-		return "user/user-list";
+		return "/user/user-list";
 	}
 
 	// Update own data form
@@ -219,7 +219,7 @@ public class UserController {
 
 		LoggingUtility.logGetResource(username, "GET", "/user/update-own-data");
 
-		return "user/update-own-data";
+		return "/user/update-own-data";
 	}
 
 	// Update own data form (wrong password)

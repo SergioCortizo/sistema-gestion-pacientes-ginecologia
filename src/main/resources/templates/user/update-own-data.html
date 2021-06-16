@@ -22,7 +22,7 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active"><span th:text="#{label.settings}">Settings</span></li>
 					</ol>
 
@@ -35,7 +35,7 @@
 							<div th:if="${duplicateUser}" class="alert alert-danger" role="alert">
 								<span th:text="#{label.userexists}">User already exists.</span>
 							</div>
-							<form id="update-form" th:object="${updateForm}" th:action="@{/user/update-own-data}"
+							<form id="update-form" th:object="${updateForm}" th:action="@{~/user/update-own-data}"
 								method="POST">
 								<div class="form-group">
 									<label class="small mb-1" for="inputName" th:text="#{label.name}">Nombre
@@ -137,7 +137,7 @@
 							<div th:if="${wrongPassword}" class="alert alert-danger" role="alert">
 								<span th:text="#{label.wrongcredentials}">Wrong credentials</span>
 							</div>
-							<form id="password-form" th:action="@{/user/change-password}" method="POST"
+							<form id="password-form" th:action="@{~/user/change-password}" method="POST"
 								th:object="${changePasswordForm}">
 								<div class="form-row">
 									<div class="col-md-6">
@@ -170,7 +170,7 @@
 			<footer class="py-4 bg-light mt-auto">
 				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
 				<div th:include="fragments/scripts :: general" />
-				<script th:src="@{/js/update-own-data.js}"></script>
+				<script th:src="@{~/js/update-own-data.js}"></script>
 			</footer>
 
 		</div>

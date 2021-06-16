@@ -22,8 +22,8 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
-						<li class="breadcrumb-item"><a th:href="@{/user/user-list}"
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/user/user-list}"
 								th:text="#{label.usersmanagement}">Gestión de usuarios</a></li>
 						<li class="breadcrumb-item active"><span th:text="#{label.registerUser}">Registrar
 								usuario</span></li>
@@ -38,7 +38,7 @@
 							<div th:if="${duplicateUser}" class="alert alert-danger" role="alert">
 								<span th:text="#{label.userexists}">User already exists.</span>
 							</div>
-							<form id="register-form" th:object="${signUpForm}" th:action="@{/user/register}"
+							<form id="register-form" th:object="${signUpForm}" th:action="@{~/user/register}"
 								method="POST">
 								<div class="form-row">
 									<div class="col-md-6">
@@ -169,7 +169,7 @@
 			<footer class="py-4 bg-light mt-auto">
 				<div th:include="fragments/copyright :: copyright" class="container-fluid" />
 				<div th:include="fragments/scripts :: general" />
-				<script th:src="@{/js/register.js}"></script>
+				<script th:src="@{~/js/register.js}"></script>
 			</footer>
 
 		</div>

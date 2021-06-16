@@ -23,7 +23,7 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.checkagenda}">Comprobar agenda</span>
 						</li>
@@ -55,7 +55,7 @@
 												<span th:text="${line.reason}">Reason</span>
 											</div>
 											<form method="POST" th:if="${line.state.name} == 'opened'"
-												th:action="@{/calendar/set-entry-as-closed/{id}(id=${line.id})}">
+												th:action="@{~/calendar/set-entry-as-closed/{id}(id=${line.id})}">
 												<button class="btn btn-warning btn-sm"
 													th:text="#{label.closemeeting}">Close meeting</button>
 											</form>
@@ -88,7 +88,7 @@
 												<span th:text="${line.reason}">Reason</span>
 											</div>
 											<form method="POST" th:if="${line.state.name} == 'opened'"
-												th:action="@{/calendar/set-entry-as-closed/{id}(id=${line.id})}">
+												th:action="@{~/calendar/set-entry-as-closed/{id}(id=${line.id})}">
 												<button class="btn btn-warning btn-sm"
 													th:text="#{label.closemeeting}">Close meeting</button>
 											</form>
@@ -122,7 +122,7 @@
 												<span th:text="${line.reason}">Reason</span>
 											</div>
 											<form method="POST" th:if="${line.state.name} == 'opened'"
-												th:action="@{/calendar/set-entry-as-closed/{id}(id=${line.id})}">
+												th:action="@{~/calendar/set-entry-as-closed/{id}(id=${line.id})}">
 												<button class="btn btn-warning btn-sm"
 													th:text="#{label.closemeeting}">Close meeting</button>
 											</form>
@@ -156,7 +156,7 @@
 												<span th:text="${line.reason}">Reason</span>
 											</div>
 											<form method="POST" th:if="${line.state.name} == 'opened'"
-												th:action="@{/calendar/set-entry-as-closed/{id}(id=${line.id})}">
+												th:action="@{~/calendar/set-entry-as-closed/{id}(id=${line.id})}">
 												<button class="btn btn-warning btn-sm"
 													th:text="#{label.closemeeting}">Close meeting</button>
 											</form>

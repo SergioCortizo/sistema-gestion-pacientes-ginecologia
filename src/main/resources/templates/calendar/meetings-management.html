@@ -23,7 +23,7 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active">
 							<span th:text="#{label.meetingsmanagement}">Meetings management</span>
 						</li>
@@ -43,7 +43,7 @@
 								aria-labelledby="headingAddCalendarEntry">
 								<div class="panel-body">
 									<form method="POST" id="add-calendar-entry-form"
-										th:action="@{/calendar/add-calendar-entry}" th:object="${addCalendarEntryForm}">
+										th:action="@{~/calendar/add-calendar-entry}" th:object="${addCalendarEntryForm}">
 										<div class="form-row">
 											<div class="col-md-8">
 												<div class="form-group">
@@ -288,13 +288,13 @@
 											</div>
 											<div class="row">
 												<form method="POST" th:if="${line.state.name} == 'opened'"
-													th:action="@{/calendar/cancel-meeting/{id}(id=${line.id})}"
+													th:action="@{~/calendar/cancel-meeting/{id}(id=${line.id})}"
 													class="mr-2">
 													<button class="btn btn-danger btn-sm"
 														th:text="#{label.cancelmeeting}">Cancel meeting</button>
 												</form>
 												<form method="GET" th:if="${line.state.name} == 'opened'"
-													th:action="@{/calendar/update-meeting/{id}(id=${line.id})}">
+													th:action="@{~/calendar/update-meeting/{id}(id=${line.id})}">
 													<button class="btn btn-primary btn-sm"
 														th:text="#{label.updatemeeting}">Update meeting</button>
 												</form>
@@ -337,13 +337,13 @@
 											</div>
 											<div class="row">
 												<form method="POST" th:if="${line.state.name} == 'opened'"
-													th:action="@{/calendar/cancel-meeting/{id}(id=${line.id})}"
+													th:action="@{~/calendar/cancel-meeting/{id}(id=${line.id})}"
 													class="mr-2">
 													<button class="btn btn-danger btn-sm"
 														th:text="#{label.cancelmeeting}">Cancel meeting</button>
 												</form>
 												<form method="GET" th:if="${line.state.name} == 'opened'"
-													th:action="@{/calendar/update-meeting/{id}(id=${line.id})}">
+													th:action="@{~/calendar/update-meeting/{id}(id=${line.id})}">
 													<button class="btn btn-primary btn-sm"
 														th:text="#{label.updatemeeting}">Update meeting</button>
 												</form>
@@ -387,13 +387,13 @@
 											</div>
 											<div class="row">
 												<form method="POST" th:if="${line.state.name} == 'opened'"
-													th:action="@{/calendar/cancel-meeting/{id}(id=${line.id})}"
+													th:action="@{~/calendar/cancel-meeting/{id}(id=${line.id})}"
 													class="mr-2">
 													<button class="btn btn-danger btn-sm"
 														th:text="#{label.cancelmeeting}">Cancel meeting</button>
 												</form>
 												<form method="GET" th:if="${line.state.name} == 'opened'"
-													th:action="@{/calendar/update-meeting/{id}(id=${line.id})}">
+													th:action="@{~/calendar/update-meeting/{id}(id=${line.id})}">
 													<button class="btn btn-primary btn-sm"
 														th:text="#{label.updatemeeting}">Update meeting</button>
 												</form>
@@ -438,7 +438,7 @@
 												<span th:text="${line.reason}">Reason</span>
 											</div>
 											<form method="POST" th:if="${line.state.name} == 'opened'"
-												th:action="@{/calendar/cancel-meeting/{id}(id=${line.id})}">
+												th:action="@{~/calendar/cancel-meeting/{id}(id=${line.id})}">
 												<button class="btn btn-danger btn-sm"
 													th:text="#{label.cancelmeeting}">Cancel meeting</button>
 											</form>
@@ -459,7 +459,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/meetings-management.js}"></script>
+			<script th:src="@{~/js/meetings-management.js}"></script>
 
 		</div>
 	</div>

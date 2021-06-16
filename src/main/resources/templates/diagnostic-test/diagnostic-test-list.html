@@ -22,7 +22,7 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active"><span th:text="#{label.diagnostictestsmanagement}">Gestión de
 								pruebas diagnósticas</span></li>
 					</ol>
@@ -48,7 +48,7 @@
 								<div class="panel-body">
 									<form id="add-diagnostic-test-form" method="POST"
 										th:object="${addDiagnosticTestForm}"
-										th:action="@{/diagnostic-test/add-diagnostic-test}">
+										th:action="@{~/diagnostic-test/add-diagnostic-test}">
 										<div class="form-group">
 											<label class="small mb-1" for="inputName"
 												th:text="#{label.diagnostictestname}">Name</label>
@@ -86,7 +86,7 @@
 									<div class="card card-body">
 										<form id="search-diagnostic-tests-form" method="POST"
 											th:object="${searchDiagnosticTestsForm}"
-											th:action="@{/diagnostic-test/search-diagnostic-tests}">
+											th:action="@{~/diagnostic-test/search-diagnostic-tests}">
 											<div class="form-group">
 												<label class="small mb-1" for="inputName"
 													th:text="#{label.diagnostictestname}">Name</label>
@@ -140,7 +140,7 @@
 																</div>
 																<div class="modal-body">
 																	<form
-																		th:action="@{/diagnostic-test/update/{id}(id=${diagnosticTest.id})}"
+																		th:action="@{~/diagnostic-test/update/{id}(id=${diagnosticTest.id})}"
 																		th:object="${updateDiagnosticTestForm}"
 																		th:id="'update-diagnostic-test-form-' + ${diagnosticTest.id}"
 																		method="POST">
@@ -169,7 +169,7 @@
 													</div>
 
 													<form method="POST"
-														th:action="@{/diagnostic-test/change-diagnostic-test-state/{id}(id=${diagnosticTest.id})}">
+														th:action="@{~/diagnostic-test/change-diagnostic-test-state/{id}(id=${diagnosticTest.id})}">
 														<button class="btn btn-link" type="submit">
 															<i th:title="#{label.enable}" class="fas fa-check"
 																th:if="${!diagnosticTest.enabled}"></i>
@@ -195,7 +195,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/diagnostic-test-list.js}"></script>
+			<script th:src="@{~/js/diagnostic-test-list.js}"></script>
 
 		</div>
 

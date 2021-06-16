@@ -21,7 +21,7 @@
 					<div th:include="fragments/main_general :: main_general" />
 
 					<ol class="breadcrumb mb-4">
-						<li class="breadcrumb-item"><a th:href="@{/}" th:text="#{label.home}">Inicio</a></li>
+						<li class="breadcrumb-item"><a th:href="@{~/}" th:text="#{label.home}">Inicio</a></li>
 						<li class="breadcrumb-item active"><span th:text="#{label.medicinesmanagement}">Gestión de
 								medicamentos</span></li>
 					</ol>
@@ -45,7 +45,7 @@
 								aria-labelledby="headingAddMedicine">
 								<div class="panel-body">
 									<form id="add-medicine-form" method="POST" th:object="${addMedicineForm}"
-										th:action="@{/medicine/add-medicine}">
+										th:action="@{~/medicine/add-medicine}">
 										<div class="form-group">
 											<label class="small mb-1" for="inputName"
 												th:text="#{label.medicinename}">Name</label>
@@ -83,7 +83,7 @@
 									<div class="card card-body">
 										<form id="search-specialities-form" method="POST"
 											th:object="${searchMedicinesForm}"
-											th:action="@{/medicine/search-medicines}">
+											th:action="@{~/medicine/search-medicines}">
 											<div class="form-group">
 												<label class="small mb-1" for="inputName"
 													th:text="#{label.medicinename}">Name</label>
@@ -137,7 +137,7 @@
 																	<form
 																		th:id="'update-medicine-form-' + ${medicine.id}"
 																		method="POST"
-																		th:action="@{/medicine/update/{id}(id=${medicine.id})}"
+																		th:action="@{~/medicine/update/{id}(id=${medicine.id})}"
 																		th:object="${updateMedicineForm}">
 																		<div class="form-group">
 																			<label class="small mb-1" for="inputName"
@@ -164,7 +164,7 @@
 													</div>
 
 													<form method="POST"
-														th:action="@{/medicine/change-medicine-state/{id}(id=${medicine.id})}">
+														th:action="@{~/medicine/change-medicine-state/{id}(id=${medicine.id})}">
 														<button class="btn btn-link" type="submit">
 															<i th:title="#{label.enable}" class="fas fa-check" th:if="${!medicine.enabled}"></i>
 															<i th:title="#{label.disable}" class="fas fa-times" th:if="${medicine.enabled}"></i>
@@ -188,7 +188,7 @@
 				<div th:include="fragments/scripts :: general" />
 			</footer>
 
-			<script th:src="@{/js/medicine-list.js}"></script>
+			<script th:src="@{~/js/medicine-list.js}"></script>
 
 		</div>
 	</div>
