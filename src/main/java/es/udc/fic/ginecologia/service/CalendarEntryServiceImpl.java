@@ -55,7 +55,8 @@ public class CalendarEntryServiceImpl implements CalendarEntryService {
 	public CalendarEntry findById(Integer userId, Integer calendarEntryId)
 			throws InstanceNotFoundException, PermissionException {
 
-		if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId)) {
+		if (!permissionChecker.checkIsAdmin(userId) && !permissionChecker.checkIsCitations(userId)
+				&& !permissionChecker.checkIsFacultative(userId)) {
 			throw new PermissionException();
 		}
 
