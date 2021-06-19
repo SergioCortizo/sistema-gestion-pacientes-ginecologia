@@ -98,8 +98,7 @@
 															(final
 															date)</label>
 														<input class="form-control" id="dateTo" name="dateTo"
-															placeholder="DD/MM/YYY" type="text"
-															th:field="*{dateTo}" />
+															placeholder="DD/MM/YYY" type="text" th:field="*{dateTo}" />
 													</div>
 												</div>
 											</div>
@@ -114,9 +113,18 @@
 												</div>
 												<label class="my-1 mr-2 ml-3" for="selectRole"
 													th:text="#{label.role}">Role</label>
-												<select class="custom-select my-1 mr-sm-2" id="selectRole" th:field="*{roleId}">
-													<option th:each="role : ${roles}" th:value="${role.id}"
-														th:text="${role.name}">Role</option>
+												<select class="custom-select my-1 mr-sm-2" id="selectRole"
+													th:field="*{roleId}">
+													<option th:each="role : ${roles}" th:value="${role.id}">
+														<th:block th:switch="${role.name}">
+															<span th:case="'ROLE_ADMIN'"
+																th:text="#{label.admin}">Admin</span>
+															<span th:case="'ROLE_FACULTATIVE'"
+																th:text="#{label.facultative}">Facultative</span>
+															<span th:case="'ROLE_CITATIONS'"
+																th:text="#{label.citations}">Citations</span>
+														</th:block>
+													</option>
 												</select>
 											</div>
 											<div class="form-row">
@@ -162,14 +170,17 @@
 											<td>
 												<div class="row">
 													<form th:action="@{~/user/update/{id}(id=${user.id})}" method="GET">
-														<button th:title="#{label.updateUser}" class="btn btn-link" type="submit"><i
-																class="fas fa-edit"></i></button>
+														<button th:title="#{label.updateUser}" class="btn btn-link"
+															type="submit"><i class="fas fa-edit"></i></button>
 													</form>
-													<form th:action="@{~/user/change-enabling-state/{id}(id=${user.id})}"
+													<form
+														th:action="@{~/user/change-enabling-state/{id}(id=${user.id})}"
 														method="POST">
 														<button class="btn btn-link" type="submit">
-															<i th:title="#{label.enable}" class="fas fa-check" th:if="${!user.enabled}"></i>
-															<i th:title="#{label.disable}" class="fas fa-times" th:if="${user.enabled}"></i>
+															<i th:title="#{label.enable}" class="fas fa-check"
+																th:if="${!user.enabled}"></i>
+															<i th:title="#{label.disable}" class="fas fa-times"
+																th:if="${user.enabled}"></i>
 														</button>
 													</form>
 												</div>

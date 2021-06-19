@@ -79,8 +79,8 @@ public class UserSearchForm {
 
 	@Override
 	public String toString() {
-		return "UserSearchForm [login=" + login + ", name=" + name + ", email=" + email + ", dateFrom=" + dateFrom.toString()
-				+ ", dateTo=" + dateTo.toString() + ", enabled=" + enabled + ", roleId=" + roleId + "]";
+		return "UserSearchForm [login=" + login + ", name=" + name + ", email=" + email + ", dateFrom=" + (dateFrom != null ? dateFrom.toString() : "")
+				+ ", dateTo=" + (dateTo != null ? dateTo.toString() : "") + ", enabled=" + enabled + ", roleId=" + roleId + "]";
 	}
 	
 }
