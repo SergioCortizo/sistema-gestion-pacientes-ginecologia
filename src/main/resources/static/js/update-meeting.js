@@ -140,6 +140,10 @@ $(document).ready(() => {
 			&& (!busyHours.includes(e.id))) {
 			$(".hourOption-" + i).show();
 		}
+		
+		if ($(".hourOption-" + i).is(':selected')) {
+			$(".hourOption-" + i).show();
+		}
 
 	});
 
