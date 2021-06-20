@@ -123,6 +123,7 @@ public class MessageController {
 		model.addAttribute("facultatives", facultatives);
 		model.addAttribute("messageForm", new MessageForm());
 		model.addAttribute("message", message);
+		model.addAttribute("isSender", message.getSender().getId() == userId);
 
 		LoggingUtility.logGetResource(username, "GET", "/messages/read-message/" + id);
 

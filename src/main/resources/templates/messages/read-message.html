@@ -31,42 +31,47 @@
 						</li>
 					</ol>
 
-					<a href="#reply-message-modal" role="button" class="btn btn-large btn-primary" data-toggle="modal">
-						<span th:text="#{label.replymessage}">Reply message</span>
-					</a>
-					<div id="reply-message-modal" class="modal fade">
-						<div class="modal-dialog modal-lg">
-							<div class="modal-content">
-								<div class="modal-header">
-									<h4 class="modal-title" th:text="#{label.replymessage}">Reply message</h4>
-								</div>
-								<div class="modal-body">
-									<form id="add-message-form" method="POST"
-										th:action="@{~/messages/reply-message/{id}(id=${message.id})}"
-										th:object="${messageForm}">
-										<div class="row">
-											<label class="small mb-1" for="subject"
-												th:text="#{label.subject}">Subject</label>
-											<input class="form-control py-4" id="subject" name="subject"
-												th:field="*{subject}" type="text" th:placeholder="#{label.subject}"
-												maxlength="100" />
-										</div>
-										<div class="row">
-											<label class="small mb-1" for="users" th:text="#{label.messagebody}">Message
-												body</label>
-										</div>
-										<div class="row">
-											<textarea id="messagebody" th:field="*{message_body}" rows="15"></textarea>
-										</div>
-										<div class="row mt-3">
-											<button type="submit" th:text="#{label.send}"
-												class="btn btn-primary">Send</button>
-										</div>
-									</form>
-								</div>
-								<div class="modal-footer">
-									<button type="button" class="btn btn-default" data-dismiss="modal"
-										th:text="#{label.close}">Close</button>
+					<div th:if="${!isSender}">
+						<a href="#reply-message-modal" role="button" class="btn btn-large btn-primary"
+							data-toggle="modal">
+							<span th:text="#{label.replymessage}">Reply message</span>
+						</a>
+						<div id="reply-message-modal" class="modal fade">
+							<div class="modal-dialog modal-lg">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title" th:text="#{label.replymessage}">Reply message</h4>
+									</div>
+									<div class="modal-body">
+										<form id="add-message-form" method="POST"
+											th:action="@{~/messages/reply-message/{id}(id=${message.id})}"
+											th:object="${messageForm}">
+											<div class="row">
+												<label class="small mb-1" for="subject"
+													th:text="#{label.subject}">Subject</label>
+												<input class="form-control py-4" id="subject" name="subject"
+													th:field="*{subject}" type="text" th:placeholder="#{label.subject}"
+													maxlength="100" />
+											</div>
+											<div class="row">
+												<label class="small mb-1" for="users"
+													th:text="#{label.messagebody}">Message
+													body</label>
+											</div>
+											<div class="row">
+												<textarea id="messagebody" th:field="*{message_body}"
+													rows="15"></textarea>
+											</div>
+											<div class="row mt-3">
+												<button type="submit" th:text="#{label.send}"
+													class="btn btn-primary">Send</button>
+											</div>
+										</form>
+									</div>
+									<div class="modal-footer">
+										<button type="button" class="btn btn-default" data-dismiss="modal"
+											th:text="#{label.close}">Close</button>
+									</div>
 								</div>
 							</div>
 						</div>
