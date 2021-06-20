@@ -277,296 +277,305 @@
 									</div>
 								</div>
 							</div>
-
-							<div class="panel-heading" role="tab" id="headingClinicCourse">
-								<h4 class="panel-title">
-									<a role="button" data-toggle="collapse" data-parent="#accordion"
-										href="#collapseClinicCourse" aria-expanded="true"
-										aria-controls="collapseClinicCourse">
-										<span th:text="#{label.cliniccourse}">Clinic course</span>
-									</a>
-								</h4>
-							</div>
-							<div id="collapseClinicCourse" class="panel-collapse collapse in" role="tabpanel"
-								aria-labelledby="headingClinicCourse">
-								<div class="panel-body">
-									<div class="card mb-4">
-										<div class="card-header">
-											<i class="fas fa-calendar-alt mr-1"></i>
+							<div sec:authorize="hasRole('FACULTATIVE')">
+								<div class="panel-heading" role="tab" id="headingClinicCourse">
+									<h4 class="panel-title">
+										<a role="button" data-toggle="collapse" data-parent="#accordion"
+											href="#collapseClinicCourse" aria-expanded="true"
+											aria-controls="collapseClinicCourse">
 											<span th:text="#{label.cliniccourse}">Clinic course</span>
-										</div>
-										<div class="card-body">
-											<div class="panel-group" id="accordion" role="tablist"
-												aria-multiselectable="true">
-												<div class="panel panel-default"
-													th:each="meeting : ${patient.meetings}">
-													<div class="panel-heading" role="tab"
-														th:id="'headingCourseClinic-' + ${meeting.id}">
-														<h6 class="panel-title">
-															<a role="button" data-toggle="collapse"
-																data-parent="#accordion"
-																th:href="'#collapseHeadingCourseClinic-' + ${meeting.id}"
-																aria-expanded="true"
-																th:attr="aria-controls='collapseHeadingCourseClinic-' + ${meeting.id}">
-																<span
-																	th:text="${meeting.meeting_date.toLocalDate()} + ' ' + ${meeting.meeting_date.toLocalTime()}">Meeting
-																	date</span>
-															</a>
-														</h6>
-													</div>
-													<div th:id="'collapseHeadingCourseClinic-' + ${meeting.id}"
-														class="panel-collapse collapse in" role="tabpanel"
-														th:attr="aria-labelledby='collapseHeadingCourseClinic-' + ${meeting.id}">
-														<div class="panel-body">
-															<a href="#interconsultationModal" role="button"
-																class="btn btn-large btn-primary" data-toggle="modal"
-																th:text="#{label.openinterconsultation}">Open
-																interconsultation</a>
+										</a>
+									</h4>
+								</div>
+								<div id="collapseClinicCourse" class="panel-collapse collapse in" role="tabpanel"
+									aria-labelledby="headingClinicCourse">
+									<div class="panel-body">
+										<div class="card mb-4">
+											<div class="card-header">
+												<i class="fas fa-calendar-alt mr-1"></i>
+												<span th:text="#{label.cliniccourse}">Clinic course</span>
+											</div>
+											<div class="card-body">
+												<div class="panel-group" id="accordion" role="tablist"
+													aria-multiselectable="true">
+													<div class="panel panel-default"
+														th:each="meeting : ${patient.meetings}">
+														<div class="panel-heading" role="tab"
+															th:id="'headingCourseClinic-' + ${meeting.id}">
+															<h6 class="panel-title">
+																<a role="button" data-toggle="collapse"
+																	data-parent="#accordion"
+																	th:href="'#collapseHeadingCourseClinic-' + ${meeting.id}"
+																	aria-expanded="true"
+																	th:attr="aria-controls='collapseHeadingCourseClinic-' + ${meeting.id}">
+																	<span
+																		th:text="${meeting.meeting_date.toLocalDate()} + ' ' + ${meeting.meeting_date.toLocalTime()}">Meeting
+																		date</span>
+																</a>
+															</h6>
+														</div>
+														<div th:id="'collapseHeadingCourseClinic-' + ${meeting.id}"
+															class="panel-collapse collapse in" role="tabpanel"
+															th:attr="aria-labelledby='collapseHeadingCourseClinic-' + ${meeting.id}">
+															<div class="panel-body">
+																<a href="#interconsultationModal" role="button"
+																	class="btn btn-large btn-primary"
+																	data-toggle="modal"
+																	th:text="#{label.openinterconsultation}">Open
+																	interconsultation</a>
 
-															<div id="interconsultationModal" class="modal fade">
-																<div class="modal-dialog modal-lg">
-																	<div class="modal-content">
-																		<div class="modal-header">
-																			<h4 class="modal-title"
-																				th:text="#{label.openinterconsultation}">
-																				Open
-																				interconsultation</h4>
-																		</div>
-																		<div class="modal-body">
-																			<form id="open-interconsultation-form"
-																				method="POST"
-																				th:action="@{~/messages/open-interconsultation/{id}(id=${meeting.id})}"
-																				th:object="${messageForm}">
-																				<div class="row">
-																					<div class="form-group">
-																						<label class="small mb-1"
-																							for="users"
-																							th:text="#{label.user}">User</label>
-																						<div>
-																							<select
-																								id="usersInterconsultation"
-																								th:field="*{receiverId}"
-																								class="form-control py-4">
-																								<option
-																									th:each="user : ${facultatives}"
-																									th:value="${user.id}">
-																									<span
-																										th:text="${user.name}">User</span>
-																								</option>
-																							</select>
-																						</div>
-																						<div
-																							th:each="user, rowStat : ${facultatives}">
-																							<ul th:id="'specialities-' + ${user.id}"
-																								th:style="${rowStat.index} == '0' ? '' : 'display:none;'">
-																								<li
-																									th:each="speciality : ${user.specialities}">
-																									<span
-																										th:text="${speciality.name}">Speciality</span>
-																								</li>
-																							</ul>
+																<div id="interconsultationModal" class="modal fade">
+																	<div class="modal-dialog modal-lg">
+																		<div class="modal-content">
+																			<div class="modal-header">
+																				<h4 class="modal-title"
+																					th:text="#{label.openinterconsultation}">
+																					Open
+																					interconsultation</h4>
+																			</div>
+																			<div class="modal-body">
+																				<form id="open-interconsultation-form"
+																					method="POST"
+																					th:action="@{~/messages/open-interconsultation/{id}(id=${meeting.id})}"
+																					th:object="${messageForm}">
+																					<div class="row">
+																						<div class="form-group">
+																							<label class="small mb-1"
+																								for="users"
+																								th:text="#{label.user}">User</label>
+																							<div>
+																								<select
+																									id="usersInterconsultation"
+																									th:field="*{receiverId}"
+																									class="form-control py-4">
+																									<option
+																										th:each="user : ${facultatives}"
+																										th:value="${user.id}">
+																										<span
+																											th:text="${user.name}">User</span>
+																									</option>
+																								</select>
+																							</div>
+																							<div
+																								th:each="user, rowStat : ${facultatives}">
+																								<ul th:id="'specialities-' + ${user.id}"
+																									th:style="${rowStat.index} == '0' ? '' : 'display:none;'">
+																									<li
+																										th:each="speciality : ${user.specialities}">
+																										<span
+																											th:text="${speciality.name}">Speciality</span>
+																									</li>
+																								</ul>
+																							</div>
 																						</div>
 																					</div>
-																				</div>
-																				<div class="row">
-																					<label class="small mb-1"
-																						for="reasonInterconsultation"
-																						th:text="#{label.reason}">Reason</label>
-																					<input class="form-control py-4"
-																						id="reasonInterconsultation"
-																						th:field="*{subject}"
-																						type="text"
-																						th:placeholder="#{label.reason}"
-																						maxlength="100" required />
-																				</div>
-																				<div class="row">
-																					<label class="small mb-1"
-																						for="users"
-																						th:text="#{label.messagebody}">Message
-																						body</label>
-																				</div>
-																				<div class="row">
-																					<textarea id="interconsultationbody"
-																						th:field="*{message_body}"
-																						rows="15"></textarea>
-																				</div>
-																				<div class="row mt-3">
-																					<button
-																						id="submit-interconsultation"
-																						type="submit"
-																						th:text="#{label.send}"
-																						class="btn btn-primary">Send</button>
-																				</div>
-																			</form>
-																		</div>
-																		<div class="modal-footer">
-																			<button type="button"
-																				class="btn btn-default"
-																				data-dismiss="modal"
-																				th:text="#{label.close}">Close</button>
+																					<div class="row">
+																						<label class="small mb-1"
+																							for="reasonInterconsultation"
+																							th:text="#{label.reason}">Reason</label>
+																						<input class="form-control py-4"
+																							id="reasonInterconsultation"
+																							th:field="*{subject}"
+																							type="text"
+																							th:placeholder="#{label.reason}"
+																							maxlength="100" required />
+																					</div>
+																					<div class="row">
+																						<label class="small mb-1"
+																							for="users"
+																							th:text="#{label.messagebody}">Message
+																							body</label>
+																					</div>
+																					<div class="row">
+																						<textarea
+																							id="interconsultationbody"
+																							th:field="*{message_body}"
+																							rows="15"></textarea>
+																					</div>
+																					<div class="row mt-3">
+																						<button
+																							id="submit-interconsultation"
+																							type="submit"
+																							th:text="#{label.send}"
+																							class="btn btn-primary">Send</button>
+																					</div>
+																				</form>
+																			</div>
+																			<div class="modal-footer">
+																				<button type="button"
+																					class="btn btn-default"
+																					data-dismiss="modal"
+																					th:text="#{label.close}">Close</button>
+																			</div>
 																		</div>
 																	</div>
 																</div>
-															</div>
-															<ul>
-																<li>
-																	<span class="text-muted"
-																		th:text="#{label.activity}">Activity</span>
-																	<span th:text="${meeting.activity}">Activity</span>
-																</li>
-																<li>
-																	<span class="text-muted"
-																		th:text="#{label.facultativeprofile}">Facultative
-																		profile</span>
-																	<span th:text="${meeting.user.username}">Facultative
-																		profile</span>
-																</li>
-																<li>
-																	<span class="text-muted"
-																		th:text="#{label.comments}">Comments</span>
-																	<div class="content"
-																		th:utext="${meeting.comments}" />
-																</li>
-																<li>
-																	<span class="text-muted"
-																		th:text="#{label.questions}">Questions</span>
-																	<ul>
-																		<li th:each="answer : ${meeting.answers}">
-																			<div>
-																				<span class="text-muted"
-																					th:text="${answer.question.question}">Question</span>
-																			</div>
-																			<div>
+																<ul>
+																	<li>
+																		<span class="text-muted"
+																			th:text="#{label.activity}">Activity</span>
+																		<span
+																			th:text="${meeting.activity}">Activity</span>
+																	</li>
+																	<li>
+																		<span class="text-muted"
+																			th:text="#{label.facultativeprofile}">Facultative
+																			profile</span>
+																		<span
+																			th:text="${meeting.user.username}">Facultative
+																			profile</span>
+																	</li>
+																	<li>
+																		<span class="text-muted"
+																			th:text="#{label.comments}">Comments</span>
+																		<div class="content"
+																			th:utext="${meeting.comments}" />
+																	</li>
+																	<li>
+																		<span class="text-muted"
+																			th:text="#{label.questions}">Questions</span>
+																		<ul>
+																			<li th:each="answer : ${meeting.answers}">
+																				<div>
+																					<span class="text-muted"
+																						th:text="${answer.question.question}">Question</span>
+																				</div>
+																				<div>
+																					<span
+																						th:text="${answer.answer}">Answer</span>
+																				</div>
+																			</li>
+																		</ul>
+																	</li>
+																	<li>
+																		<span class="text-muted"
+																			th:text="#{label.complementarytests}">Complementary
+																			tests</span>
+																		<ul>
+																			<li
+																				th:each="complementaryTest : ${meeting.complementaryTests}">
+																				<a
+																					th:href="@{~/downloadFile/{id}(id=${complementaryTest.id})}">
+																					<span
+																						th:text="${complementaryTest.fileName} + ' - '">Complementary
+																						test name</span>
+																				</a>
 																				<span
-																					th:text="${answer.answer}">Answer</span>
-																			</div>
-																		</li>
-																	</ul>
-																</li>
-																<li>
-																	<span class="text-muted"
-																		th:text="#{label.complementarytests}">Complementary
-																		tests</span>
-																	<ul>
-																		<li
-																			th:each="complementaryTest : ${meeting.complementaryTests}">
-																			<a
-																				th:href="@{~/downloadFile/{id}(id=${complementaryTest.id})}">
-																				<span
-																					th:text="${complementaryTest.fileName} + ' - '">Complementary
+																					th:text="${complementaryTest.diagnosticTest.name}">Diagnostic
 																					test name</span>
-																			</a>
-																			<span
-																				th:text="${complementaryTest.diagnosticTest.name}">Diagnostic
-																				test name</span>
-																		</li>
-																	</ul>
-																</li>
+																			</li>
+																		</ul>
+																	</li>
 
-																<li>
-																	<span class="text-muted"
-																		th:text="#{label.recipes}">Recipes</span>
-																	<ul>
-																		<li th:each="recipe : ${meeting.recipes}">
-																			<span class="text-muted"
-																				th:text="#{label.recipedispensedfor}">Recipe
-																				dispensed for</span>
-																			<span class="ml-2"
-																				th:text="${recipe.dispensingDate}">Dispensing
-																				date</span>
+																	<li>
+																		<span class="text-muted"
+																			th:text="#{label.recipes}">Recipes</span>
+																		<ul>
+																			<li th:each="recipe : ${meeting.recipes}">
+																				<span class="text-muted"
+																					th:text="#{label.recipedispensedfor}">Recipe
+																					dispensed for</span>
+																				<span class="ml-2"
+																					th:text="${recipe.dispensingDate}">Dispensing
+																					date</span>
 
-																			<ul>
-																				<li>
-																					<span class="font-weight-bold"
-																						th:text="#{label.clarifications}">Clarifications</span>
-																					<div
-																						th:utext="${recipe.clarifications}">
-																					</div>
-																				</li>
-																				<li>
-																					<span class="font-weight-bold"
-																						th:text="#{label.medicines}">Medicines</span>
-																					<table
-																						class="table table-sm table-responsive"
-																						id="table-medicines">
-																						<thead>
-																							<tr>
-																								<th scope="col"
-																									th:text="#{label.medicine}">
-																									Medicine
-																								</th>
-																								<th scope="col"
-																									th:text="#{label.denomination}">
-																									Denomination
-																								</th>
-																								<th scope="col"
-																									th:text="#{label.dosification}">
-																									Dosification
-																								</th>
-																								<th scope="col"
-																									th:text="#{label.formofadministration}">
-																									Form
-																									of
-																									administration</th>
-																								<th scope="col"
-																									th:text="#{label.format}">
-																									Format
-																								</th>
-																								<th scope="col"
-																									th:text="#{label.units}">
-																									Units</th>
-																								<th scope="col"
-																									th:text="#{label.posology}">
-																									Posology
-																								</th>
-																							</tr>
-																						</thead>
-																						<tbody>
-																							<tr
-																								th:each="medicine : ${recipe.medicines}">
-																								<th scope="row"
-																									th:text="${medicine.medicine.name}">
-																									Medicine</th>
-																								<td
-																									th:text="${medicine.denomination}">
-																									Denomination</td>
-																								<td
-																									th:text="${medicine.dosification}">
-																									Dosification</td>
-																								<td
-																									th:text="${medicine.formOfAdministration}">
-																									Form of
-																									administration</td>
-																								<td
-																									th:text="${medicine.format}">
-																									Format</td>
-																								<td
-																									th:text="${medicine.units}">
-																									Units</td>
-																								<td
-																									th:text="${medicine.posology}">
-																									Posology</td>
-																							</tr>
-																						</tbody>
-																					</table>
-																				</li>
-																			</ul>
+																				<ul>
+																					<li>
+																						<span class="font-weight-bold"
+																							th:text="#{label.clarifications}">Clarifications</span>
+																						<div
+																							th:utext="${recipe.clarifications}">
+																						</div>
+																					</li>
+																					<li>
+																						<span class="font-weight-bold"
+																							th:text="#{label.medicines}">Medicines</span>
+																						<table
+																							class="table table-sm table-responsive"
+																							id="table-medicines">
+																							<thead>
+																								<tr>
+																									<th scope="col"
+																										th:text="#{label.medicine}">
+																										Medicine
+																									</th>
+																									<th scope="col"
+																										th:text="#{label.denomination}">
+																										Denomination
+																									</th>
+																									<th scope="col"
+																										th:text="#{label.dosification}">
+																										Dosification
+																									</th>
+																									<th scope="col"
+																										th:text="#{label.formofadministration}">
+																										Form
+																										of
+																										administration
+																									</th>
+																									<th scope="col"
+																										th:text="#{label.format}">
+																										Format
+																									</th>
+																									<th scope="col"
+																										th:text="#{label.units}">
+																										Units</th>
+																									<th scope="col"
+																										th:text="#{label.posology}">
+																										Posology
+																									</th>
+																								</tr>
+																							</thead>
+																							<tbody>
+																								<tr
+																									th:each="medicine : ${recipe.medicines}">
+																									<th scope="row"
+																										th:text="${medicine.medicine.name}">
+																										Medicine</th>
+																									<td
+																										th:text="${medicine.denomination}">
+																										Denomination
+																									</td>
+																									<td
+																										th:text="${medicine.dosification}">
+																										Dosification
+																									</td>
+																									<td
+																										th:text="${medicine.formOfAdministration}">
+																										Form of
+																										administration
+																									</td>
+																									<td
+																										th:text="${medicine.format}">
+																										Format</td>
+																									<td
+																										th:text="${medicine.units}">
+																										Units</td>
+																									<td
+																										th:text="${medicine.posology}">
+																										Posology</td>
+																								</tr>
+																							</tbody>
+																						</table>
+																					</li>
+																				</ul>
 
-																			<div class="row">
-																				<form method="GET"
-																					th:action="@{~/recipe/get-recipe/{id}(id=${recipe.id})}">
-																					<button class="btn btn-link"
-																						type="submit">
-																						<span
-																							th:text="#{label.generaterecipe}">Generate
-																							recipe</span>
-																					</button>
-																				</form>
-																			</div>
-																		</li>
+																				<div class="row">
+																					<form method="GET"
+																						th:action="@{~/recipe/get-recipe/{id}(id=${recipe.id})}">
+																						<button class="btn btn-link"
+																							type="submit">
+																							<span
+																								th:text="#{label.generaterecipe}">Generate
+																								recipe</span>
+																						</button>
+																					</form>
+																				</div>
+																			</li>
 
-																	</ul>
+																		</ul>
 
+															</div>
 														</div>
 													</div>
 												</div>

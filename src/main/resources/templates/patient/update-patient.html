@@ -335,7 +335,7 @@
 						</div>
 					</div>
 
-					<div class="card mb-4">
+					<div class="card mb-4" sec:authorize="hasRole('FACULTATIVE')">
 						<div class="card-header">
 							<i class="fas fa-calendar-alt mr-1"></i>
 							<span th:text="#{label.cliniccourse}">Clinic course</span>
