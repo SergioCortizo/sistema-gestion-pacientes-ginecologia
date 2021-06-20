@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		user.setRoles(foundRoles);
 
 		userRepo.save(user);
-		
+
 		return user.getId();
 	}
 
@@ -98,10 +98,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 		user.setPhone_number(phoneNumber);
 		user.setCollegiate_number(collegiateNumber);
 
-		Set<Role> foundRoles = new HashSet<Role>();
-		roleRepo.findAllById(roles).forEach(foundRoles::add);
-
-		user.setRoles(foundRoles);
+		if (roles != null) {
+			Set<Role> foundRoles = new HashSet<Role>();
+			roleRepo.findAllById(roles).forEach(foundRoles::add);
+			user.setRoles(foundRoles);
+		}
 
 		return user;
 
@@ -136,8 +137,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 	}
 
 	@Override
-	public void changePassword(Integer id, String newPassword)
-			throws InstanceNotFoundException {
+	public void changePassword(Integer id, String newPassword) throws InstanceNotFoundException {
 
 		User user = permissionChecker.checkUser(id);
 
